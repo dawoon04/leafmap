@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리프맵 LeafMap · 부산 채식 메뉴 성분 확인 대시보드</title>
+<meta name="description" content="부산을 찾는 외국인 채식 여행자를 위해 식당 메뉴와 양념 성분 근거를 확인해 주는 리프맵 웹 서비스 대시보드(MVP 데모)">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --g9:#173F2D; --g8:#1F4D38; --g7:#2A6A4C; --g5:#4E9A73; --g2:#CFE3D6; --g1:#E8F1EB;
+  --bg:#F5F4EE; --card:#FFFFFF; --line:#E3E2DA; --text:#1B2420; --muted:#68726D;
+  --ok:#2A6A4C; --okbg:#E6F2EA; --chk:#A76712; --chkbg:#FFF3DC; --exc:#B3402F; --excbg:#FBE8E4;
+  --info:#2F5E8C; --infobg:#E7EFF8;
+  --r:14px; --sh:0 1px 2px rgba(20,40,30,.05),0 4px 16px rgba(20,40,30,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;background:var(--bg);color:var(--text);font-size:14.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font:inherit;color:inherit}
+a{color:var(--g7)}
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+/* sidebar */
+.side{background:var(--g9);color:#E7EFE9;padding:22px 16px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:0 6px}
+.brand .logo{width:36px;height:36px;border-radius:10px;background:#E8F1EB;display:grid;place-items:center}
+.brand b{font-size:19px;letter-spacing:-.3px;color:#fff}
+.brand small{display:block;font-size:11.5px;color:#A9C3B3;margin-top:-2px}
+.store{background:rgba(255,255,255,.07);border-radius:12px;padding:12px}
+.store .lbl{font-size:11px;color:#A9C3B3}
+.store .val{font-weight:600;color:#fff;margin-top:2px}
+.store .chips{display:flex;gap:6px;margin-top:8px}
+.store .chips span{font-size:11px;background:rgba(255,255,255,.12);padding:2px 8px;border-radius:20px}
+.navgroup{font-size:11px;color:#86A595;padding:4px 10px 2px;letter-spacing:.3px}
+nav{display:flex;flex-direction:column;gap:2px}
+nav button{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:#D5E3DA;text-align:left;width:100%;font-size:14px}
+nav button:hover{background:rgba(255,255,255,.07)}
+nav button.on{background:#E8F1EB;color:var(--g9);font-weight:600}
+nav button .ic{width:18px;text-align:center;font-size:15px}
+nav button .badge{margin-left:auto;font-size:11px;background:#E39A3B;color:#fff;border-radius:20px;padding:0 7px;min-width:20px;text-align:center}
+nav button .tag{margin-left:auto;font-size:10px;background:#7FBF97;color:var(--g9);border-radius:4px;padding:0 5px;font-weight:700}
+.side .foot{margin-top:auto;background:rgba(255,255,255,.07);border-radius:12px;padding:12px;font-size:12px;color:#B9CEC1}
+.side .foot b{color:#fff}
+.side .foot button{margin-top:8px;font-size:12px;color:#fff;background:rgba(255,255,255,.12);padding:5px 10px;border-radius:8px}
+/* main */
+main{padding:26px 32px 60px;min-width:0}
+.demo{display:flex;gap:10px;align-items:flex-start;background:var(--infobg);color:var(--info);border-radius:12px;padding:10px 14px;font-size:13px;margin-bottom:20px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.head h1{font-size:24px;letter-spacing:-.5px}
+.head p{color:var(--muted);margin-top:2px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:10px;font-weight:600;font-size:14px;background:var(--g8);color:#fff;transition:.15s}
+.btn:hover{background:var(--g7)}
+.btn.ghost{background:#fff;color:var(--g8);border:1px solid var(--g2)}
+.btn.ghost:hover{background:var(--g1)}
+.btn.sm{padding:6px 11px;font-size:12.5px;border-radius:8px}
+.btn.warn{background:var(--exc)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.page{display:none;animation:fade .25s ease}
+.page.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g21{grid-template-columns:2fr 1fr}
+.g12{grid-template-columns:1fr 2fr}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh);min-width:0}
+.card h3{font-size:16px;letter-spacing:-.2px;display:flex;align-items:center;gap:8px}
+.card .sub{color:var(--muted);font-size:13px;margin-top:2px}
+.card-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+.kpi .l{color:var(--muted);font-size:13px}
+.kpi .v{font-size:28px;font-weight:700;letter-spacing:-.8px;margin-top:4px}
+.kpi .v small{font-size:14px;color:var(--muted);font-weight:500;margin-left:4px}
+.kpi .d{font-size:12.5px;margin-top:6px;color:var(--muted)}
+.bar{height:7px;background:#EEEDE6;border-radius:6px;overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;background:var(--g7);border-radius:6px;transition:width .4s}
+.mission{background:linear-gradient(120deg,var(--g8),#2E7353);color:#fff;border:none}
+.mission .eyebrow{font-size:12px;color:#BFE0CC;display:flex;gap:6px;align-items:center}
+.mission h2{font-size:19px;margin:6px 0 6px;letter-spacing:-.3px}
+.mission p{color:#DCEDE2;font-size:14px}
+.mission .row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.mission .btn{background:#fff;color:var(--g8)}
+.mission .btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.pill.ok{background:var(--okbg);color:var(--ok)}
+.pill.check{background:var(--chkbg);color:var(--chk)}
+.pill.excl{background:var(--excbg);color:var(--exc)}
+.pill.info{background:var(--infobg);color:var(--info)}
+.pill.mute{background:#EFEEE8;color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:12.5px;padding:9px 10px;border-bottom:1px solid var(--line);background:#FAFAF6}
+td{padding:11px 10px;border-bottom:1px solid #EFEEE7;vertical-align:top}
+tr:last-child td{border-bottom:none}
+.tbl{overflow-x:auto}
+.list{display:flex;flex-direction:column}
+.li{display:flex;gap:12px;align-items:flex-start;padding:11px 0;border-bottom:1px solid #EFEEE7}
+.li:last-child{border-bottom:none}
+.li .ico{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;flex-shrink:0;background:var(--g1);font-size:15px}
+.li .t{font-weight:600;font-size:13.5px}
+.li .s{color:var(--muted);font-size:12.5px}
+.muted{color:var(--muted)}
+.small{font-size:12.5px}
+.note{font-size:12.5px;color:var(--muted);margin-top:10px}
+.sec-title{font-size:13px;font-weight:700;color:var(--muted);margin:22px 0 10px;letter-spacing:.2px}
+/* explore */
+.ex-wrap{display:grid;grid-template-columns:290px 1fr;gap:16px}
+.opt{display:flex;flex-direction:column;gap:6px}
+.radio{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:11px;cursor:pointer;background:#fff}
+.radio.on{border-color:var(--g7);background:var(--g1)}
+.radio .rd{width:16px;height:16px;border-radius:50%;border:2px solid #B9C2BC;margin-top:2px;flex-shrink:0}
+.radio.on .rd{border:5px solid var(--g7)}
+.radio b{font-size:13.5px;display:block}
+.radio span{font-size:12px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 11px;border-radius:20px;border:1px solid var(--line);font-size:12.5px;background:#fff}
+.chip.on{background:var(--g8);border-color:var(--g8);color:#fff}
+.seg{display:inline-flex;background:#EEEDE6;border-radius:10px;padding:3px}
+.seg button{padding:5px 12px;border-radius:8px;font-size:12.5px;color:var(--muted)}
+.seg button.on{background:#fff;color:var(--text);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.summary{background:var(--g1);border-radius:11px;padding:11px 12px;font-size:12.5px;color:var(--g9)}
+.toggle{display:flex;align-items:center;justify-content:space-between;font-size:13px;gap:8px}
+.sw{width:38px;height:22px;border-radius:20px;background:#CFCFC7;position:relative;flex-shrink:0;transition:.2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.2s}
+.sw.on{background:var(--g7)}
+.sw.on::after{left:19px}
+.map{width:100%;height:auto;display:block;border-radius:11px;background:#EEF0E6}
+.pin{cursor:pointer;transition:transform .15s}
+.pin:hover{transform:translateY(-2px)}
+.rlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:14px}
+.rc{border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;background:#fff;text-align:left;transition:.15s}
+.rc:hover{border-color:var(--g5);box-shadow:var(--sh)}
+.rc.dim{opacity:.55}
+.rc .n{font-weight:700;font-size:14px}
+.rc .a{font-size:12px;color:var(--muted)}
+.rc .cnt{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.empty{padding:28px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px;margin-top:14px}
+/* drawer */
+.ov{position:fixed;inset:0;background:rgba(15,30,22,.35);opacity:0;pointer-events:none;transition:.2s;z-index:40}
+.ov.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;height:100vh;width:min(470px,100vw);background:#fff;z-index:50;transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;box-shadow:-10px 0 30px rgba(0,0,0,.08)}
+.drawer.on{transform:none}
+.drawer .dh{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.drawer .dh h3{font-size:17px}
+.drawer .db{padding:18px 20px;overflow-y:auto;flex:1}
+.x{width:32px;height:32px;border-radius:9px;background:#F1F0EA;font-size:16px;margin-left:auto;flex-shrink:0}
+.menu-it{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;cursor:pointer;display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.menu-it:hover{border-color:var(--g5)}
+.kv{display:grid;grid-template-columns:96px 1fr;gap:6px 10px;font-size:13px;margin-top:8px}
+.kv dt{color:var(--muted)}
+.tags{display:flex;flex-wrap:wrap;gap:5px}
+.tag2{font-size:12px;background:#F1F0EA;border-radius:6px;padding:2px 8px}
+.ev{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px;background:#FCFCF9}
+.label-raw{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#F4F2E9;border-radius:8px;padding:8px 10px;margin-top:6px;color:#3d3d33}
+.kr-card{background:#FFFBEF;border:1px solid #F0DFAF;border-radius:12px;padding:14px;margin-top:12px}
+.kr-card .kr{font-size:16px;font-weight:600;line-height:1.6;color:#3A2E10}
+.kr-card .en{font-size:12.5px;color:#7A6A40;margin-top:6px}
+.banner{display:flex;gap:10px;padding:11px 13px;border-radius:11px;font-size:13px;margin-top:10px}
+.banner b{white-space:nowrap}
+.hb{margin:14px 0}.hb .lab{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}.hb .trk{display:flex;height:30px;border-radius:8px;overflow:hidden;background:#EEEDE6}.hb .trk i{display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;font-style:normal;transition:width .4s;min-width:0;overflow:hidden}
+.lg{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:4px}.lg span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;background:var(--c);vertical-align:-1px}
+.vb{display:flex;align-items:flex-end;justify-content:space-around;height:240px;border-bottom:1px solid var(--line);padding:0 10px;gap:20px}.vb div{flex:1;max-width:110px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}.vb b{font-size:15px;margin-bottom:6px}.vb i{display:block;width:100%;border-radius:8px 8px 0 0}.vbx{display:flex;justify-content:space-around;padding:8px 10px 0;gap:20px;font-size:13px;color:var(--muted)}.vbx span{flex:1;max-width:110px;text-align:center}
+.banner.ok{background:var(--okbg);color:var(--ok)}
+.banner.check{background:var(--chkbg);color:#7A4B0D}
+.banner.excl{background:var(--excbg);color:var(--exc)}
+/* analyzer */
+textarea,input[type=text],input[type=date],select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;font-size:13.5px;outline:none}
+textarea:focus,input:focus,select:focus{border-color:var(--g5)}
+textarea{min-height:120px;resize:vertical;line-height:1.55}
+label.f{display:block;font-size:12.5px;font-weight:600;margin:12px 0 5px}
+label.f em{font-style:normal;color:var(--muted);font-weight:400}
+.steps{display:flex;gap:6px;margin:12px 0}
+.steps div{flex:1;font-size:11.5px;text-align:center;padding:7px 4px;border-radius:8px;background:#EFEEE8;color:var(--muted)}
+.steps div.on{background:var(--g8);color:#fff}
+.steps div.done{background:var(--g2);color:var(--g9)}
+.loading{display:none;align-items:center;gap:10px;color:var(--muted);font-size:13px;padding:14px 0}
+.loading.on{display:flex}
+.spin{width:18px;height:18px;border:2.5px solid var(--g2);border-top-color:var(--g7);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.dietres{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.dietres div{border-radius:11px;padding:10px 12px;font-size:12.5px}
+.dietres b{display:block;font-size:14px;margin-top:2px}
+/* timeline */
+.tl{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tl .w{border-radius:12px;padding:14px;background:#FAFAF6;border:1px solid var(--line)}
+.tl .w .wk{font-size:12px;font-weight:700;color:var(--g7)}
+.tl .w b{display:block;margin:4px 0 6px;font-size:14px}
+.tl .w p{font-size:12.5px;color:var(--muted)}
+.tl .w .out{margin-top:8px;font-size:12px;background:var(--g1);color:var(--g9);border-radius:7px;padding:4px 8px;display:inline-block}
+.qs li{margin:0 0 8px 18px;font-size:13.5px}
+/* modal */
+.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-48%);width:min(520px,calc(100vw - 32px));max-height:86vh;overflow-y:auto;background:#fff;border-radius:16px;z-index:60;padding:22px;opacity:0;pointer-events:none;transition:.2s;box-shadow:0 20px 50px rgba(0,0,0,.18)}
+.modal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}
+.modal h3{font-size:17px;margin-bottom:4px}
+.modal .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,20px);background:var(--g9);color:#fff;padding:11px 18px;border-radius:12px;font-size:13.5px;opacity:0;transition:.25s;z-index:80;pointer-events:none;max-width:calc(100vw - 32px)}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.matrix{width:100%;max-width:760px;height:auto;display:block;margin:0 auto}
+.rng{width:100%;accent-color:var(--g7)}
+.calc-out{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.calc-out div{background:var(--g1);border-radius:11px;padding:12px}
+.calc-out b{font-size:20px;display:block;color:var(--g9)}
+.road{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.road .st{border-left:3px solid var(--g5);padding:4px 0 4px 14px}
+.road .st .p{font-size:12px;font-weight:700;color:var(--g7)}
+.road .st b{display:block;margin:2px 0 6px}
+.road .st ul{margin-left:16px;font-size:13px;color:var(--muted)}
+.ref li{margin:0 0 12px 0;list-style:none;font-size:13.5px}
+.ref li span{color:var(--muted);font-size:12.5px;display:block}
+.mobile-top{display:none}
+@media (max-width:1100px){
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g21,.g12,.g3{grid-template-columns:1fr}
+  .ex-wrap{grid-template-columns:1fr}
+  .tl,.road{grid-template-columns:1fr 1fr}
+}
+@media (max-width:820px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;width:260px;z-index:70;transform:translateX(-100%);transition:transform .25s}
+  .side.on{transform:none}
+  .mobile-top{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--g9);color:#fff;position:sticky;top:0;z-index:30}
+  .mobile-top button{color:#fff;font-size:20px;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.1)}
+  main{padding:18px 16px 50px}
+  .g2,.g4,.tl,.road,.dietres,.calc-out{grid-template-columns:1fr}
+  .head h1{font-size:21px}
+}
+</style>
+</head>
+<body>
+<div class="mobile-top"><button id="menuBtn" aria-label="메뉴 열기">☰</button><b>LeafMap</b><span style="font-size:12px;opacity:.7">부산 채식 메뉴 확인</span></div>
+<div class="app">
+<aside class="side" id="side">
+  <div class="brand">
+    <div class="logo"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></div>
+    <div><b>LeafMap</b><small>리프맵 · 부산 채식 메뉴 확인</small></div>
+  </div>
+  <div class="store">
+    <div class="lbl">운영 지역 (MVP)</div>
+    <div class="val">부산 해운대 · 서면</div>
+    <div class="chips"><span>식당 10곳</span><span>메뉴 30개</span></div>
+  </div>
+  <nav id="nav">
+    <div class="navgroup">운영</div>
+    <button data-p="overview" class="on"><span class="ic">▦</span>대시보드 개요</button>
+    <button data-p="queue"><span class="ic">✓</span>등록·검토 큐<span class="badge" id="bQueue">0</span></button>
+    <button data-p="analyze"><span class="ic">✦</span>AI 성분 분석<span class="tag">AI</span></button>
+    <button data-p="reports"><span class="ic">⚑</span>정정 제보·문의<span class="badge" id="bRep">0</span></button>
+    <div class="navgroup">여행자 화면</div>
+    <button data-p="explore"><span class="ic">⌖</span>메뉴 탐색 (여행자 뷰)</button>
+    <div class="navgroup">기획·검증</div>
+    <button data-p="validation"><span class="ic">◎</span>고객 검증 계획</button>
+    <button data-p="market"><span class="ic">▤</span>시장·경쟁 분석</button>
+    <button data-p="business"><span class="ic">₩</span>수익 모델·확장</button>
+    <button data-p="about"><span class="ic">ⓘ</span>기획 개요·참고자료</button>
+  </nav>
+  <div class="foot">
+    <b>이다운</b> · 2023761031<br>AI데이터기반서비스기획 중간과제
+    <br><button id="resetBtn">데모 데이터 초기화</button>
+  </div>
+</aside>
+
+<main>
+<div class="demo"><span>ⓘ</span><div>이 사이트는 <b>MVP 시연용 데모</b>입니다. 식당·메뉴·제품·제보와 화면 안의 수치는 모두 가상 데이터이며, 실제 식당이나 제품을 평가한 결과가 아닙니다. 버튼으로 바꾼 상태는 이 브라우저에만 저장됩니다.</div></div>
+
+<!-- ================= OVERVIEW ================= -->
+<section class="page on" id="p-overview">
+  <div class="head">
+    <div><h1>대시보드 개요</h1><p>등록된 메뉴의 판정 상태와 운영자가 오늘 처리할 일을 한눈에 봅니다.</p></div>
+    <button class="btn" data-go="explore">여행자 화면 보기 →</button>
+  </div>
+  <div class="card mission" id="mission"></div>
+  <div class="grid g4" style="margin-top:16px" id="kpis"></div>
+  <div class="grid g21" style="margin-top:16px">
+    <div class="card">
+      <div class="card-h"><div><h3>식단별 메뉴 판정 결과</h3><div class="sub">같은 메뉴 30개라도 식단 조건에 따라 결과가 달라집니다</div></div></div>
+      <div id="cDiet"></div>
+      <div class="note">조건에 맞음 = 제외 재료 근거 확인 + 식당 사용 확인 완료 · 추가 확인 필요 = 제품 불명·식당 확인 대기·상충 정보</div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><h3>지역별 데이터 확보</h3><div class="sub">MVP 목표: 2곳 상권, 식당 10곳·메뉴 30개</div></div></div>
+      <div id="regionProg"></div>
+      <div class="sec-title" style="margin-top:18px">데이터 신선도</div>
+      <div id="fresh"></div>
+    </div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <div class="card-h"><div><h3>최근 운영 활동</h3><div class="sub">검토·제보·분석 기록</div></div></div>
+      <div class="list" id="activity"></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><h3>판정 원칙</h3><div class="sub">추천을 서두르지 않는 것이 리프맵의 기준입니다</div></div></div>
+      <div class="list">
+        <div class="li"><div class="ico">①</div><div><div class="t">이름이 아니라 메뉴의 재료를 본다</div><div class="s">“비건 식당”이라는 표시보다 육수·소스·반찬까지 메뉴 단위로 확인합니다.</div></div></div>
+        <div class="li"><div class="ico">②</div><div><div class="t">브랜드가 아니라 정확한 제품을 특정한다</div><div class="s">같은 브랜드라도 제품·판매 국가에 따라 성분이 다르므로 제품명·용량·국가를 받습니다.</div></div></div>
+        <div class="li"><div class="ico">③</div><div><div class="t">AI는 초안, 결정은 사람이 한다</div><div class="s">AI가 성분표를 읽고 번역해 의심 재료를 찾으면 운영자가 원문과 대조합니다.</div></div></div>
+        <div class="li"><div class="ico">④</div><div><div class="t">모르면 “추가 확인 필요”로 둔다</div><div class="s">제품 분석이 끝나도 식당 사용 확인 전에는 ‘조건에 맞음’으로 확정하지 않습니다.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= EXPLORE ================= -->
+<section class="page" id="p-explore">
+  <div class="head">
+    <div><h1 data-i="exTitle">메뉴 탐색</h1><p data-i="exSub">외국인 여행자가 보는 화면입니다. 식단을 정하면 부산 식당의 메뉴를 조건에 맞춰 보여줍니다.</p></div>
+    <div class="seg" id="langSeg"><button data-l="ko" class="on">한국어</button><button data-l="en">English</button></div>
+  </div>
+  <div class="ex-wrap">
+    <div class="card" style="align-self:start">
+      <h3 data-i="dietQ">어떤 식단인가요?</h3>
+      <div class="opt" id="dietOpts" style="margin-top:10px"></div>
+      <label class="f" data-i="exclQ">먹지 않는 재료</label>
+      <div class="chips" id="exChips"></div>
+      <label class="f" data-i="areaQ">지역</label>
+      <div class="seg" id="areaSeg" style="display:flex">
+        <button data-a="all" class="on" style="flex:1" data-i="all">전체</button>
+        <button data-a="haeundae" style="flex:1" data-i="hae">해운대</button>
+        <button data-a="seomyeon" style="flex:1" data-i="seo">서면</button>
+      </div>
+      <div class="toggle" style="margin-top:14px"><span data-i="showChk">‘추가 확인 필요’ 메뉴도 보기</span><button class="sw on" id="swChk" aria-label="toggle"></button></div>
+      <div class="summary" id="condSum" style="margin-top:14px"></div>
+      <div class="note" data-i="locNote">위치 권한 없이도 지역을 직접 고를 수 있습니다. 조건은 화면을 이동해도 유지됩니다.</div>
+    </div>
+    <div style="min-width:0">
+      <div class="card">
+        <div class="card-h">
+          <div><h3 data-i="mapT">부산 지도</h3><div class="sub" data-i="mapS">핀 숫자 = 내 조건에 맞는 메뉴 수 (개략도, 실제 축척 아님)</div></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap" id="legend"></div>
+        </div>
+        <svg class="map" id="map" viewBox="0 0 800 420"></svg>
+        <div id="rlist"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ANALYZE ================= -->
+<section class="page" id="p-analyze">
+  <div class="head">
+    <div><h1>AI 성분 분석</h1><p>식당이 올린 성분표 원문을 읽어 동물 유래 의심 재료를 찾고, 운영자가 검토할 초안을 만듭니다.</p></div>
+  </div>
+  <div class="grid g2">
+    <div class="card">
+      <h3>1. 제품 특정 & 성분표 입력</h3>
+      <div class="sub">브랜드명만으로는 판정하지 않습니다. 정확한 제품명과 판매 국가를 함께 받습니다.</div>
+      <label class="f">예시 성분표 불러오기 <em>(가상 제품)</em></label>
+      <select id="sample"></select>
+      <div class="grid g2" style="gap:10px">
+        <div><label class="f">브랜드 · 제품명</label><input type="text" id="aProd" placeholder="예: 데모식품 양조간장 500ml"></div>
+        <div><label class="f">판매 국가</label><input type="text" id="aCountry" placeholder="예: 대한민국"></div>
+      </div>
+      <label class="f">성분표 원문 <em>(쉼표로 구분, 한국어·영어 가능)</em></label>
+      <textarea id="aText" placeholder="정제수, 탈지대두, 소맥, 천일염, 주정"></textarea>
+      <div class="steps" id="aSteps"><div>성분 읽기</div><div>번역·정규화</div><div>동물 유래 대조</div><div>운영자 검토</div></div>
+      <button class="btn" id="aRun" style="width:100%;justify-content:center">AI 분석 초안 만들기</button>
+      <div class="note">데모 분석기는 브라우저 안에서 동작하는 규칙 기반 사전(동물 유래 재료 약 90개 표현·식물성 예외 규칙)으로 성분을 대조합니다. 실제 서비스에서는 사진 판독(OCR)과 언어모델 번역을 더하되, 결과는 항상 사람이 검토합니다.</div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div><h3>2. 분석 초안</h3><div class="sub" id="aSub">왼쪽에서 성분표를 입력하고 분석을 실행하세요.</div></div><span id="aPill"></span></div>
+      <div class="loading" id="aLoad"><div class="spin"></div><span id="aLoadT">성분표를 읽는 중...</span></div>
+      <div id="aOut"><div class="empty" style="margin-top:0">아직 분석한 성분표가 없습니다.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUEUE ================= -->
+<section class="page" id="p-queue">
+  <div class="head">
+    <div><h1>등록·검토 큐</h1><p>‘추가 확인 필요’ 메뉴를 처리하고, 식당이 보낸 새 등록 자료를 검토합니다.</p></div>
+    <button class="btn" id="openReg">+ 식당 메뉴 등록 폼</button>
+  </div>
+  <div class="card">
+    <div class="card-h"><div><h3>확인 대기 메뉴</h3><div class="sub">처리하면 여행자 화면과 대시보드 수치에 바로 반영됩니다</div></div></div>
+    <div class="tbl"><table><thead><tr><th>식당 / 메뉴</th><th>대기 사유</th><th>마지막 확인</th><th style="width:250px">처리</th></tr></thead><tbody id="qBody"></tbody></table></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="card-h"><div><h3>신규 등록 자료</h3><div class="sub">식당이 모바일 폼으로 보낸 자료 · 운영자가 누락 항목을 확인합니다</div></div></div>
+    <div class="tbl"><table><thead><tr><th>식당 / 메뉴</th><th>제출 자료</th><th>누락 확인</th><th>상태</th></tr></thead><tbody id="subBody"></tbody></table></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>식당 등록 항목과 이유</h3>
+    <div class="tbl" style="margin-top:10px"><table><thead><tr><th>입력 항목</th><th>필요한 이유</th></tr></thead><tbody>
+      <tr><td>메뉴명과 기본 재료</td><td>한·영 메뉴를 연결하고 주재료를 확인</td></tr>
+      <tr><td>육수·소스·반찬</td><td>주재료 외 동물 유래 재료의 누락 방지</td></tr>
+      <tr><td>브랜드와 정확한 제품명</td><td>같은 브랜드의 다른 제품 구분</td></tr>
+      <tr><td>용량과 판매 국가</td><td>제품 버전과 성분표 구분</td></tr>
+      <tr><td>성분표 사진과 원문 링크</td><td>분석 결과를 사람이 다시 확인</td></tr>
+      <tr><td>실제 사용 여부와 변경일</td><td>제품 분석과 식당 사용 사실 연결</td></tr>
+    </tbody></table></div>
+  </div>
+</section>
+
+<!-- ================= REPORTS ================= -->
+<section class="page" id="p-reports">
+  <div class="head">
+    <div><h1>정정 제보·문의</h1><p>제보는 접수 즉시 사실로 바꾸지 않고, 검토 후 반영합니다. 상충 정보가 생기면 해당 메뉴는 ‘추가 확인 필요’로 돌아갑니다.</p></div>
+  </div>
+  <div class="grid g4" id="repKpi"></div>
+  <div class="grid g21" style="margin-top:16px">
+    <div class="card">
+      <div class="card-h"><div><h3>제보 목록</h3><div class="sub">접수 → 검토 중 → 반영 / 기각</div></div></div>
+      <div class="list" id="repList"></div>
+    </div>
+    <div class="card">
+      <h3>한국어 요청 문장 만들기</h3>
+      <div class="sub">여행자가 직원에게 보여줄 문장, 운영자가 식당에 보낼 문장을 만듭니다.</div>
+      <label class="f">받는 사람</label>
+      <div class="seg" id="krTo" style="display:flex"><button data-t="staff" class="on" style="flex:1">식당 직원(여행자용)</button><button data-t="owner" style="flex:1">식당 사장님(운영자용)</button></div>
+      <label class="f">먹지 않는 재료</label>
+      <div class="chips" id="krChips"></div>
+      <div id="krOut"></div>
+      <button class="btn ghost sm" id="krCopy" style="margin-top:10px">문장 복사</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= VALIDATION ================= -->
+<section class="page" id="p-validation">
+  <div class="head">
+    <div><h1>고객 검증 계획</h1><p>아래 내용은 실행 계획이며 조사 결과가 아닙니다. 목표 수치는 자체 가설입니다.</p></div>
+    <span class="pill check"><span class="dot"></span>측정 전</span>
+  </div>
+  <div class="card mission">
+    <div class="eyebrow">검증할 핵심 가설</div>
+    <h2>메뉴의 재료와 양념 제품의 성분 근거를 함께 보여주면, 방문 전 메뉴를 고르는 시간과 시행착오가 줄어든다.</h2>
+    <p>과제: “해운대에서 본인의 제외 재료에 맞는 메뉴를 찾고, 그 메뉴를 고른 근거를 설명해 주세요.”</p>
+  </div>
+  <div class="grid g3" style="margin-top:16px">
+    <div class="card kpi"><div class="l">여행자 테스트</div><div class="v">5<small>명</small></div><div class="d">부산 식당 이용 경험이 있는 영어 사용자</div></div>
+    <div class="card kpi"><div class="l">식당 운영자 테스트</div><div class="v">3<small>곳</small></div><div class="d">등록·변경 입력의 부담 확인</div></div>
+    <div class="card kpi"><div class="l">실행 기간</div><div class="v">4<small>주</small></div><div class="d">조사 → 시제품 → 시험 → 수정·재시험</div></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>측정 기준</h3>
+    <div class="tbl" style="margin-top:10px"><table><thead><tr><th>지표</th><th>측정 방법</th><th>사전 목표</th><th>결과</th></tr></thead><tbody>
+      <tr><td><b>과제 완료</b></td><td>도움 없이 메뉴와 근거 화면에 도달</td><td>5명 중 4명 이상</td><td><span class="pill mute">측정 전</span></td></tr>
+      <tr><td><b>탐색 시간</b></td><td>기존 방식(검색·지도앱)과 같은 난이도 과제 비교, 순서를 바꿔 학습 효과 완화</td><td>완료자 중앙값 20% 단축</td><td><span class="pill mute">측정 전</span></td></tr>
+      <tr><td><b>확인 대기 이해</b></td><td>‘추가 확인 필요’의 의미를 자기 말로 설명</td><td>5명 중 4명 이상</td><td><span class="pill mute">측정 전</span></td></tr>
+      <tr><td><b>데이터 정확성</b></td><td>제외 재료·근거 누락 사례를 준비해 점검</td><td>준비한 사례에서 오추천 0건</td><td><span class="pill mute">측정 전</span></td></tr>
+      <tr><td><b>운영 부담</b></td><td>식당 등록과 변경 입력 시험</td><td>3곳 중 2곳 이상 완료</td><td><span class="pill mute">측정 전</span></td></tr>
+    </tbody></table></div>
+    <div class="note">수집 기록: 과제 시간 · 오클릭 · 발언(생각 말하기) · 오추천 · 갱신 누락 · 재확인 시간</div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h3>여행자 인터뷰 질문</h3>
+      <ol class="qs" style="margin-top:12px">
+        <li>최근 부산에서 먹을 곳을 어떻게 찾았나요? 가장 번거로웠던 순간은?</li>
+        <li>이 화면을 보고 어떤 메뉴를 고르겠어요? 무엇을 더 확인해야 하나요?</li>
+        <li>‘추가 확인 필요’ 표시를 보면 어떻게 행동하겠어요?</li>
+        <li>평소 방식보다 편해진 점과 어려운 점은 무엇인가요?</li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>식당 운영자 인터뷰 질문</h3>
+      <ol class="qs" style="margin-top:12px">
+        <li>메뉴에 쓰는 양념 제품명과 성분표를 공유하는 데 부담이 있나요?</li>
+        <li>제품이나 레시피가 바뀌면 어떤 방법으로 알려 주실 수 있나요?</li>
+        <li>외국인 채식 손님을 맞을 때 겪은 어려움은 무엇인가요?</li>
+        <li>등록 폼 입력에 걸린 시간과 헷갈린 항목은 무엇인가요?</li>
+      </ol>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>4주 실행 일정</h3>
+    <div class="tl" style="margin-top:12px">
+      <div class="w"><div class="wk">1주차</div><b>경험 조사 · 식당 협조 요청</b><p>여행자 불편 사례 수집, 해운대·서면 식당 접촉</p><span class="out">문제 기록 · 자료 확보 여부</span></div>
+      <div class="w"><div class="wk">2주차</div><b>화면 연결 · 분석 초안</b><p>여행자 4개 화면 연결, 판정 규칙과 분석 초안 제작</p><span class="out">시제품 · 판정 규칙</span></div>
+      <div class="w"><div class="wk">3주차</div><b>여행자 5명 · 식당 3곳 시험</b><p>과제 수행 관찰, 등록·변경 입력 시험</p><span class="out">시간 · 오류 · 발언 기록</span></div>
+      <div class="w"><div class="wk">4주차</div><b>수정 후 재시험</b><p>문구·근거 위치 수정 후 같은 과제로 재측정</p><span class="out">변경 전후 화면 · 확장 판단</span></div>
+    </div>
+    <div class="grid g3" style="margin-top:14px">
+      <div class="banner check"><span>①</span><div>상태 이해가 낮으면 문구와 근거 위치를 수정한다.</div></div>
+      <div class="banner check"><span>②</span><div>자료 확보가 어려우면 식당 수를 줄이고 확인 가능한 메뉴에 집중한다.</div></div>
+      <div class="banner ok"><span>③</span><div>사용성과 데이터 갱신이 모두 가능할 때 다른 부산 상권으로 넓힌다.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MARKET ================= -->
+<section class="page" id="p-market">
+  <div class="head"><div><h1>시장·경쟁 분석</h1><p>부산을 찾는 외국인은 빠르게 늘고 있지만, 메뉴 단위로 숨은 동물성 재료를 확인할 방법은 부족합니다.</p></div></div>
+  <div class="grid g21">
+    <div class="card">
+      <div class="card-h"><div><h3>부산 방문 외국인 관광객</h3><div class="sub">단위: 만 명 (반올림) · 전체 외국인 관광객 규모</div></div></div>
+      <div id="cVisit"></div>
+      <div class="note">출처: 부산광역시(2023·2024년), 부산연구원(2025년). 방한 관광객 중 채식주의자 비율은 공식 수치를 확인하지 못해 추정하지 않았습니다.</div>
+    </div>
+    <div class="card">
+      <h3>문제의 근거</h3>
+      <div class="list" style="margin-top:6px">
+        <div class="li"><div class="ico">🍲</div><div><div class="t">숨은 육수</div><div class="s">한국관광공사는 한국 음식에 육류·생선 육수를 쓰는 경우가 있다고 안내합니다.</div></div></div>
+        <div class="li"><div class="ico">🥬</div><div><div class="t">김치의 액젓·젓갈</div><div class="s">채소 반찬처럼 보여도 액젓이나 젓갈이 들어갈 수 있습니다.</div></div></div>
+        <div class="li"><div class="ico">🗣</div><div><div class="t">언어 장벽</div><div class="s">재료를 묻고 싶어도 한국어로 정확히 묻기 어렵습니다.</div></div></div>
+        <div class="li"><div class="ico">✈</div><div><div class="t">기획 출발점</div><div class="s">프랑스인 채식주의자 친구가 부산에서 검색 정보와 실제 메뉴가 달라 식사에 어려움을 겪은 경험.</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>경쟁 서비스 비교</h3>
+    <div class="tbl" style="margin-top:10px"><table><thead><tr><th>서비스</th><th>공식 소개의 강점</th><th>리프맵의 비교 관점</th></tr></thead><tbody>
+      <tr><td><b>HappyCow</b></td><td>채식 장소 검색과 필터, 이용자 리뷰</td><td>개별 메뉴의 양념 제품과 최신 재료는 추가 확인 필요</td></tr>
+      <tr><td><b>네이버지도</b></td><td>장소 검색과 리뷰, 길찾기와 다국어 지도</td><td>장소를 찾은 뒤 개인 제외 재료와 메뉴 성분을 대조할 필요</td></tr>
+      <tr><td><b>Veganify</b></td><td>바코드와 성분 기반 제품 판별</td><td>포장 제품의 결과를 식당 메뉴와 육수·반찬에 연결할 필요</td></tr>
+      <tr><td><b style="color:var(--g7)">리프맵</b></td><td>메뉴 단위 성분 근거 + 식당 사용 확인 + 확인일·확인 주체 표시</td><td>데이터 확보와 갱신 부담이 가장 큰 과제 → 상권을 좁혀 시작</td></tr>
+    </tbody></table></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="card-h"><div><h3>포지셔닝 맵</h3><div class="sub">공식 소개를 바탕으로 한 자체 해석 (정량 평가 아님)</div></div></div>
+    <svg class="matrix" viewBox="0 0 720 360" id="matrix"></svg>
+  </div>
+</section>
+
+<!-- ================= BUSINESS ================= -->
+<section class="page" id="p-business">
+  <div class="head"><div><h1>수익 모델·확장</h1><p>여행자 핵심 기능은 무료로 두고, 확인된 데이터의 가치를 식당과 관광 기관에 판매하는 구조를 가설로 세웠습니다.</p></div><span class="pill check"><span class="dot"></span>가설 · 검증 전</span></div>
+  <div class="grid g4">
+    <div class="card"><div class="pill ok">B2B · 주력</div><h3 style="margin-top:10px">식당 ‘성분 확인’ 구독</h3><p class="small muted" style="margin-top:6px">제품 등록 대행, 메뉴 변경 시 재검토, 영어 메뉴 상세 페이지, 매장용 QR 안내판 제공</p></div>
+    <div class="card"><div class="pill info">B2G · B2B</div><h3 style="margin-top:10px">관광 기관·숙박 제휴</h3><p class="small muted" style="margin-top:6px">관광안내소·호텔 컨시어지용 채식 메뉴 안내 키트와 데이터 라이선스</p></div>
+    <div class="card"><div class="pill mute">B2C · 보조</div><h3 style="margin-top:10px">여행자 프리미엄</h3><p class="small muted" style="margin-top:6px">오프라인 저장, 추가 언어, 여행 일정별 저장 목록. 탐색·근거 보기는 계속 무료</p></div>
+    <div class="card"><div class="pill mute">광고 · 보조</div><h3 style="margin-top:10px">비건 제품 제휴</h3><p class="small muted" style="margin-top:6px">비건 식품 브랜드 안내. <b>광고는 판정 결과·정렬 순서와 완전히 분리</b>합니다</p></div>
+  </div>
+  <div class="grid g12" style="margin-top:16px">
+    <div class="card">
+      <h3>수익 시뮬레이터</h3>
+      <div class="sub">모든 값은 검증 전 가정입니다. 슬라이더로 바꿔 보세요.</div>
+      <label class="f">유료 구독 식당 수 <em id="vR"></em></label><input type="range" class="rng" id="sR" min="0" max="200" value="30">
+      <label class="f">식당 월 구독료 <em id="vF"></em></label><input type="range" class="rng" id="sF" min="5000" max="50000" step="1000" value="19000">
+      <label class="f">제휴 기관 수 <em id="vP"></em></label><input type="range" class="rng" id="sP" min="0" max="10" value="2">
+      <label class="f">기관당 연 계약금 <em id="vC"></em></label><input type="range" class="rng" id="sC" min="0" max="10000000" step="500000" value="3000000">
+      <div class="calc-out"><div><span class="small muted">월 예상 매출</span><b id="oM"></b></div><div><span class="small muted">연 예상 매출</span><b id="oY"></b></div></div>
+      <div class="note" id="oNote"></div>
+    </div>
+    <div class="card">
+      <h3>왜 식당이 돈을 낼까? — 검증할 질문</h3>
+      <div class="list" style="margin-top:6px">
+        <div class="li"><div class="ico">?</div><div><div class="t">외국인 채식 손님이 실제로 늘어나는가</div><div class="s">QR 안내판 스캔 수, ‘근거 보기’ 이후 방문 의향을 식당별로 기록</div></div></div>
+        <div class="li"><div class="ico">?</div><div><div class="t">직원이 같은 질문에 답하는 시간이 줄어드는가</div><div class="s">한국어 요청 카드 사용 전후 응대 시간 비교</div></div></div>
+        <div class="li"><div class="ico">?</div><div><div class="t">성분표 공유를 부담스러워하지 않는가</div><div class="s">레시피 전체가 아닌 사용 제품만 받는 방식으로 부담을 낮춤</div></div></div>
+        <div class="li"><div class="ico">!</div><div><div class="t">신뢰가 무너지면 모델 전체가 무너진다</div><div class="s">유료 식당도 판정 기준은 동일 · 결제 여부와 ‘조건에 맞음’ 표시는 무관</div></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>확장 로드맵</h3>
+    <div class="road" style="margin-top:14px">
+      <div class="st"><div class="p">STAGE 1 · MVP</div><b>해운대·서면, 식당 10곳</b><ul><li>영어·한국어 웹</li><li>수작업 검수 + AI 초안</li><li>여행자 5명·식당 3곳 검증</li></ul></div>
+      <div class="st"><div class="p">STAGE 2 · 부산 전역</div><b>광안리·남포·전포 등 상권 추가</b><ul><li>식당용 등록 화면 분리</li><li>변경 알림(레시피·제품 교체)</li><li>일본어·중국어 추가</li></ul></div>
+      <div class="st"><div class="p">STAGE 3 · 타깃 확장</div><b>제외 재료 기반의 다른 식단</b><ul><li>외국인 유학생(장기 체류)</li><li>힌두·자이나 채식 등 종교 식단</li><li>알레르기는 의료적 책임 문제로 별도 검토</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="page" id="p-about">
+  <div class="head"><div><h1>기획 개요·참고자료</h1><p>AI데이터기반서비스기획 중간과제 · 2023761031 이다운</p></div></div>
+  <div class="grid g3">
+    <div class="card"><div class="l muted small">대상</div><h3 style="margin-top:6px">부산을 여행하는 외국인 채식 지향 여행자</h3><p class="small muted" style="margin-top:6px">제외 재료가 분명하고 영어로 식당을 찾는 사람. 비건·락토오보 중심, 페스코는 별도 옵션</p></div>
+    <div class="card"><div class="l muted small">불편</div><h3 style="margin-top:6px">검색 정보와 실제 재료가 다르다</h3><p class="small muted" style="margin-top:6px">양념·육수·반찬의 성분을 알기 어렵고, 한국어로 묻기도 어렵다</p></div>
+    <div class="card"><div class="l muted small">해결</div><h3 style="margin-top:6px">메뉴별 성분 근거와 확인 상태</h3><p class="small muted" style="margin-top:6px">개인별 제외 재료 설정 → 메뉴 판정 → 근거·확인일·확인 주체 표시</p></div>
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card">
+      <h3>앱 기획에서 웹 대시보드로 바꾼 이유</h3>
+      <div class="list" style="margin-top:6px">
+        <div class="li"><div class="ico">↻</div><div><div class="t">설치 없이 링크로 바로 열림</div><div class="s">여행자는 짧게 머무르므로 앱 설치보다 QR·링크 접근이 현실적입니다.</div></div></div>
+        <div class="li"><div class="ico">⇆</div><div><div class="t">여행자와 운영자를 한 곳에서</div><div class="s">탐색 화면과 검토 큐·AI 분석·제보 처리가 같은 데이터를 공유합니다.</div></div></div>
+        <div class="li"><div class="ico">◫</div><div><div class="t">데이터 기반 운영</div><div class="s">판정 상태, 신선도, 제보 처리 현황을 지표로 관리합니다.</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>이전 기획서(한수)와 비교한 개선점</h3>
+      <div class="tbl" style="margin-top:10px"><table><thead><tr><th>항목</th><th>리프맵에서 보완한 점</th></tr></thead><tbody>
+        <tr><td>아이디어</td><td>부산 식당 메뉴·양념 성분 확인으로 목적과 이용 상황을 구체화</td></tr>
+        <tr><td>타깃</td><td>제외 재료가 분명한 외국인 여행자로 첫 고객을 좁힘</td></tr>
+        <tr><td>문제와 해결</td><td>육수·액젓 등 숨은 재료 문제를 성분 근거 기능으로 연결</td></tr>
+        <tr><td>기능 범위</td><td>식단 설정·탐색·메뉴 상세·근거 확인 중심으로 MVP 확정</td></tr>
+        <tr><td>검증</td><td>측정 기준과 4주 일정, 실제 동작하는 웹 시제품 제시</td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <h3>참고자료</h3>
+    <ol class="ref" style="margin-top:12px">
+      <li>[1] 한국관광공사, Tips for Vegetarians (2023년 10월 갱신) <span>육수·김치 양념·언어 장벽의 근거 · <a href="https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=140732" target="_blank" rel="noopener">원문 보기</a></span></li>
+      <li>[2] 부산광역시, 2024년 부산방문 외국인 관광객 (2025.2.19) <span>2023·2024년 방문객 통계 · <a href="https://www.busan.go.kr/nbtnewsBU/1668304" target="_blank" rel="noopener">원문 보기</a></span></li>
+      <li>[3] 부산연구원, 부산 관광 질적 성장 (2026.6.11) <span>2025년 외국인 방문객 규모 · <a href="https://bdi.re.kr/www/boardview/3/668" target="_blank" rel="noopener">원문 보기</a></span></li>
+      <li>[4] HappyCow, General User FAQ 및 Search <span>공식 서비스 소개와 탐색 기능 · <a href="https://www.happycow.net/members/faq" target="_blank" rel="noopener">원문 보기</a></span></li>
+      <li>[5] NAVER Corp, NAVER Maps App Store 소개 <span>장소 검색·길찾기·다국어 지원 · <a href="https://apps.apple.com/us/app/naver-maps-navigation/id311867728" target="_blank" rel="noopener">원문 보기</a></span></li>
+      <li>[6] FrontEndNetwork, Veganify 공식 저장소 <span>바코드·제품 성분 판별 기능 · <a href="https://github.com/frontendnetwork/veganify" target="_blank" rel="noopener">원문 보기</a></span></li>
+      <li>[7] The Vegan Society, Definition of veganism <span>비건의 동물 유래 식품 제외 기준 · <a href="https://www.vegansociety.com/go-vegan/definition-veganism" target="_blank" rel="noopener">원문 보기</a></span></li>
+      <li>[8] Atlassian, MVP ideation template 및 Product requirements template <span>문제·경쟁·테스트·일정·기능 범위의 구성 틀 · <a href="https://www.atlassian.com/software/confluence/templates/mvp-ideation" target="_blank" rel="noopener">원문 보기</a></span></li>
+    </ol>
+    <div class="note">식당·메뉴·제품·제보·운영 기록은 시연용 가상 데이터입니다. 수익 모델의 금액, 목표 수치, 일정은 제안이며 실행 성과가 아닙니다.</div>
+  </div>
+</section>
+</main>
+</div>
+
+<div class="ov" id="ov"></div>
+<aside class="drawer" id="drawer"><div class="dh"><button class="x" id="dBack" style="margin-left:0;display:none">←</button><h3 id="dTitle"></h3><button class="x" id="dClose">✕</button></div><div class="db" id="dBody"></div></aside>
+<div class="modal" id="modal"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- 기본 정의 ---------------- */
+const CATS={
+  meat:{ko:'육류',en:'Meat'}, fish:{ko:'생선',en:'Fish'}, shell:{ko:'해산물',en:'Shellfish & seafood'},
+  egg:{ko:'달걀',en:'Eggs'}, dairy:{ko:'유제품',en:'Dairy'}, honey:{ko:'꿀',en:'Honey'}, other:{ko:'기타 동물 유래',en:'Other animal-derived'}
+};
+const CK=Object.keys(CATS);
+const DIETS={
+  vegan:{ko:'비건',en:'Vegan',dko:'동물 유래 식품 전부 제외',den:'No animal products',ex:['meat','fish','shell','egg','dairy','honey','other']},
+  lacto:{ko:'락토오보 채식',en:'Lacto-ovo vegetarian',dko:'육류·생선·해산물 제외',den:'No meat or seafood',ex:['meat','fish','shell']},
+  pesco:{ko:'페스코',en:'Pescatarian',dko:'육류만 제외',den:'No meat, eats seafood',ex:['meat']},
+  custom:{ko:'직접 설정',en:'Custom',dko:'재료를 직접 고름',den:'Pick ingredients yourself',ex:null}
+};
+const PEND={
+  restaurant:{ko:'식당 사용 확인 대기',en:'Waiting for restaurant confirmation',d:'제품 성분표는 확인했지만 식당이 실제로 쓰는 제품인지 확인되지 않았습니다.'},
+  product:{ko:'제품 불명',en:'Product not identified',d:'양념·재료의 정확한 제품명이 등록되지 않아 성분을 대조할 수 없습니다.'},
+  conflict:{ko:'상충 정보(제보)',en:'Conflicting report',d:'등록 정보와 다른 제보가 들어와 검토 중입니다.'}
+};
+const ST={ok:{ko:'조건에 맞음',en:'Matches your diet'},check:{ko:'추가 확인 필요',en:'Needs confirmation'},excl:{ko:'제외 재료 포함',en:'Contains excluded'}};
+const TODAY='2026-11-10';
+
+/* ---------------- 가상 데이터 ---------------- */
+const RESTOS0=[
+ {id:'r1',ko:'그린테이블',en:'Green Table',area:'haeundae',addr:'해운대해수욕장 인근',x:672,y:262,menus:[
+  {id:'m1',ko:'두부 덮밥',en:'Tofu rice bowl',ing:['두부','밥','제철 채소'],broth:'없음',sauce:[{n:'양조간장',p:'데모식품 양조간장 500ml',c:'대한민국',raw:'정제수, 탈지대두, 소맥, 천일염, 주정'}],contains:[],pending:'restaurant',at:'2026-11-03',by:'운영자(제품 분석)'},
+  {id:'m2',ko:'버섯 들깨 칼국수',en:'Mushroom perilla noodles',ing:['칼국수면','표고버섯','들깨'],broth:'다시마·표고 육수',sauce:[{n:'국간장',p:'데모식품 국간장 900ml',c:'대한민국',raw:'정제수, 대두, 천일염, 주정'}],contains:[],pending:null,at:'2026-10-28',by:'식당+운영자'},
+  {id:'m3',ko:'채소전',en:'Vegetable pancake',ing:['부침가루','애호박','양파','달걀'],broth:'없음',sauce:[{n:'초간장',p:'자체 제조(간장·식초)',c:'-',raw:'양조간장, 식초, 물'}],contains:['egg'],pending:null,at:'2026-10-28',by:'식당+운영자'}]},
+ {id:'r2',ko:'소이키친',en:'Soy Kitchen',area:'haeundae',addr:'해운대역 인근',x:722,y:206,menus:[
+  {id:'m4',ko:'비건 버거',en:'Vegan burger',ing:['콩 패티','통밀빵','양상추','토마토'],broth:'없음',sauce:[{n:'비건 마요',p:'데모 비건마요 300g',c:'대한민국',raw:'대두유, 정제수, 식초, 설탕, 완두단백, 정제소금'}],contains:[],pending:null,at:'2026-11-01',by:'식당+운영자'},
+  {id:'m5',ko:'감자튀김과 마요',en:'Fries with mayo',ing:['감자','식용유'],broth:'없음',sauce:[{n:'마요네즈',p:'데모 마요네즈 500g',c:'대한민국',raw:'대두유, 난황, 식초, 설탕, 정제소금'}],contains:['egg'],pending:null,at:'2026-11-01',by:'식당+운영자'},
+  {id:'m6',ko:'콩고기 김밥',en:'Soy-meat gimbap',ing:['밥','김','콩고기','시금치','단무지'],broth:'없음',sauce:[{n:'단무지',p:'미등록',c:'-',raw:'(성분표 미제출)'}],contains:[],pending:'product',at:'2026-10-15',by:'운영자'}]},
+ {id:'r3',ko:'해운대 비빔당',en:'Bibim House Haeundae',area:'haeundae',addr:'구남로',x:628,y:222,menus:[
+  {id:'m7',ko:'산채비빔밥',en:'Mountain greens bibimbap',ing:['밥','나물 5종','참기름'],broth:'없음',sauce:[{n:'고추장',p:'데모 찹쌀고추장 1kg',c:'대한민국',raw:'고춧가루, 찹쌀, 물엿, 정제소금, 대두, 주정'}],contains:[],pending:null,at:'2026-10-30',by:'식당+운영자'},
+  {id:'m8',ko:'된장찌개',en:'Soybean paste stew',ing:['두부','애호박','된장'],broth:'멸치 육수',sauce:[{n:'된장',p:'데모 재래된장 1kg',c:'대한민국',raw:'대두, 천일염, 정제수'}],contains:['fish'],pending:null,at:'2026-10-30',by:'식당+운영자'},
+  {id:'m9',ko:'달걀 비빔밥',en:'Egg bibimbap',ing:['밥','나물','달걀 프라이'],broth:'없음',sauce:[{n:'고추장',p:'데모 찹쌀고추장 1kg',c:'대한민국',raw:'고춧가루, 찹쌀, 물엿, 정제소금, 대두, 주정'}],contains:['egg'],pending:null,at:'2026-10-30',by:'식당+운영자'}]},
+ {id:'r4',ko:'오션 브레드',en:'Ocean Bread',area:'haeundae',addr:'해운대 해변로',x:640,y:300,menus:[
+  {id:'m10',ko:'사워도우',en:'Sourdough',ing:['밀가루','물','소금','천연발효종'],broth:'없음',sauce:[],contains:[],pending:null,at:'2026-07-20',by:'식당+운영자'},
+  {id:'m11',ko:'크루아상',en:'Croissant',ing:['밀가루','버터','달걀','우유'],broth:'없음',sauce:[],contains:['dairy','egg'],pending:null,at:'2026-07-20',by:'식당+운영자'},
+  {id:'m12',ko:'꿀 바게트',en:'Honey baguette',ing:['밀가루','꿀','버터'],broth:'없음',sauce:[],contains:['honey','dairy'],pending:null,at:'2026-07-20',by:'식당+운영자'}]},
+ {id:'r5',ko:'달맞이 사찰음식',en:'Dalmaji Temple Food',area:'haeundae',addr:'달맞이길',x:765,y:262,menus:[
+  {id:'m13',ko:'연잎밥',en:'Lotus leaf rice',ing:['찹쌀','연잎','대추','밤'],broth:'없음',sauce:[],contains:[],pending:null,at:'2026-10-25',by:'식당+운영자'},
+  {id:'m14',ko:'사찰 국수',en:'Temple-style noodles',ing:['소면','애호박','버섯'],broth:'다시마·무 육수',sauce:[{n:'국간장',p:'데모식품 국간장 900ml',c:'대한민국',raw:'정제수, 대두, 천일염, 주정'}],contains:[],pending:null,at:'2026-10-25',by:'식당+운영자'},
+  {id:'m15',ko:'들깨 미역국',en:'Perilla seaweed soup',ing:['미역','들깨가루'],broth:'채수(등록 정보)',sauce:[{n:'국간장',p:'데모식품 국간장 900ml',c:'대한민국',raw:'정제수, 대두, 천일염, 주정'}],contains:[],pending:'conflict',conflictCat:'shell',at:'2026-10-25',by:'식당+운영자'}]},
+ {id:'r6',ko:'리프 카페',en:'Leaf Cafe',area:'haeundae',addr:'해운대 시장 인근',x:590,y:250,menus:[
+  {id:'m16',ko:'오트 라떼',en:'Oat latte',ing:['에스프레소','귀리 음료'],broth:'없음',sauce:[{n:'귀리 음료',p:'데모 오트드링크 1L',c:'스웨덴',raw:'water, oats, rapeseed oil, calcium carbonate, salt'}],contains:[],pending:null,at:'2026-11-05',by:'식당+운영자'},
+  {id:'m17',ko:'당근 케이크',en:'Carrot cake',ing:['밀가루','당근','호두','설탕'],broth:'없음',sauce:[{n:'프로스팅',p:'미등록',c:'-',raw:'(제품명 확인 중)'}],contains:[],pending:'product',at:'2026-11-05',by:'운영자'},
+  {id:'m18',ko:'치즈 케이크',en:'Cheesecake',ing:['크림치즈','달걀','설탕','버터'],broth:'없음',sauce:[],contains:['dairy','egg'],pending:null,at:'2026-11-05',by:'식당+운영자'}]},
+ {id:'r7',ko:'서면 채소식당',en:'Seomyeon Veggie Table',area:'seomyeon',addr:'서면역 1번 출구',x:178,y:168,menus:[
+  {id:'m19',ko:'채소 커리',en:'Vegetable curry',ing:['감자','당근','병아리콩','밥'],broth:'채수',sauce:[{n:'커리 페이스트',p:'데모 커리페이스트 200g',c:'태국',raw:'chili, lemongrass, garlic, shallot, salt, galangal'}],contains:[],pending:null,at:'2026-11-02',by:'식당+운영자'},
+  {id:'m20',ko:'버터 커리',en:'Butter curry',ing:['토마토','버터','생크림','두부'],broth:'채수',sauce:[],contains:['dairy'],pending:null,at:'2026-11-02',by:'식당+운영자'},
+  {id:'m21',ko:'갈릭 난',en:'Garlic naan',ing:['밀가루','마늘','기(정제버터)'],broth:'없음',sauce:[],contains:['dairy'],pending:null,at:'2026-11-02',by:'식당+운영자'}]},
+ {id:'r8',ko:'오롯 샐러드',en:'Orot Salad',area:'seomyeon',addr:'서면 젊음의 거리',x:250,y:132,menus:[
+  {id:'m22',ko:'퀴노아 샐러드',en:'Quinoa salad',ing:['퀴노아','병아리콩','오이','적양파'],broth:'없음',sauce:[{n:'발사믹 드레싱',p:'데모 발사믹 250ml',c:'이탈리아',raw:'wine vinegar, grape must, olive oil, salt'}],contains:[],pending:null,at:'2026-10-20',by:'식당+운영자'},
+  {id:'m23',ko:'시저 샐러드',en:'Caesar salad',ing:['로메인','크루통','파르메산'],broth:'없음',sauce:[{n:'시저 드레싱',p:'데모 시저드레싱 300ml',c:'미국',raw:'soybean oil, water, parmesan cheese, egg yolk, anchovies, vinegar'}],contains:['dairy','egg','fish'],pending:null,at:'2026-10-20',by:'식당+운영자'},
+  {id:'m24',ko:'훈제연어 포케',en:'Smoked salmon poke',ing:['밥','훈제연어','아보카도'],broth:'없음',sauce:[{n:'포케 소스',p:'자체 제조',c:'-',raw:'간장, 참기름, 식초'}],contains:['fish'],pending:null,at:'2026-10-20',by:'식당+운영자'}]},
+ {id:'r9',ko:'전포 누들',en:'Jeonpo Noodle',area:'seomyeon',addr:'전포카페거리',x:292,y:212,menus:[
+  {id:'m25',ko:'콩국수',en:'Cold soy milk noodles',ing:['소면','콩물','오이'],broth:'콩물',sauce:[],contains:[],pending:null,at:'2026-07-12',by:'식당+운영자'},
+  {id:'m26',ko:'김치볶음밥',en:'Kimchi fried rice',ing:['밥','김치','양파'],broth:'없음',sauce:[{n:'김치',p:'데모 포기김치 3kg',c:'대한민국',raw:'배추, 고춧가루, 마늘, 멸치액젓, 새우젓, 설탕'}],contains:['fish','shell'],pending:null,at:'2026-07-12',by:'식당+운영자'},
+  {id:'m27',ko:'들기름 막국수',en:'Perilla oil buckwheat noodles',ing:['메밀면','들기름','김가루'],broth:'없음',sauce:[{n:'양념간장',p:'자체 제조(간장 제품 확인 중)',c:'-',raw:'(간장 제품 확인 중)'}],contains:[],pending:'restaurant',at:'2026-11-07',by:'운영자(제품 분석)'}]},
+ {id:'r10',ko:'비빔공방',en:'Bibim Lab',area:'seomyeon',addr:'부전시장 인근',x:142,y:236,menus:[
+  {id:'m28',ko:'비건 김밥',en:'Vegan gimbap',ing:['밥','김','우엉','당근','두부'],broth:'없음',sauce:[{n:'우엉조림 간장',p:'데모식품 양조간장 500ml',c:'대한민국',raw:'정제수, 탈지대두, 소맥, 천일염, 주정'}],contains:[],pending:null,at:'2026-11-04',by:'식당+운영자'},
+  {id:'m29',ko:'떡볶이',en:'Tteokbokki',ing:['떡','양배추','대파'],broth:'확인 중(어묵 육수 여부)',sauce:[{n:'고추장',p:'데모 찹쌀고추장 1kg',c:'대한민국',raw:'고춧가루, 찹쌀, 물엿, 정제소금, 대두, 주정'}],contains:[],pending:'restaurant',at:'2026-11-04',by:'운영자(제품 분석)'},
+  {id:'m30',ko:'해물파전',en:'Seafood pancake',ing:['쪽파','오징어','새우','달걀'],broth:'없음',sauce:[],contains:['shell','egg'],pending:null,at:'2026-11-04',by:'식당+운영자'}]}
+];
+const SUBS0=[
+ {id:'s1',r:'광안 비건하우스 (신규)',m:'비건 짜장면',files:['메뉴 사진','춘장 성분표 사진'],missing:['춘장 판매 국가','용량'],status:'누락 보완 요청'},
+ {id:'s2',r:'소이키친',m:'콩고기 김밥 — 단무지 제품',files:['제품 사진','성분표 사진'],missing:[],status:'검토 대기'}
+];
+const REPS0=[
+ {id:'p1',menu:'m15',who:'여행자 (France)',text:'들깨 미역국에 조개 육수가 들어간다고 직원이 말했어요.',cat:'shell',at:'2026-11-08',status:'검토 중'},
+ {id:'p2',menu:'m11',who:'여행자 (Germany)',text:'크루아상이 이제 비건 버터로 바뀌었다고 들었어요.',cat:null,at:'2026-11-06',status:'접수'},
+ {id:'p3',menu:'m19',who:'식당 운영자',text:'채소 커리에 쓰는 페이스트 제품을 같은 회사 다른 제품으로 바꿨습니다.',cat:null,at:'2026-11-02',status:'반영'},
+ {id:'p4',menu:'m7',who:'여행자 (USA)',text:'비빔밥 나물에 액젓이 들어간 것 같아요.',cat:null,at:'2026-10-29',status:'기각',note:'식당 레시피·사용 제품 재확인 결과 액젓 미사용'}
+];
+const ACT0=[
+ {i:'✓',t:'달맞이 사찰음식 · 3개 메뉴 확인 완료',s:'식당 사용 제품 사진 대조 · 2026-10-25'},
+ {i:'⚑',t:'들깨 미역국 상충 제보 접수 → 추가 확인 필요로 전환',s:'여행자 제보 · 2026-11-08'},
+ {i:'✦',t:'전포 누들 양념간장 AI 분석 초안 생성',s:'제품 미특정으로 식당 확인 대기 · 2026-11-07'},
+ {i:'↻',t:'채소 커리 페이스트 제품 변경 반영',s:'식당 변경 신고 · 2026-11-02'}
+];
+
+/* ---------------- 상태 ---------------- */
+const KEY='leafmap-demo-v1';
+let S;
+function fresh(){return {restos:JSON.parse(JSON.stringify(RESTOS0)),subs:JSON.parse(JSON.stringify(SUBS0)),reps:JSON.parse(JSON.stringify(REPS0)),act:JSON.parse(JSON.stringify(ACT0)),diet:'vegan',ex:[...DIETS.vegan.ex],area:'all',showChk:true,lang:'ko',krTo:'staff',krEx:['meat','fish','shell']};}
+function load(){try{const v=localStorage.getItem(KEY);S=v?JSON.parse(v):fresh();}catch(e){S=fresh();}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+load();
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const allMenus=()=>S.restos.flatMap(r=>r.menus.map(m=>({...m,r})));
+const findMenu=id=>{for(const r of S.restos)for(const m of r.menus)if(m.id===id)return{m,r};return null};
+function judge(m,ex){const hit=m.contains.filter(c=>ex.includes(c));if(hit.length)return{s:'excl',hit};if(m.pending)return{s:'check'};return{s:'ok'};}
+const L=(ko,en)=>S.lang==='en'?en:ko;
+const catName=c=>L(CATS[c].ko,CATS[c].en);
+function pill(s,txt){return `<span class="pill ${s}"><span class="dot"></span>${txt||L(ST[s].ko,ST[s].en)}</span>`}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2400)}
+function daysAgo(d){return Math.round((new Date(TODAY)-new Date(d))/864e5)}
+function logAct(i,t,s){S.act.unshift({i,t,s:s+' · '+TODAY});S.act=S.act.slice(0,8);}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------------- 내비게이션 ---------------- */
+let current='overview';
+function go(p){current=p;$$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===p));$$('.page').forEach(s=>s.classList.toggle('on',s.id==='p-'+p));$('#side').classList.remove('on');window.scrollTo({top:0});render();try{history.replaceState(null,'','#'+p)}catch(e){}}
+$$('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.p));
+document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go)});
+$('#menuBtn').onclick=()=>$('#side').classList.toggle('on');
+$('#resetBtn').onclick=()=>{S=fresh();save();render();toast('데모 데이터를 처음 상태로 되돌렸습니다')};
+
+/* ---------------- 개요 ---------------- */
+function renderOverview(){
+  const ms=allMenus();
+  const pend=ms.filter(m=>m.pending);
+  const byType=k=>pend.filter(m=>m.pending===k).length;
+  const confirmed=ms.filter(m=>!m.pending).length;
+  const openReps=S.reps.filter(r=>r.status==='접수'||r.status==='검토 중').length;
+  const stale=ms.filter(m=>!m.pending&&daysAgo(m.at)>90);
+  $('#mission').innerHTML=`<div class="eyebrow">✦ 오늘의 AI 추천 운영 업무</div>
+   <h2>확인 대기 메뉴 ${pend.length}건 · 처리 시 비건 여행자에게 보이는 메뉴가 늘어납니다</h2>
+   <p>식당 사용 확인 대기 ${byType('restaurant')}건은 한국어 확인 요청 메시지를 보내면 바로 처리할 수 있습니다. ${stale.length?`확인일이 90일 지난 메뉴 ${stale.length}개는 재확인이 필요합니다.`:''} 미처리 제보 ${openReps}건도 함께 확인하세요.</p>
+   <div class="row"><button class="btn" data-go="queue">검토 큐로 이동</button><button class="btn ghost" data-go="reports">제보 확인</button></div>`;
+  const vegOk=ms.filter(m=>judge(m,DIETS.vegan.ex).s==='ok').length;
+  $('#kpis').innerHTML=[
+   ['등록 식당',S.restos.length,'곳',`MVP 목표 10곳 대비 ${Math.round(S.restos.length/10*100)}%`,S.restos.length/10],
+   ['등록 메뉴',ms.length,'개',`확인 완료 ${confirmed}개 · 대기 ${pend.length}개`,confirmed/ms.length],
+   ['비건 조건에 맞는 메뉴',vegOk,'개',`전체 메뉴의 ${Math.round(vegOk/ms.length*100)}%`,vegOk/ms.length],
+   ['미처리 제보',openReps,'건',`전체 제보 ${S.reps.length}건 중`,1-openReps/Math.max(1,S.reps.length)]
+  ].map(k=>`<div class="card kpi"><div class="l">${k[0]}</div><div class="v">${k[1]}<small>${k[2]}</small></div><div class="d">${k[3]}</div><div class="bar"><i style="width:${Math.min(100,k[4]*100)}%"></i></div></div>`).join('');
+  // 지역
+  const reg=a=>{const rs=S.restos.filter(r=>r.area===a);const mm=rs.flatMap(r=>r.menus);return{r:rs.length,m:mm.length,c:mm.filter(m=>!m.pending).length}};
+  const h=reg('haeundae'),s=reg('seomyeon');
+  $('#regionProg').innerHTML=[['해운대',h],['서면',s]].map(([n,d])=>`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:13px"><b>${n}</b><span class="muted">식당 ${d.r}곳 · 메뉴 ${d.m}개 · 확인 완료 ${d.c}개</span></div><div class="bar"><i style="width:${d.c/d.m*100}%"></i></div></div>`).join('');
+  $('#fresh').innerHTML=stale.length?stale.map(m=>`<div class="li"><div class="ico" style="background:var(--chkbg)">⏱</div><div style="flex:1"><div class="t">${m.r.ko} · ${m.ko}</div><div class="s">마지막 확인 ${m.at} (${daysAgo(m.at)}일 전)</div></div><button class="btn ghost sm" data-recheck="${m.id}">재확인 요청</button></div>`).join(''):`<div class="small muted">90일 이상 지난 메뉴가 없습니다.</div>`;
+  $$('[data-recheck]').forEach(b=>b.onclick=()=>{const {m,r}=findMenu(b.dataset.recheck);m.pending='restaurant';logAct('↻',`${r.ko} · ${m.ko} 재확인 요청`,'신선도 점검');save();render();toast(`${m.ko}을(를) 추가 확인 필요로 돌리고 식당에 재확인을 요청했습니다`)});
+  $('#activity').innerHTML=S.act.map(a=>`<div class="li"><div class="ico">${a.i}</div><div><div class="t">${esc(a.t)}</div><div class="s">${esc(a.s)}</div></div></div>`).join('');
+  const COL={ok:'#2A6A4C',check:'#D99434',excl:'#C9634F'};
+  $('#cDiet').innerHTML=['vegan','lacto','pesco'].map(d=>{const c={ok:0,check:0,excl:0};ms.forEach(m=>c[judge(m,DIETS[d].ex).s]++);return `<div class="hb"><div class="lab"><b>${DIETS[d].ko}</b><span class="muted">맞음 ${c.ok} · 확인 필요 ${c.check} · 제외 ${c.excl}</span></div><div class="trk">${['ok','check','excl'].map(k=>`<i style="width:${c[k]/ms.length*100}%;background:${COL[k]}">${c[k]||''}</i>`).join('')}</div></div>`}).join('')+`<div class="lg"><span style="--c:${COL.ok}">조건에 맞음</span><span style="--c:${COL.check}">추가 확인 필요</span><span style="--c:${COL.excl}">제외 재료 포함</span></div>`;
+}
+
+/* ---------------- 여행자 탐색 ---------------- */
+const I18N={exTitle:['메뉴 탐색','Find food in Busan'],exSub:['외국인 여행자가 보는 화면입니다. 식단을 정하면 부산 식당의 메뉴를 조건에 맞춰 보여줍니다.','Set what you don\'t eat. We check menus, broths and sauces — not just restaurant names.'],dietQ:['어떤 식단인가요?','What do you eat?'],exclQ:['먹지 않는 재료','Ingredients to avoid'],areaQ:['지역','Area'],all:['전체','All'],hae:['해운대','Haeundae'],seo:['서면','Seomyeon'],showChk:['‘추가 확인 필요’ 메뉴도 보기','Show “needs confirmation” dishes'],locNote:['위치 권한 없이도 지역을 직접 고를 수 있습니다. 조건은 화면을 이동해도 유지됩니다.','No location permission needed. Your settings stay as you move between pages.'],mapT:['부산 지도','Busan map'],mapS:['핀 숫자 = 내 조건에 맞는 메뉴 수 (개략도, 실제 축척 아님)','Pin number = dishes that match you (schematic, not to scale)']};
+function applyI18n(){$$('[data-i]').forEach(e=>{const v=I18N[e.dataset.i];if(v)e.textContent=L(v[0],v[1])});$$('#langSeg button').forEach(b=>b.classList.toggle('on',b.dataset.l===S.lang))}
+$$('#langSeg button').forEach(b=>b.onclick=()=>{S.lang=b.dataset.l;save();renderExplore()});
+$$('#areaSeg button').forEach(b=>b.onclick=()=>{S.area=b.dataset.a;save();renderExplore()});
+$('#swChk').onclick=()=>{S.showChk=!S.showChk;save();renderExplore()};
+
+function renderExplore(){
+  applyI18n();
+  $('#dietOpts').innerHTML=Object.entries(DIETS).map(([k,d])=>`<div class="radio ${S.diet===k?'on':''}" data-d="${k}"><div class="rd"></div><div><b>${L(d.ko,d.en)}</b><span>${L(d.dko,d.den)}</span></div></div>`).join('');
+  $$('#dietOpts .radio').forEach(e=>e.onclick=()=>{S.diet=e.dataset.d;if(DIETS[S.diet].ex)S.ex=[...DIETS[S.diet].ex];save();renderExplore()});
+  $('#exChips').innerHTML=CK.map(c=>`<button class="chip ${S.ex.includes(c)?'on':''}" data-c="${c}">${S.ex.includes(c)?'✓ ':''}${catName(c)}</button>`).join('');
+  $$('#exChips .chip').forEach(e=>e.onclick=()=>{const c=e.dataset.c;S.ex=S.ex.includes(c)?S.ex.filter(x=>x!==c):[...S.ex,c];const match=Object.entries(DIETS).find(([k,d])=>d.ex&&d.ex.length===S.ex.length&&d.ex.every(x=>S.ex.includes(x)));S.diet=match?match[0]:'custom';save();renderExplore()});
+  $$('#areaSeg button').forEach(b=>b.classList.toggle('on',b.dataset.a===S.area));
+  $('#swChk').classList.toggle('on',S.showChk);
+  const ex=S.ex;
+  $('#condSum').innerHTML=`<b>${L('내 조건','Your filter')}</b> · ${L(DIETS[S.diet].ko,DIETS[S.diet].en)}<br>${ex.length?L('제외: ','Avoid: ')+ex.map(catName).join(', '):L('제외 재료 없음','Nothing excluded')}`;
+  $('#legend').innerHTML=pill('ok')+pill('check')+pill('excl');
+  // restos
+  const rs=S.restos.map(r=>{const js=r.menus.map(m=>judge(m,ex).s);return{r,ok:js.filter(s=>s==='ok').length,ch:js.filter(s=>s==='check').length,ex:js.filter(s=>s==='excl').length}});
+  const vis=rs.filter(x=>S.area==='all'||x.r.area===S.area);
+  drawMap(rs);
+  const shown=vis.filter(x=>x.ok||(S.showChk&&x.ch));
+  const hidden=vis.filter(x=>!(x.ok||(S.showChk&&x.ch)));
+  shown.sort((a,b)=>b.ok-a.ok||b.ch-a.ch);
+  let html='';
+  if(!shown.length)html=`<div class="empty">${L('지금 조건에 맞는 메뉴가 있는 식당이 없습니다. 제외 재료를 줄이거나 ‘추가 확인 필요’ 메뉴를 함께 보세요.','No restaurants match right now. Try showing “needs confirmation” dishes or another area.')}</div>`;
+  else html=`<div class="rlist">${shown.map(x=>rc(x)).join('')}</div>`;
+  if(hidden.length)html+=`<div class="sec-title">${L('조건에 맞는 메뉴가 없는 식당','No matching dishes')} (${hidden.length})</div><div class="rlist">${hidden.map(x=>rc(x,true)).join('')}</div>`;
+  $('#rlist').innerHTML=html;
+  $$('#rlist .rc').forEach(e=>e.onclick=()=>openResto(e.dataset.r));
+}
+function rc(x,dim){return `<button class="rc ${dim?'dim':''}" data-r="${x.r.id}"><div class="n">${L(x.r.ko,x.r.en)}</div><div class="a">${L(x.r.en,x.r.ko)} · ${x.r.addr}</div><div class="cnt">${x.ok?pill('ok',`${L('맞음','Match')} ${x.ok}`):''}${x.ch?pill('check',`${L('확인 필요','Check')} ${x.ch}`):''}${x.ex?pill('excl',`${L('제외','Excluded')} ${x.ex}`):''}</div></button>`}
+function drawMap(rs){
+  const svg=$('#map');
+  let g=`<rect width="800" height="420" fill="#EEF0E6"/>
+  <path d="M800,150 C740,190 720,280 660,318 C610,348 560,350 520,420 L800,420 Z" fill="#CFE2EC"/>
+  <path d="M0,330 C80,320 140,360 200,420 L0,420Z" fill="#D9E8EE"/>
+  <ellipse cx="590" cy="372" rx="26" ry="16" fill="#DDE8D6"/>
+  <text x="590" y="400" font-size="11" fill="#6C8079" text-anchor="middle">동백섬 Dongbaek</text>
+  <text x="690" y="370" font-size="12" fill="#5A7F93" text-anchor="middle" font-style="italic">해운대해수욕장 Haeundae Beach</text>
+  <g stroke="#FFFFFF" stroke-width="7" fill="none" stroke-linecap="round"><path d="M40,190 L360,190 C430,190 470,230 560,240 L790,240"/><path d="M215,40 L215,330"/><path d="M110,90 L330,300"/><path d="M600,120 L660,330"/></g>
+  <g stroke="#E2E4D8" stroke-width="2" fill="none"><path d="M40,190 L360,190 C430,190 470,230 560,240 L790,240"/></g>
+  <rect x="40" y="60" width="320" height="250" rx="18" fill="none" stroke="#9DB8A6" stroke-dasharray="5 5"/>
+  <rect x="530" y="150" width="262" height="190" rx="18" fill="none" stroke="#9DB8A6" stroke-dasharray="5 5"/>
+  <text x="56" y="84" font-size="14" font-weight="700" fill="#2A6A4C">${L('서면','Seomyeon')}</text>
+  <text x="546" y="174" font-size="14" font-weight="700" fill="#2A6A4C">${L('해운대','Haeundae')}</text>
+  <text x="440" y="208" font-size="11" fill="#8A948F" text-anchor="middle">${L('지하철 2호선','Metro Line 2')}</text>`;
+  rs.forEach(x=>{const on=S.area==='all'||x.r.area===S.area;const st=x.ok?'ok':(x.ch?'check':'excl');const col={ok:'#2A6A4C',check:'#C9821F',excl:'#B9B9B0'}[st];const n=x.ok||(x.ch&&S.showChk?x.ch:0);
+    g+=`<g class="pin" data-r="${x.r.id}" opacity="${on?1:.25}" transform="translate(${x.r.x},${x.r.y})"><path d="M0,0 C-14,-16 -16,-24 -16,-30 A16,16 0 1 1 16,-30 C16,-24 14,-16 0,0Z" fill="${col}"/><text y="-25" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">${n}</text><text y="14" text-anchor="middle" font-size="11" font-weight="600" fill="#2C3A33">${L(x.r.ko,x.r.en)}</text></g>`});
+  svg.innerHTML=g;
+  $$('#map .pin').forEach(p=>p.onclick=()=>openResto(p.dataset.r));
+}
+/* drawer */
+let dStack=[];
+function openDrawer(title,html,back){$('#dTitle').textContent=title;$('#dBody').innerHTML=html;$('#dBody').scrollTop=0;$('#dBack').style.display=back?'grid':'none';$('#drawer').classList.add('on');$('#ov').classList.add('on')}
+function closeAll(){$('#drawer').classList.remove('on');$('#modal').classList.remove('on');$('#ov').classList.remove('on')}
+$('#dClose').onclick=closeAll;$('#ov').onclick=closeAll;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
+let curResto=null;
+$('#dBack').onclick=()=>openResto(curResto);
+function openResto(id){
+  curResto=id;const r=S.restos.find(x=>x.id===id);
+  const items=r.menus.map(m=>{const j=judge(m,S.ex);return `<div class="menu-it" data-m="${m.id}"><div><b>${L(m.ko,m.en)}</b><div class="small muted">${L(m.en,m.ko)}</div>${j.s==='excl'?`<div class="small" style="color:var(--exc);margin-top:4px">${L('포함','Contains')}: ${j.hit.map(catName).join(', ')}</div>`:''}${j.s==='check'?`<div class="small" style="color:var(--chk);margin-top:4px">${L(PEND[m.pending].ko,PEND[m.pending].en)}</div>`:''}</div>${pill(j.s)}</div>`}).join('');
+  openDrawer(L(r.ko,r.en),`<div class="small muted">${L(r.en,r.ko)} · ${r.addr} · ${L('가상 식당','Demo restaurant')}</div><div class="sec-title">${L('메뉴','Dishes')} (${r.menus.length})</div>${items}<div class="note">${L('메뉴를 누르면 재료·육수·양념 제품과 성분 근거를 볼 수 있습니다.','Tap a dish to see ingredients, broth, sauces and evidence.')}</div>`);
+  $$('#dBody .menu-it').forEach(e=>e.onclick=()=>openMenu(e.dataset.m));
+}
+function openMenu(id){
+  const {m,r}=findMenu(id);const j=judge(m,S.ex);
+  const bannerTxt={ok:L('내 제외 재료가 확인되지 않았고, 식당이 실제 사용 제품을 확인했습니다.','None of your excluded ingredients were found, and the restaurant confirmed the products it uses.'),check:L(PEND[m.pending]?.d||'','We could not fully verify this dish yet. We recommend asking the restaurant.'),excl:L(`제외 재료(${(j.hit||[]).map(catName).join(', ')})가 포함된 것으로 확인했습니다.`,`Confirmed to contain: ${(j.hit||[]).map(catName).join(', ')}.`)}[j.s];
+  const ev=m.sauce.length?m.sauce.map(s=>`<div class="ev"><div style="display:flex;justify-content:space-between;gap:8px"><b>${s.n}</b><span class="small muted">${s.c}</span></div><div class="small muted">${L('제품','Product')}: ${s.p}</div><div class="label-raw">${L('성분표 원문','Label')}: ${esc(s.raw)}</div><div class="small" style="margin-top:6px">${aiNote(s.raw)}</div></div>`).join(''):`<div class="small muted">${L('별도 양념 제품 없음 (기본 재료로 판정)','No packaged sauce — judged from base ingredients')}</div>`;
+  const conf=m.pending==='restaurant'||m.pending==='product'?pill('check',L('식당 확인 대기','Restaurant: pending')):m.pending==='conflict'?pill('check',L('제보 검토 중','Under review')):pill('ok',L('식당 확인 완료','Restaurant confirmed'));
+  openDrawer(L(m.ko,m.en),`<div class="small muted">${L(r.ko,r.en)} · ${L(m.en,m.ko)}</div>
+   <div class="banner ${j.s}"><b>${L(ST[j.s].ko,ST[j.s].en)}</b>&nbsp;<span>${bannerTxt}</span></div>
+   <dl class="kv"><dt>${L('기본 재료','Ingredients')}</dt><dd class="tags">${m.ing.map(x=>`<span class="tag2">${x}</span>`).join('')}</dd><dt>${L('육수','Broth')}</dt><dd>${m.broth}</dd><dt>${L('확인 상태','Status')}</dt><dd>${conf}</dd><dt>${L('확인일·주체','Checked')}</dt><dd>${m.at} · ${m.by}</dd></dl>
+   <div class="sec-title">${L('성분 근거 — 원문과 AI 해석','Ingredient evidence — label & AI reading')}</div>${ev}
+   <div class="kr-card"><div class="small" style="color:#8A6A10;font-weight:700;margin-bottom:4px">${L('직원에게 보여주세요','Show this to the staff')}</div><div class="kr">${krSentence(S.ex,'staff',m.ko)}</div><div class="en">${enSentence(S.ex,m.en)}</div></div>
+   <div style="display:flex;gap:8px;margin-top:14px"><button class="btn ghost" style="flex:1;justify-content:center" id="repBtn">${L('정보가 달라요 (정정 제보)','Report a change')}</button></div>`,true);
+  $('#repBtn').onclick=()=>openReport(m.id);
+}
+function aiNote(raw){if(raw.startsWith('('))return `<span style="color:var(--chk)">${L('AI: 성분표가 없어 판단할 수 없음','AI: no label to read')}</span>`;const a=analyze(raw);const an=a.rows.filter(x=>x.v==='animal');const un=a.rows.filter(x=>x.v==='unsure');if(an.length)return `<span style="color:var(--exc)">AI: ${an.map(x=>`${x.tok}→${catName(x.cat)}`).join(', ')}</span>`;if(un.length)return `<span style="color:var(--chk)">AI: ${L('출처 확인 필요','Check source')} — ${un.map(x=>x.tok).join(', ')}</span>`;return `<span style="color:var(--ok)">AI: ${L('동물 유래 의심 재료 없음','No animal-derived ingredients found')}</span>`}
+
+/* ---------------- 한국어 요청 문장 ---------------- */
+const KRW={meat:'고기(소·돼지·닭)',fish:'생선·멸치·액젓',shell:'새우·조개·굴 같은 해산물',egg:'달걀',dairy:'우유·버터·치즈',honey:'꿀',other:'젤라틴 같은 동물성 재료'};
+const ENW={meat:'meat',fish:'fish (incl. anchovy & fish sauce)',shell:'shellfish & seafood',egg:'eggs',dairy:'dairy',honey:'honey',other:'other animal-derived ingredients'};
+function krSentence(ex,to,menu){
+  if(!ex.length)return '이 메뉴에 들어가는 재료를 알려 주실 수 있나요?';
+  const list=ex.map(c=>KRW[c]).join(', ');
+  if(to==='owner')return `안녕하세요, 리프맵입니다. ${menu?`‘${menu}’ 메뉴에 `:'메뉴에 '}사용하시는 육수·소스·양념 제품의 정확한 제품명과 성분표 사진을 보내 주실 수 있을까요? 특히 ${list}이(가) 들어가는지 확인하려고 합니다. 확인해 주시면 외국인 손님께 확인 완료로 안내하겠습니다.`;
+  return `저는 ${list}을(를) 먹지 않아요. ${menu?`‘${menu}’의 `:''}육수·소스·양념에도 들어가나요? 빼고 만들어 주실 수 있나요?`;
+}
+function enSentence(ex,menu){if(!ex.length)return 'Could you tell me what ingredients are in this dish?';return `I don't eat ${ex.map(c=>ENW[c]).join(', ')}. Are any of these in the broth, sauce or seasoning${menu?` of “${menu}”`:''}? Could you make it without them?`}
+function renderKr(){
+  $$('#krTo button').forEach(b=>b.classList.toggle('on',b.dataset.t===S.krTo));
+  $('#krChips').innerHTML=CK.map(c=>`<button class="chip ${S.krEx.includes(c)?'on':''}" data-c="${c}">${CATS[c].ko}</button>`).join('');
+  $$('#krChips .chip').forEach(e=>e.onclick=()=>{const c=e.dataset.c;S.krEx=S.krEx.includes(c)?S.krEx.filter(x=>x!==c):[...S.krEx,c];save();renderKr()});
+  $('#krOut').innerHTML=`<div class="kr-card"><div class="kr">${krSentence(S.krEx,S.krTo)}</div>${S.krTo==='staff'?`<div class="en">${enSentence(S.krEx)}</div>`:''}</div>`;
+}
+$$('#krTo button').forEach(b=>b.onclick=()=>{S.krTo=b.dataset.t;save();renderKr()});
+$('#krCopy').onclick=()=>{const t=$('#krOut .kr').textContent;try{navigator.clipboard.writeText(t).then(()=>toast('문장을 복사했습니다'),()=>toast('복사할 수 없는 환경입니다. 문장을 직접 선택해 주세요'))}catch(e){toast('복사할 수 없는 환경입니다')}};
+
+/* ---------------- 제보 ---------------- */
+function openReport(mid){
+  const {m,r}=findMenu(mid);
+  $('#modal').innerHTML=`<h3>${L('정정 제보','Report a change')}</h3><div class="small muted">${L(r.ko,r.en)} · ${L(m.ko,m.en)}</div>
+  <label class="f">${L('어떤 점이 다른가요?','What is different?')}</label><textarea id="rpText" placeholder="${L('예: 직원이 육수에 멸치가 들어간다고 했어요','e.g. The staff said the broth has anchovy')}"></textarea>
+  <label class="f">${L('관련 재료','Related ingredient')} <em>(${L('선택','optional')})</em></label><select id="rpCat"><option value="">-</option>${CK.map(c=>`<option value="${c}">${catName(c)}</option>`).join('')}</select>
+  <div class="note">${L('제보는 바로 사실로 바뀌지 않습니다. 운영자가 식당에 확인한 뒤 반영하며, 그동안 이 메뉴는 ‘추가 확인 필요’로 표시됩니다.','Reports are reviewed before any change. Meanwhile, the dish is marked “needs confirmation”.')}</div>
+  <div class="acts"><button class="btn ghost" id="rpCancel">${L('취소','Cancel')}</button><button class="btn" id="rpSend">${L('제보 보내기','Send report')}</button></div>`;
+  $('#modal').classList.add('on');$('#ov').classList.add('on');
+  $('#rpCancel').onclick=()=>{$('#modal').classList.remove('on');if(!$('#drawer').classList.contains('on'))$('#ov').classList.remove('on')};
+  $('#rpSend').onclick=()=>{const t=$('#rpText').value.trim();if(!t){toast(L('내용을 입력해 주세요','Please describe the change'));return}
+    S.reps.unshift({id:'p'+Date.now(),menu:mid,who:L('여행자 (데모 입력)','Traveler (demo)'),text:t,cat:$('#rpCat').value||null,at:TODAY,status:'접수'});
+    m.pending='conflict';if($('#rpCat').value)m.conflictCat=$('#rpCat').value;
+    logAct('⚑',`${r.ko} · ${m.ko} 정정 제보 접수 → 추가 확인 필요`,'여행자 제보');save();
+    $('#modal').classList.remove('on');openMenu(mid);render();toast(L('제보를 접수했습니다. 검토 후 반영됩니다','Thanks! We will review it.'))};
+}
+function renderReports(){
+  const c=s=>S.reps.filter(r=>r.status===s).length;
+  $('#repKpi').innerHTML=[['접수',c('접수'),'check'],['검토 중',c('검토 중'),'info'],['반영',c('반영'),'ok'],['기각',c('기각'),'mute']].map(k=>`<div class="card kpi"><div class="l">${pill(k[2],k[0])}</div><div class="v">${k[1]}<small>건</small></div></div>`).join('');
+  $('#repList').innerHTML=S.reps.map(p=>{const f=findMenu(p.menu);const st={'접수':'check','검토 중':'info','반영':'ok','기각':'mute'}[p.status];
+    let acts='';if(p.status==='접수')acts=`<button class="btn ghost sm" data-ra="review" data-id="${p.id}">검토 시작</button>`;
+    if(p.status==='검토 중')acts=`<button class="btn sm" data-ra="apply" data-id="${p.id}">식당 확인 → 반영</button><button class="btn ghost sm" data-ra="reject" data-id="${p.id}">기각</button>`;
+    return `<div class="li"><div class="ico">⚑</div><div style="flex:1;min-width:0"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="t">${f?f.r.ko+' · '+f.m.ko:'-'}</span>${pill(st,p.status)}${p.cat?`<span class="pill mute">${CATS[p.cat].ko}</span>`:''}</div><div style="font-size:13.5px;margin-top:3px">“${esc(p.text)}”</div><div class="s">${esc(p.who)} · ${p.at}${p.note?' · '+esc(p.note):''}</div>${acts?`<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">${acts}</div>`:''}</div></div>`}).join('');
+  $$('[data-ra]').forEach(b=>b.onclick=()=>{const p=S.reps.find(x=>x.id===b.dataset.id);const f=findMenu(p.menu);const a=b.dataset.ra;
+    if(a==='review'){p.status='검토 중';if(f&&!f.m.pending)f.m.pending='conflict';logAct('⚑',`제보 검토 시작: ${f.m.ko}`,'운영자');toast('검토 중으로 바꾸고 메뉴를 추가 확인 필요로 표시했습니다')}
+    if(a==='apply'){p.status='반영';if(f){if(p.cat&&!f.m.contains.includes(p.cat))f.m.contains.push(p.cat);f.m.pending=null;f.m.at=TODAY;f.m.by='식당+운영자(제보 반영)';}p.note='식당 확인 후 반영';logAct('✓',`제보 반영: ${f.m.ko}${p.cat?` — ${CATS[p.cat].ko} 포함으로 수정`:''}`,'운영자');toast('식당 확인 결과를 반영했습니다. 확인일과 근거가 갱신됩니다')}
+    if(a==='reject'){p.status='기각';if(f&&f.m.pending==='conflict'){f.m.pending=null;f.m.at=TODAY;}p.note='식당 재확인 결과 기존 정보 유지';logAct('✕',`제보 기각: ${f.m.ko}`,'운영자');toast('제보를 기각하고 기존 정보를 유지했습니다')}
+    save();render()});
+  renderKr();
+}
+
+/* ---------------- 검토 큐 ---------------- */
+function renderQueue(){
+  const pend=allMenus().filter(m=>m.pending);
+  $('#qBody').innerHTML=pend.length?pend.map(m=>`<tr><td><b>${m.r.ko}</b><br>${m.ko} <span class="muted small">${m.en}</span></td><td>${pill('check',PEND[m.pending].ko)}<div class="small muted" style="margin-top:4px">${PEND[m.pending].d}</div></td><td class="small">${m.at}<br><span class="muted">${m.by}</span></td><td><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn sm" data-qa="ok" data-id="${m.id}" ${m.pending==='product'?'disabled title="제품 특정 후 처리 가능"':''}>식당 확인 완료</button><button class="btn ghost sm" data-qa="msg" data-id="${m.id}">확인 요청 문장</button>${m.pending==='product'?`<button class="btn ghost sm" data-qa="prod" data-id="${m.id}">제품 등록됨</button>`:''}</div></td></tr>`).join(''):`<tr><td colspan="4"><div class="empty" style="margin:0">확인 대기 메뉴가 없습니다. 모든 메뉴가 판정을 마쳤습니다.</div></td></tr>`;
+  $$('[data-qa]').forEach(b=>b.onclick=()=>{const {m,r}=findMenu(b.dataset.id);const a=b.dataset.qa;
+    if(a==='ok'){if(m.pending==='conflict'){go('reports');toast('상충 정보는 제보 화면에서 식당 확인 결과로 처리합니다');return}m.pending=null;m.at=TODAY;m.by='식당+운영자';logAct('✓',`${r.ko} · ${m.ko} 식당 확인 완료`,'검토 큐');save();render();toast(`${m.ko}: 확인 완료 — 여행자 화면에 반영되었습니다`)}
+    if(a==='prod'){m.pending='restaurant';if(m.sauce[0]&&m.sauce[0].p==='미등록'){m.sauce[0].p='데모 제품(등록 완료)';m.sauce[0].raw='정제수, 설탕, 식초, 정제소금, 치자황색소';m.sauce[0].c='대한민국'}m.by='운영자(제품 분석)';logAct('✦',`${m.ko} 제품 특정·AI 분석 완료 → 식당 사용 확인 대기`,'검토 큐');save();render();toast('제품을 특정했습니다. 이제 식당 사용 확인만 남았습니다')}
+    if(a==='msg'){$('#modal').innerHTML=`<h3>식당 확인 요청 문장</h3><div class="small muted">${r.ko} · ${m.ko}</div><div class="kr-card"><div class="kr">${krSentence(['meat','fish','shell','egg','dairy','honey'],'owner',m.ko)}</div></div><div class="acts"><button class="btn ghost" id="mClose">닫기</button><button class="btn" id="mCopy">복사</button></div>`;$('#modal').classList.add('on');$('#ov').classList.add('on');$('#mClose').onclick=closeAll;$('#mCopy').onclick=()=>{try{navigator.clipboard.writeText($('#modal .kr').textContent);toast('복사했습니다')}catch(e){toast('복사할 수 없는 환경입니다')}}}
+  });
+  $('#subBody').innerHTML=S.subs.map(s=>`<tr><td><b>${esc(s.r)}</b><br>${esc(s.m)}</td><td class="small">${s.files.map(esc).join(' · ')}</td><td class="small">${s.missing.length?`<span style="color:var(--exc)">누락: ${s.missing.map(esc).join(', ')}</span>`:'<span style="color:var(--ok)">필수 항목 모두 제출</span>'}</td><td>${pill(s.missing.length?'check':'info',s.status)}</td></tr>`).join('');
+}
+$('#openReg').onclick=()=>{
+  $('#modal').innerHTML=`<h3>식당 메뉴 등록 (모바일 입력 폼 미리보기)</h3><div class="small muted">초기에는 별도 식당용 앱 대신 이 폼과 운영자 관리표를 씁니다.</div>
+  <label class="f">식당명</label><input type="text" id="fR" placeholder="예: 광안 비건하우스">
+  <label class="f">메뉴명 (한/영)</label><input type="text" id="fM" placeholder="예: 비건 짜장면 / Vegan jjajangmyeon">
+  <label class="f">기본 재료 · 육수 · 소스 · 반찬</label><input type="text" id="fI" placeholder="예: 면, 양파, 춘장 / 채수">
+  <label class="f">양념 브랜드 · 정확한 제품명 · 용량</label><input type="text" id="fP" placeholder="예: 데모식품 춘장 300g">
+  <label class="f">판매 국가</label><input type="text" id="fC" placeholder="예: 대한민국">
+  <label class="f">성분표 사진 <em>(데모: 첨부했다고 가정)</em></label><label style="display:flex;gap:8px;align-items:center;font-size:13px"><input type="checkbox" id="fPh"> 성분표 사진 첨부</label>
+  <label class="f">실제 사용 여부 · 변경일</label><label style="display:flex;gap:8px;align-items:center;font-size:13px"><input type="checkbox" id="fU"> 이 제품을 현재 이 메뉴에 사용 중입니다</label>
+  <div class="acts"><button class="btn ghost" id="fCancel">취소</button><button class="btn" id="fSend">등록 자료 보내기</button></div>`;
+  $('#modal').classList.add('on');$('#ov').classList.add('on');
+  $('#fCancel').onclick=closeAll;
+  $('#fSend').onclick=()=>{const v=id=>$(id).value.trim();if(!v('#fR')||!v('#fM')){toast('식당명과 메뉴명은 꼭 입력해 주세요');return}
+    const missing=[];if(!v('#fI'))missing.push('재료·육수·소스');if(!v('#fP'))missing.push('정확한 제품명');if(!v('#fC'))missing.push('판매 국가');if(!$('#fPh').checked)missing.push('성분표 사진');if(!$('#fU').checked)missing.push('실제 사용 확인');
+    S.subs.unshift({id:'s'+Date.now(),r:v('#fR'),m:v('#fM'),files:[v('#fP')||'제품명 없음',$('#fPh').checked?'성분표 사진':'사진 없음'],missing,status:missing.length?'누락 보완 요청':'검토 대기'});
+    logAct('＋',`신규 등록 자료 접수: ${v('#fR')} · ${v('#fM')}`,'식당 등록 폼');save();closeAll();render();toast(missing.length?`접수 완료 · 누락 ${missing.length}건은 보완 요청 상태로 둡니다`:'접수 완료 · 운영자 검토 대기')};
+};
+
+/* ---------------- AI 분석기 ---------------- */
+const DICT=[
+ ['meat',['소고기','쇠고기','우육','돼지','돈육','닭','계육','치킨','베이컨','햄','라드','우지','젤라틴','콜라겐','사골','beef','pork','chicken','bacon','ham','lard','tallow','gelatin','gelatine','collagen','meat']],
+ ['fish',['멸치','액젓','어간장','가쓰오','가다랑어','참치','연어','어묵','젓갈','어유','피쉬','anchov','fish','bonito','tuna','salmon','katsuobushi']],
+ ['shell',['새우','굴','조개','홍합','바지락','꽃게','게살','오징어','문어','관자','shrimp','prawn','oyster','clam','mussel','crab','squid','scallop','lobster']],
+ ['egg',['계란','달걀','난황','난백','전란','알부민','마요네즈','egg','albumin','mayonnaise']],
+ ['dairy',['우유','유청','카제인','버터','치즈','크림','요거트','요구르트','유당','연유','분유','유크림','milk','whey','casein','butter','cheese','cream','yogurt','yoghurt','lactose','ghee','parmesan']],
+ ['honey',['꿀','벌꿀','로열젤리','프로폴리스','honey','royal jelly','propolis']],
+ ['other',['카민','코치닐','셸락','라놀린','carmine','cochineal','shellac','lanolin','e120','e904']]
+];
+const PLANT_EX=['땅콩버터','코코아버터','카카오버터','시어버터','코코넛밀크','코코넛크림','오트밀크','귀리','두유','아몬드밀크','비건','식물성','peanut butter','cocoa butter','shea butter','coconut milk','coconut cream','oat milk','soy milk','almond milk','vegan','plant-based','dairy-free','egg-free','eggplant','butternut','buttercup'];
+const UNSURE=[['천연향료','향의 원료(동물/식물)가 표시되지 않음'],['향료','원료 출처 미표시'],['효소','동물 유래 효소일 수 있음'],['유화제','동물성 지방 유래일 수 있음'],['글리세린','동물성 지방 유래일 수 있음'],['모노글리세리드','동물성 지방 유래일 수 있음'],['비타민d3','양모(라놀린) 유래가 많음'],['육수','어떤 육수인지 확인 필요'],['natural flavor','source not stated'],['flavour','source not stated'],['flavor','source not stated'],['enzyme','may be animal-derived'],['emulsifier','may be animal-derived'],['glycerin','may be animal-derived'],['glycerol','may be animal-derived'],['mono- and diglycerides','may be animal-derived'],['vitamin d3','often from lanolin'],['stock','type of stock unknown'],['broth','type of broth unknown']];
+const TR={'정제수':'water','탈지대두':'defatted soybean','대두':'soybean','소맥':'wheat','천일염':'sea salt','정제소금':'refined salt','주정':'ethanol (brewing)','설탕':'sugar','물엿':'corn syrup','고춧가루':'chili powder','찹쌀':'glutinous rice','쌀':'rice','마늘':'garlic','배추':'napa cabbage','식초':'vinegar','대두유':'soybean oil','변성전분':'modified starch','간장':'soy sauce','굴추출물':'oyster extract','멸치액젓':'anchovy fish sauce','새우젓':'salted shrimp','난황':'egg yolk','유청분말':'whey powder','젤라틴':'gelatin','천연향료':'natural flavor','대두레시틴':'soy lecithin','water':'정제수','sugar':'설탕','salt':'소금','oats':'귀리','whey powder':'유청분말','natural flavor':'천연향료','soy lecithin':'대두레시틴','gelatin':'젤라틴','wheat flour':'밀가루','palm oil':'팜유','skim milk powder':'탈지분유','vitamin d3':'비타민D3','honey':'꿀','egg yolk':'난황','anchovies':'멸치','parmesan cheese':'파르메산 치즈'};
+function analyze(text){
+  const toks=text.replace(/[()\[\]{}]/g,',').split(/[,，、·;\n]+/).map(t=>t.trim()).filter(Boolean);
+  const rows=toks.map(tok=>{const low=tok.toLowerCase().replace(/\s+/g,' ');const lowNS=low.replace(/\s/g,'');
+    if(PLANT_EX.some(p=>low.includes(p)||lowNS.includes(p.replace(/\s/g,''))))return{tok,v:'plant',cat:null,why:'식물성 예외 규칙(이름에 동물성 단어가 있어도 식물성)'};
+    for(const [cat,ws] of DICT){const w=ws.find(w=>low.includes(w)||lowNS.includes(w.replace(/\s/g,'')));if(w)return{tok,v:'animal',cat,why:`‘${w}’ 일치`}}
+    const u=UNSURE.find(([w])=>low.includes(w)||lowNS.includes(w.replace(/\s/g,'')));if(u)return{tok,v:'unsure',cat:null,why:u[1]};
+    return{tok,v:'plant',cat:null,why:'동물 유래 사전에 없음'}});
+  return{toks,rows};
+}
+const SAMPLES=[
+ {n:'양조간장 (데모식품, 대한민국)',p:'데모식품 양조간장 500ml',c:'대한민국',t:'정제수, 탈지대두, 소맥, 천일염, 주정'},
+ {n:'굴소스 (데모식품, 대한민국)',p:'데모식품 굴소스 260g',c:'대한민국',t:'굴추출물, 설탕, 정제소금, 변성전분, 간장(대두, 소맥), 카라멜색소'},
+ {n:'포기김치 양념 (데모, 대한민국)',p:'데모 포기김치 3kg',c:'대한민국',t:'배추, 고춧가루, 마늘, 멸치액젓, 새우젓, 설탕, 생강'},
+ {n:'Chocolate cookie (Demo, USA)',p:'Demo Cookies 200g',c:'미국',t:'wheat flour, sugar, palm oil, cocoa butter, whey powder, soy lecithin, natural flavor, salt'},
+ {n:'젤리 (데모, 대한민국)',p:'데모 과일젤리 100g',c:'대한민국',t:'물엿, 설탕, 젤라틴, 사과농축과즙, 구연산, 천연향료, 카민'},
+ {n:'오트 드링크 (Demo, Sweden)',p:'Demo Oat Drink 1L',c:'스웨덴',t:'water, oats, rapeseed oil, calcium carbonate, vitamin d3, salt'},
+ {n:'땅콩버터 비건 쿠키 (데모)',p:'데모 땅콩버터쿠키',c:'대한민국',t:'밀가루, 땅콩버터, 설탕, 코코넛오일, 두유, 베이킹소다, 정제소금'}
+];
+$('#sample').innerHTML='<option value="">— 직접 입력 —</option>'+SAMPLES.map((s,i)=>`<option value="${i}">${s.n}</option>`).join('');
+$('#sample').onchange=e=>{const s=SAMPLES[e.target.value];if(!s)return;$('#aProd').value=s.p;$('#aCountry').value=s.c;$('#aText').value=s.t};
+let lastA=null;
+$('#aRun').onclick=()=>{
+  const t=$('#aText').value.trim();
+  if(!t){toast('성분표 원문을 입력하거나 예시를 불러오세요');return}
+  if(!$('#aProd').value.trim()){toast('정확한 제품명을 먼저 입력하세요. 브랜드만으로는 판정하지 않습니다');$('#aProd').focus();return}
+  const steps=$$('#aSteps div');steps.forEach(s=>s.className='');
+  $('#aOut').innerHTML='';$('#aPill').innerHTML='';$('#aLoad').classList.add('on');$('#aRun').disabled=true;
+  const msgs=['성분표를 읽는 중...','한국어·영어 성분명을 정규화하는 중...','동물 유래 재료 사전과 대조하는 중...'];
+  let i=0;const tick=()=>{if(i>0)steps[i-1].className='done';if(i<3){steps[i].className='on';$('#aLoadT').textContent=msgs[i];i++;setTimeout(tick,520)}else{steps[3].className='on';$('#aLoad').classList.remove('on');$('#aRun').disabled=false;showA(t)}};tick();
+};
+function showA(t){
+  const a=analyze(t);lastA={a,p:$('#aProd').value.trim(),c:$('#aCountry').value.trim()||'미입력'};
+  const an=a.rows.filter(r=>r.v==='animal'),un=a.rows.filter(r=>r.v==='unsure');
+  const cats=[...new Set(an.map(r=>r.cat))];
+  const res=d=>{const hit=cats.filter(c=>DIETS[d].ex.includes(c));if(hit.length)return['excl','제외 재료 포함',hit.map(c=>CATS[c].ko).join(', ')];if(un.length)return['check','추가 확인 필요',un.length+'개 성분 출처 불명'];return['ok','조건에 맞음','의심 재료 없음']};
+  $('#aSub').textContent=`${lastA.p} · ${lastA.c} · 성분 ${a.rows.length}개`;
+  $('#aPill').innerHTML=an.length?pill('excl',`동물 유래 ${an.length}`):un.length?pill('check',`확인 필요 ${un.length}`):pill('ok','의심 재료 없음');
+  $('#aOut').innerHTML=`<div class="dietres">${['vegan','lacto','pesco'].map(d=>{const r=res(d);return `<div style="background:var(--${r[0]==='ok'?'okbg':r[0]==='check'?'chkbg':'excbg'})"><span class="small">${DIETS[d].ko}</span><b style="color:var(--${r[0]==='ok'?'ok':r[0]==='check'?'chk':'exc'})">${r[1]}</b><span class="small muted">${r[2]}</span></div>`}).join('')}</div>
+  <div class="tbl"><table><thead><tr><th>원문 성분</th><th>번역</th><th>판정</th><th>근거</th></tr></thead><tbody>${a.rows.map(r=>`<tr><td><b>${esc(r.tok)}</b></td><td class="small muted">${TR[r.tok.toLowerCase()]||TR[r.tok]||'—'}</td><td>${r.v==='animal'?pill('excl',CATS[r.cat].ko):r.v==='unsure'?pill('check','출처 확인'):pill('ok','식물성/무관')}</td><td class="small muted">${esc(r.why)}</td></tr>`).join('')}</tbody></table></div>
+  <div class="banner check" style="margin-top:12px"><span>!</span><div>이 결과는 <b>AI 분석 초안</b>입니다. 운영자가 성분표 원문과 대조하고, 식당이 이 제품을 실제로 쓰는지 확인하기 전에는 여행자에게 ‘조건에 맞음’으로 공개하지 않습니다.</div></div>
+  <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn" id="aOk">원문 대조 완료 · 초안 저장</button><button class="btn ghost" id="aHold">추가 확인 요청</button></div>`;
+  $('#aOk').onclick=()=>{logAct('✦',`AI 분석 검토 완료: ${lastA.p}${cats.length?` — ${cats.map(c=>CATS[c].ko).join('·')} 포함`:''}`,'운영자 원문 대조');save();toast('검토 기록을 남겼습니다. 식당 사용 확인 후 메뉴에 연결됩니다');$('#aOk').disabled=true};
+  $('#aHold').onclick=()=>{logAct('?',`추가 확인 요청: ${lastA.p} (출처 불명 ${un.length}건)`,'AI 분석');save();toast('제조사·식당에 추가 확인을 요청했습니다');$('#aHold').disabled=true};
+}
+
+/* ---------------- 시장 ---------------- */
+function renderMarket(){
+  const V=[['2023',182,'#9CC3AC'],['2024',293,'#4E9A73'],['2025',364,'#1F4D38']];
+  $('#cVisit').innerHTML=`<div class="vb">${V.map(v=>`<div><b>${v[1]}만</b><i style="height:${v[1]/400*85}%;background:${v[2]}"></i></div>`).join('')}</div><div class="vbx">${V.map(v=>`<span>${v[0]}</span>`).join('')}</div><div class="small muted" style="text-align:center;margin-top:8px">2023→2025년 2배(약 +100%) 증가</div>`;
+  const m=$('#matrix');
+  const P=[['HappyCow',190,250,'#8A948F'],['네이버지도',150,290,'#8A948F'],['Veganify',560,250,'#8A948F'],['리프맵',560,100,'#1F4D38']];
+  m.innerHTML=`<rect x="80" y="30" width="600" height="290" fill="#FAFAF6" stroke="#E3E2DA" rx="10"/><line x1="380" y1="30" x2="380" y2="320" stroke="#E3E2DA"/><line x1="80" y1="175" x2="680" y2="175" stroke="#E3E2DA"/>
+  <text x="380" y="345" text-anchor="middle" font-size="12" fill="#68726D">← 장소(식당) 단위 정보 ······ 메뉴·성분 단위 정보 →</text>
+  <text x="40" y="175" text-anchor="middle" font-size="12" fill="#68726D" transform="rotate(-90 40 175)">← 이용자 리뷰·자동 판정 ······ 검토된 근거 →</text>
+  <text x="670" y="52" text-anchor="end" font-size="11" fill="#2A6A4C" font-weight="700">리프맵의 빈자리</text>
+  ${P.map(p=>`<circle cx="${p[1]}" cy="${p[2]}" r="${p[0]==='리프맵'?13:9}" fill="${p[3]}"/><text x="${p[1]+18}" y="${p[2]+4}" font-size="13" font-weight="${p[0]==='리프맵'?700:500}" fill="${p[0]==='리프맵'?'#1F4D38':'#3E4842'}">${p[0]}</text>`).join('')}`;
+}
+
+/* ---------------- 수익 ---------------- */
+const won=n=>n>=1e8?(n/1e8).toFixed(2).replace(/\.?0+$/,'')+'억 원':Math.round(n/1e4).toLocaleString()+'만 원';
+function renderBiz(){
+  const R=+$('#sR').value,F=+$('#sF').value,P=+$('#sP').value,C=+$('#sC').value;
+  $('#vR').textContent=`— ${R}곳`;$('#vF').textContent=`— ${F.toLocaleString()}원`;$('#vP').textContent=`— ${P}곳`;$('#vC').textContent=`— ${won(C)}`;
+  const m=R*F+P*C/12;$('#oM').textContent=won(m);$('#oY').textContent=won(m*12);
+  $('#oNote').textContent=`식당 구독 ${won(R*F*12)} + 기관 제휴 ${won(P*C)} (연간). 데이터 검수 인건비가 가장 큰 비용이므로, 식당 1곳 검수에 드는 시간을 검증 단계에서 함께 측정합니다.`;
+}
+['#sR','#sF','#sP','#sC'].forEach(s=>$(s).oninput=renderBiz);
+
+/* ---------------- 렌더 ---------------- */
+function render(){
+  const pend=allMenus().filter(m=>m.pending).length;$('#bQueue').textContent=pend;$('#bQueue').style.display=pend?'':'none';
+  const op=S.reps.filter(r=>r.status==='접수'||r.status==='검토 중').length;$('#bRep').textContent=op;$('#bRep').style.display=op?'':'none';
+  if(current==='overview')renderOverview();
+  if(current==='explore')renderExplore();
+  if(current==='queue')renderQueue();
+  if(current==='reports')renderReports();
+  if(current==='market')renderMarket();
+  if(current==='business')renderBiz();
+}
+const h=(location.hash||'').slice(1);
+if(h&&document.getElementById('p-'+h))go(h);else render();
+</script>
+</body>
+</html>
