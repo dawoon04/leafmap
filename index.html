@@ -257,6 +257,7 @@ label.f em{font-style:normal;color:var(--muted);font-weight:400}
   <div class="foot">
     <b>이다운</b> · 2023761031<br>AI데이터기반서비스기획 중간과제
     <br><button id="resetBtn">데모 데이터 초기화</button>
+    <br><span id="syncState" style="font-size:11px;opacity:.75">● 이 브라우저에만 저장</span>
   </div>
 </aside>
 
@@ -604,6 +605,7 @@ label.f em{font-style:normal;color:var(--muted);font-weight:400}
 <div class="modal" id="modal"></div>
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ---------------- 기본 정의 ---------------- */
 const CATS={
@@ -679,10 +681,10 @@ const REPS0=[
  {id:'p4',menu:'m7',who:'여행자 (USA)',text:'비빔밥 나물에 액젓이 들어간 것 같아요.',cat:null,at:'2026-10-29',status:'기각',note:'식당 레시피·사용 제품 재확인 결과 액젓 미사용'}
 ];
 const ACT0=[
- {i:'✓',t:'달맞이 사찰음식 · 3개 메뉴 확인 완료',s:'식당 사용 제품 사진 대조 · 2026-10-25'},
- {i:'⚑',t:'들깨 미역국 상충 제보 접수 → 추가 확인 필요로 전환',s:'여행자 제보 · 2026-11-08'},
- {i:'✦',t:'전포 누들 양념간장 AI 분석 초안 생성',s:'제품 미특정으로 식당 확인 대기 · 2026-11-07'},
- {i:'↻',t:'채소 커리 페이스트 제품 변경 반영',s:'식당 변경 신고 · 2026-11-02'}
+ {id:'a1',i:'✓',t:'달맞이 사찰음식 · 3개 메뉴 확인 완료',s:'식당 사용 제품 사진 대조 · 2026-10-25'},
+ {id:'a2',i:'⚑',t:'들깨 미역국 상충 제보 접수 → 추가 확인 필요로 전환',s:'여행자 제보 · 2026-11-08'},
+ {id:'a3',i:'✦',t:'전포 누들 양념간장 AI 분석 초안 생성',s:'제품 미특정으로 식당 확인 대기 · 2026-11-07'},
+ {id:'a4',i:'↻',t:'채소 커리 페이스트 제품 변경 반영',s:'식당 변경 신고 · 2026-11-02'}
 ];
 
 /* ---------------- 상태 ---------------- */
@@ -690,8 +692,77 @@ const KEY='leafmap-demo-v1';
 let S;
 function fresh(){return {restos:JSON.parse(JSON.stringify(RESTOS0)),subs:JSON.parse(JSON.stringify(SUBS0)),reps:JSON.parse(JSON.stringify(REPS0)),act:JSON.parse(JSON.stringify(ACT0)),diet:'vegan',ex:[...DIETS.vegan.ex],area:'all',showChk:true,lang:'ko',krTo:'staff',krEx:['meat','fish','shell']};}
 function load(){try{const v=localStorage.getItem(KEY);S=v?JSON.parse(v):fresh();}catch(e){S=fresh();}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}cloudSave();}
 load();
+
+/* ---------------- Supabase 연결 ----------------
+   아래 두 값을 Supabase 대시보드 → Project Settings → API Keys 에서 복사해 넣으세요.
+   비워 두면 지금처럼 이 브라우저(localStorage)에만 저장됩니다.
+   Publishable key(sb_publishable_…)만 넣고, Secret key(sb_secret_…)는 절대 넣지 마세요. */
+const SUPABASE_URL='https://ovvrvpvxfhdynttscisz.supabase.co';
+const SUPABASE_KEY='sb_publishable_IRk38LWq0iZMWSv4Yg3GGw_T_ximi8O';   // 공개용 키(브라우저에 넣어도 됨)
+const db=(SUPABASE_URL&&SUPABASE_KEY&&window.supabase)?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
+
+// 화면 데이터(S) ↔ 테이블 행 변환. ord는 목록 순서를 지키기 위한 값입니다.
+const toRows={
+  restaurants:()=>S.restos.map((r,i)=>({id:r.id,ko:r.ko,en:r.en,area:r.area,addr:r.addr,x:r.x,y:r.y,menus:r.menus,ord:i})),
+  reports:()=>S.reps.map((p,i)=>({id:p.id,menu_id:p.menu,who:p.who,text:p.text,cat:p.cat||null,at:p.at,status:p.status,note:p.note||null,ord:S.reps.length-i})),
+  submissions:()=>S.subs.map((x,i)=>({id:x.id,restaurant:x.r,menu:x.m,files:x.files,missing:x.missing,status:x.status,ord:S.subs.length-i})),
+  activity:()=>S.act.map((a,i)=>{if(!a.id)a.id='a'+Date.now()+'_'+i;return {id:a.id,icon:a.i,title:a.t,sub:a.s,ord:Date.now()-i}})
+};
+const fromRows={
+  restaurants:d=>d.map(r=>({id:r.id,ko:r.ko,en:r.en,area:r.area,addr:r.addr,x:r.x,y:r.y,menus:r.menus})),
+  reports:d=>d.map(p=>{const o={id:p.id,menu:p.menu_id,who:p.who,text:p.text,cat:p.cat,at:p.at,status:p.status};if(p.note)o.note=p.note;return o}),
+  submissions:d=>d.map(x=>({id:x.id,r:x.restaurant,m:x.menu,files:x.files||[],missing:x.missing||[],status:x.status})),
+  activity:d=>d.map(a=>({id:a.id,i:a.icon,t:a.title,s:a.sub}))
+};
+const KEYS={restaurants:'restos',reports:'reps',submissions:'subs',activity:'act'};
+let lastSynced='';
+const sharedJSON=()=>JSON.stringify([S.restos,S.reps,S.subs,S.act]);
+function setSync(state,msg){const e=document.getElementById('syncState');if(!e)return;
+  const m={off:['#8A948F','이 브라우저에만 저장'],busy:['#C9A227','Supabase 동기화 중…'],ok:['#4E9A73','Supabase 연결됨'],err:['#C2553F','Supabase 연결 실패 (브라우저에 임시 저장)']}[state];
+  e.style.color=m[0];e.textContent='● '+(msg||m[1]);}
+async function upsertAll(){
+  for(const t of Object.keys(toRows)){const rows=toRows[t]();if(!rows.length)continue;
+    const {error}=await db.from(t).upsert(rows);if(error)throw error;}
+  // 활동 기록은 최근 8건만 남깁니다.
+  const keepIds=S.act.map(a=>a.id);
+  if(keepIds.length){const {error}=await db.from('activity').delete().not('id','in','('+keepIds.map(x=>'"'+x+'"').join(',')+')');if(error)throw error;}
+}
+async function cloudLoad(seeded){
+  if(!db){setSync('off');return;}
+  setSync('busy');
+  try{
+    const res={};
+    for(const t of Object.keys(toRows)){
+      const q=db.from(t).select('*').order('ord',{ascending:t==='restaurants'});
+      const {data,error}=await q;if(error)throw error;res[t]=data;}
+    if(!res.restaurants.length){ if(seeded)throw new Error('초기 데이터 저장 후에도 식당 목록이 비어 있습니다');
+      const f=fresh();S.restos=f.restos;S.reps=f.reps;S.subs=f.subs;S.act=f.act;await upsertAll();return cloudLoad(true);}
+    for(const t of Object.keys(res))S[KEYS[t]]=fromRows[t](res[t]);
+    lastSynced=sharedJSON();
+    try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
+    render();setSync('ok');
+  }catch(e){console.error('[Supabase]',e);setSync('err');toast('Supabase에 연결하지 못해 이 브라우저에만 저장합니다');}
+}
+let saveTimer=null;
+function cloudSave(){
+  if(!db)return;
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(async()=>{
+    const now=sharedJSON();if(now===lastSynced)return;   // 언어·필터 같은 개인 설정만 바뀐 경우는 건너뜀
+    setSync('busy');
+    try{await upsertAll();lastSynced=now;setSync('ok');}
+    catch(e){console.error('[Supabase]',e);setSync('err');toast('Supabase 저장에 실패했습니다. 콘솔(F12)을 확인하세요');}
+  },400);
+}
+async function cloudReset(){
+  setSync('busy');
+  try{
+    for(const t of ['activity','submissions','reports','restaurants']){const {error}=await db.from(t).delete().neq('id','');if(error)throw error;}
+    await upsertAll();lastSynced=sharedJSON();setSync('ok');
+  }catch(e){console.error('[Supabase]',e);setSync('err');toast('Supabase 초기화에 실패했습니다');}
+}
 
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const allMenus=()=>S.restos.flatMap(r=>r.menus.map(m=>({...m,r})));
@@ -702,7 +773,7 @@ const catName=c=>L(CATS[c].ko,CATS[c].en);
 function pill(s,txt){return `<span class="pill ${s}"><span class="dot"></span>${txt||L(ST[s].ko,ST[s].en)}</span>`}
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2400)}
 function daysAgo(d){return Math.round((new Date(TODAY)-new Date(d))/864e5)}
-function logAct(i,t,s){S.act.unshift({i,t,s:s+' · '+TODAY});S.act=S.act.slice(0,8);}
+function logAct(i,t,s){S.act.unshift({id:'a'+Date.now(),i,t,s:s+' · '+TODAY});S.act=S.act.slice(0,8);}
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
 /* ---------------- 내비게이션 ---------------- */
@@ -711,7 +782,7 @@ function go(p){current=p;$$('#nav button').forEach(b=>b.classList.toggle('on',b.
 $$('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.p));
 document.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(g)go(g.dataset.go)});
 $('#menuBtn').onclick=()=>$('#side').classList.toggle('on');
-$('#resetBtn').onclick=()=>{S=fresh();save();render();toast('데모 데이터를 처음 상태로 되돌렸습니다')};
+$('#resetBtn').onclick=async()=>{const keep={lang:S.lang};S=fresh();S.lang=keep.lang;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}render();if(db){await cloudReset();}toast('데모 데이터를 처음 상태로 되돌렸습니다')};
 
 /* ---------------- 개요 ---------------- */
 function renderOverview(){
@@ -998,6 +1069,7 @@ function render(){
 }
 const h=(location.hash||'').slice(1);
 if(h&&document.getElementById('p-'+h))go(h);else render();
+cloudLoad();
 </script>
 </body>
 </html>
