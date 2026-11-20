@@ -4,7 +4,15 @@ AI데이터기반서비스기획 중간과제 · 2023761031 이다운
 
 부산을 찾는 외국인 채식 여행자가 **식당 이름이 아니라 메뉴의 재료·육수·양념 제품 성분 근거**를 보고 메뉴를 고를 수 있도록 돕는 서비스의 MVP 웹 시제품입니다. 기획서의 모바일 앱 구상을 설치 없이 링크로 여는 **웹 대시보드**로 바꿨습니다.
 
-## 화면 구성
+## 사이트 구성
+| 파일 | 내용 |
+|---|---|
+| `index.html` | 서비스 소개 홈. 실시간 DB 현황(식당·메뉴·확인 완료·검토 중), 판정 방식, 메뉴 판정 목록(식단별), 이용 방법, 식당 등록 신청 폼 |
+| `dashboard.html` | 운영·여행자 대시보드 (아래 화면 구성) |
+
+두 페이지는 같은 Supabase 프로젝트를 씁니다. 소개 홈의 ‘대시보드’ 버튼은 `dashboard.html`로, 기능 카드는 `dashboard.html#queue`처럼 해당 화면으로 바로 이동합니다. 소개 홈에서 보낸 식당 등록 신청은 `submissions`·`activity` 테이블에 저장되어 대시보드 ‘등록·검토 큐’와 활동 기록에 나타납니다.
+
+## 대시보드 화면 구성
 | 메뉴 | 내용 |
 |---|---|
 | 대시보드 개요 | AI 추천 운영 업무, 핵심 지표, 식단별 메뉴 판정, 지역별 확보율, 데이터 신선도(90일), 활동 기록 |
@@ -23,14 +31,14 @@ AI데이터기반서비스기획 중간과제 · 2023761031 이다운
 - **조건에 맞음**: 제외 재료를 대조할 근거가 있고 식당 사용 확인 완료
 
 ## 실행
-빌드 없이 `index.html` 하나로 동작합니다. 브라우저로 열거나 GitHub Pages로 배포하세요.
+빌드 없이 `index.html`(소개 홈)과 `dashboard.html`(대시보드) 두 파일로 동작합니다. 브라우저로 열거나 GitHub Pages로 배포하세요.
 
 ## 데이터 저장 (Supabase)
 식당·메뉴, 정정 제보, 신규 등록 자료, 운영 활동 기록은 Supabase(PostgreSQL)에 저장해 누가 접속해도 같은 데이터를 봅니다. 언어·식단 필터 같은 개인 설정은 각자의 브라우저에만 저장됩니다.
 
 1. Supabase에서 새 프로젝트를 만듭니다 (Region: Seoul).
 2. SQL Editor에 `supabase/setup.sql`을 붙여넣고 Run 합니다.
-3. Project Settings → API Keys에서 Project URL과 Publishable key(`sb_publishable_…`)를 복사해 `index.html`의 `SUPABASE_URL`, `SUPABASE_KEY`에 넣습니다.
+3. Project Settings → API Keys에서 Project URL과 Publishable key(`sb_publishable_…`)를 복사해 `index.html`과 `dashboard.html`의 `SUPABASE_URL`, `SUPABASE_KEY`에 넣습니다.
 4. 사이트를 처음 열면 시연용 초기 데이터가 테이블에 자동으로 채워집니다. 사이드바 아래에 ‘● Supabase 연결됨’이 보이면 성공입니다.
 
 두 값을 비워 두면 예전처럼 브라우저(localStorage)에만 저장됩니다. 시연용이라 로그인 없이 누구나 데이터를 바꿀 수 있게 열어 두었습니다.
