@@ -259,7 +259,7 @@ input,select,textarea{font:inherit;color:inherit}
 
 /* ===== 카카오맵 스타일 지도 홈 ===== */
 #app.mapmode .abar{display:none}
-#app.mapmode #toast{bottom:auto;top:calc(160px + var(--st))}
+#app.mapmode #toast{bottom:auto;top:calc(122px + var(--st))}
 .mfab,.mlegend{transition:bottom .28s cubic-bezier(.2,.8,.2,1),opacity .2s}
 .screen.map{padding:0;overflow:hidden;animation:none}
 #lmap{position:absolute;inset:0;background:#EEF0E8;z-index:0;font-family:inherit}
@@ -286,10 +286,17 @@ input,select,textarea{font:inherit;color:inherit}
 .msearch .mq{flex:1;text-align:left;color:#8A928E;font-size:15px;height:100%;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .msearch .av{width:36px;height:36px;border-radius:50%;background:var(--g8);color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center;flex:none}
 .mchips{position:absolute;top:calc(68px + var(--st));left:0;right:0;z-index:5;margin:0;padding:2px 12px 8px}
-.mchips2{top:calc(110px + var(--st))}
-.mchips2 .chip{font-size:12.5px;padding:6px 11px}
-.mchips2 .chip.on{background:#2A6A4C}
-.mchips2 .dl{flex:none;align-self:center;font-size:11.5px;font-weight:800;color:#3A4440;background:rgba(255,255,255,.92);border-radius:8px;padding:5px 8px;box-shadow:0 1px 5px rgba(0,0,0,.12)}
+.msearch .lk{flex:none;height:32px;padding:0 10px;border-radius:9px;background:var(--soft);font-size:12.5px;font-weight:800;color:var(--g8)}
+.mi-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.mi-list span{font-size:12.5px;background:var(--g1);color:var(--g9);border-radius:8px;padding:3px 8px;font-weight:600}
+.rate{font-size:12px;font-weight:800;color:#B7791F}
+.rvw{background:#fff;border-radius:12px;padding:12px 14px;margin-bottom:8px;font-size:13.5px}
+.rvw .h{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted);margin-bottom:4px}
+.stars{display:flex;gap:4px}
+.stars button{font-size:26px;color:#D5D3CB;line-height:1}
+.stars button.on{color:#E0A526}
+.pill.vt{background:#E3F1EE;color:#2E6F63}
+.mchips .dl{flex:none;align-self:center;font-size:11.5px;font-weight:800;color:#3A4440;background:rgba(255,255,255,.92);border-radius:8px;padding:5px 8px;box-shadow:0 1px 5px rgba(0,0,0,.12)}
 .mchips .chip{box-shadow:0 1px 5px rgba(0,0,0,.16);background:#fff;font-size:13px;padding:7px 12px}
 .mchips .chip.on{background:var(--g8);color:#fff}
 .mchips .chip.cond{color:var(--g8);font-weight:800}
@@ -327,7 +334,7 @@ input,select,textarea{font:inherit;color:inherit}
   .big-kr .x{top:56px}
   .tabbar{padding-bottom:16px}
   #toast{bottom:92px}
-  #app.mapmode #toast{top:206px}
+  #app.mapmode #toast{top:168px}
   .sheet{padding-bottom:30px}
   .login{padding-top:20px}
   .msb{padding-bottom:20px}
@@ -376,10 +383,9 @@ input,select,textarea{font:inherit;color:inherit}
     <!-- ① 지도 (홈) -->
     <section class="screen map" id="s-map" aria-labelledby="tb-map">
       <div id="lmap" aria-label="부산 채식 식당 지도"></div>
-      <div class="msearch"><span class="lg"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></span><button class="mq" id="mq" type="button"><span aria-hidden="true">⌕ </span><span data-t="mq">메뉴·식당 검색</span></button><button class="av" id="mAv" type="button" aria-label="내 정보"></button></div>
+      <div class="msearch"><span class="lg"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></span><button class="mq" id="mq" type="button"><span aria-hidden="true">⌕ </span><span data-t="mq">메뉴·식당 검색</span></button><button class="lk" id="mLang" type="button" aria-label="Language"></button><button class="av" id="mAv" type="button" aria-label="내 정보"></button></div>
       <div class="hscroll mchips" id="mapArea"></div>
-      <div class="hscroll mchips mchips2" id="mapDiet" role="group" aria-label="내 식단"></div>
-      <div class="mlegend" id="mlegend"></div>
+            <div class="mlegend" id="mlegend"></div>
       <div class="mfab" id="mfab"><div class="grp"><button type="button" id="zIn" aria-label="확대">+</button><button type="button" id="zOut" aria-label="축소">−</button></div><button type="button" class="solo" id="zHome" aria-label="내 위치">◎</button></div>
       <div class="msheet" id="msheet"><div class="msh" id="msh"><div class="grab"></div><h3 id="msT"></h3><div class="sub" id="msS"></div></div><div class="msb" id="msB"></div></div>
     </section>
@@ -486,8 +492,7 @@ input,select,textarea{font:inherit;color:inherit}
     <div class="chips" id="dietSeg2"></div>
     <div class="fl" data-t="exL">먹지 않는 재료</div>
     <div class="chips" id="exChips"></div>
-    <div class="fl" data-t="areaL">지역</div>
-    <div class="chips" id="areaChips"></div>
+    <div class="chips" id="areaChips" hidden></div>
     <div class="toggle"><span data-t="showChk">‘추가 확인 필요’ 메뉴도 보기</span><button class="sw" id="swChk" role="switch" aria-checked="true"></button></div>
     <div class="mysum" id="mySum"></div>
     <div class="acts"><button class="btn ghost" id="fReset" data-t="reset">초기화</button><button class="btn" id="fClose" data-t="apply">적용</button></div>
@@ -553,32 +558,119 @@ const PEND={
   conflict:{ko:'상충 정보(제보)',en:'Conflicting report',d:'등록 정보와 다른 제보가 들어와 검토 중입니다.'}
 };
 const ST={ok:{ko:'조건에 맞음',en:'Matches your diet'},check:{ko:'추가 확인 필요',en:'Needs confirmation'},excl:{ko:'제외 재료 포함',en:'Contains excluded'}};
-/* ---------- 실제 식당 (공개 정보, 리프맵 확인 전) ----------
-   출처: HappyCow 공개 목록(2026-11 확인). 이름·주소·좌표·유형만 담고, 메뉴 성분 판정은 넣지 않음.
-   kind: vegan = 전부 비건(공개 정보 기준) / options = 고기를 팔지만 비건 선택 가능
-   식당이 리프맵에 등록하고 운영자가 성분을 확인하면 Supabase restaurants(id 같음).menus 로 확인된 메뉴가 붙음 */
-const SRC_HC='https://www.happycow.net/reviews/';
-const PLACES=[
- {id:'s1',area:'seomyeon',ko:'태태태',en:'Tae Tae Tae',kind:'options',type:['아시안 펍','Asian pub'],addr:'부산진구 서전로10번길 22-9',lat:35.157043,lng:129.059912,hours:['매일 15:00–03:00','Daily 3pm–3am'],note:['비건 메뉴판이 따로 있어요. 술을 파는 펍이에요.','Separate vegan menu. It is a pub that serves alcohol.'],src:'tae-tae-tae-busan-353387'},
- {id:'s2',area:'seomyeon',ko:'바오하우스',en:'Bao Haus',kind:'options',type:['대만 음식','Taiwanese'],addr:'부산진구 서전로38번길 62-9',lat:35.157712,lng:129.063829,hours:['평일 11:30–15:00, 17:00–20:00 · 주말 11:30–20:00','Weekdays 11:30–15:00, 17:00–20:00 · Weekends 11:30–20:00'],note:['마파두부·가지튀김 등 비건 표시 메뉴가 있어요.','Vegan-labeled mapo tofu, fried eggplant and more.'],src:'bao-haus-busan-413739'},
- {id:'s3',area:'seomyeon',ko:'로열 인디아 서면',en:'Royal India Seomyeon',kind:'options',type:['인도·네팔 음식','Indian & Nepali'],addr:'부산진구 중앙대로 672 삼정타워 6층',lat:35.153062,lng:129.059687,hours:['월–화 11:00–22:00 · 수–일 11:00–22:30','Mon–Tue 11am–10pm · Wed–Sun 11am–10:30pm'],note:['채식 커리는 요청하면 비건으로 만들어 준대요.','Vegetarian curries can be made vegan on request.'],src:'royal-india-seomyeon-busan-452612'},
- {id:'s4',area:'seomyeon',ko:'샐러드 바구니',en:'Salad Basket',kind:'options',type:['샐러드·파스타','Salad & pasta'],addr:'부산진구 서면로 55 2–3층',lat:35.155639,lng:129.057573,hours:['매일 09:00–22:00','Daily 9am–10pm'],note:['비건 파스타·샐러드가 있고, 동물성 재료를 빼 달라고 할 수 있어요.','Vegan pasta and salads; ask to leave out animal products.'],src:'salad-basket-busan-396729'},
- {id:'s5',area:'seomyeon',ko:'그리너 전포',en:'Greener Jeonpo',kind:'options',type:['포케·샐러드','Poke & salad'],addr:'부산진구 서전로46번길 80',lat:35.157581,lng:129.06471,hours:['매일 09:00–23:00','Daily 9am–11pm'],note:['비건 재료가 표시돼 있어 직접 골라 담을 수 있어요.','Vegan ingredients are labeled — build your own bowl.'],src:'greener-busan-254060'},
- {id:'s6',area:'seomyeon',ko:'Or Whatever',en:'Or Whatever',kind:'options',type:['브런치 카페','Brunch cafe'],addr:'부산진구 전포대로186번길',lat:35.153092,lng:129.066926,hours:['월·수–일 09:30–18:00 (화 휴무)','Mon, Wed–Sun 9:30am–6pm (closed Tue)'],note:['주문할 때 비건이라고 말하면 비건으로 준비해 줘요.','Say “vegan” when ordering.'],src:'or-whatever-busan-400952'},
- {id:'s7',area:'seomyeon',ko:'희소',en:'Heeso',kind:'vegan',type:['비건 베이커리','Vegan bakery'],addr:'부산진구 전포대로186번길 16 1층',lat:35.153049,lng:129.06645,hours:['월·수–일 11:00–20:00 (화 휴무)','Mon, Wed–Sun 11am–8pm (closed Tue)'],note:['빵이 떨어지면 일찍 닫을 수 있어요.','May close early when sold out.'],src:'heeso-busan-309823'},
- {id:'s8',area:'seomyeon',ko:'오굳띵',en:'Cafe ohh good thing',kind:'vegan',type:['비건 디저트 카페','Vegan dessert cafe'],addr:'부산진구 전포대로246번길 14',lat:35.15847,lng:129.066328,hours:['월·목–일 12:30–21:00','Mon, Thu–Sun 12:30–9pm'],note:['디저트는 비건이지만 일부 음료는 우유가 기본이라 식물성 우유를 요청하세요.','Desserts are vegan; ask for plant milk in some drinks.'],src:'ohh-good-thing-busan-341572'},
- {id:'s9',area:'seomyeon',ko:'뭉구점',en:'Moonggoojeom',kind:'vegan',type:['비건 베이커리','Vegan bakery'],addr:'부산진구 서전로37번길 26 B동 1층 156호',lat:35.158904,lng:129.063994,hours:['목–일 12:00–18:30','Thu–Sun 12pm–6:30pm'],note:['디저트·음료 위주예요.','Mostly desserts and drinks.'],src:'moonggoojeom-vegan-bakery-busan-343317'},
- {id:'s10',area:'seomyeon',ko:'도시농가코페',en:'Doco City Farm House Cafe',kind:'options',type:['베이커리 카페','Bakery cafe'],addr:'부산진구 중앙대로666번길',lat:35.152266,lng:129.060338,hours:['월–목 10:00–22:00 · 금–일 11:00–22:00','Mon–Thu 10am–10pm · Fri–Sun 11am–10pm'],note:['비건 빵이 따로 표시돼 있지만 비건이 아닌 디저트도 팔아요.','Vegan bakes are marked; non-vegan desserts are sold too.'],src:'doco-city-farm-house-cafe-busan-137812'},
- {id:'s11',area:'seomyeon',ko:'그리구',en:'Greegu',kind:'options',type:['요거트 가게','Yogurt shop'],addr:'부산진구 전포대로186번길 33 1층',lat:35.153188,lng:129.067438,hours:['월–목·토–일 12:00–20:00 (금 휴무)','Mon–Thu, Sat–Sun 12–8pm (closed Fri)'],note:['비건 두유 요거트가 있어요. 포장 위주예요.','Vegan soy yogurt; mostly takeout.'],src:'greegu-busan-310122'},
- {id:'d1',area:'daeyeon',ko:'칸티푸르',en:'Kantipur',kind:'options',type:['네팔·인도 음식','Nepali & Indian'],addr:'남구 용소로13번길 16',lat:35.136404,lng:129.101531,hours:['매일 11:00–01:30','Daily 11am–1:30am'],note:['영어 메뉴판에 비건 메뉴가 표시돼 있어요. 비건 표시는 “비건으로 만들 수 있음”이라는 후기도 있어요.','English menu with vegan labels; a reviewer says the label means “can be made vegan”.'],src:'kantipur-busan-462556'},
- {id:'d2',area:'daeyeon',ko:'바반 인도 레스토랑',en:'Bhavan Indian Restaurant',kind:'options',type:['인도 음식','Indian'],addr:'남구 유엔로 171-1 4층',lat:35.130378,lng:129.095079,hours:['매일 11:00–21:00','Daily 11am–9pm'],note:['도사·사모사 등이 있고, 유제품을 빼 달라고 말해야 해요.','Dosa, samosa and more — ask for no dairy.'],src:'bhavan-indian-restaurant-busan-424340'},
- {id:'d3',area:'daeyeon',ko:'맛있는 순두부&김치찜',en:'Kimchizip',kind:'options',type:['한식','Korean'],addr:'남구 용소로8번길 20',lat:35.136252,lng:129.099301,hours:['매일 10:00–22:30','Daily 10am–10:30pm'],note:['비건 식사를 맞춰 준다는 후기와, 김치·육수에 생선·새우가 들어간다는 후기가 엇갈려요.','Reviews disagree: some got a vegan meal, others found fish/shrimp in kimchi and broth.'],src:'kimchizip-busan-371837'},
- {id:'d4',area:'daeyeon',ko:'장터손칼국수',en:'Jangteo Son Kalguksu',kind:'options',type:['한식','Korean'],addr:'남구 용소로8번길 8',lat:35.136689,lng:129.099854,hours:['정보 없음','Not listed'],note:['달걀을 뺀 비빔밥·김밥을 주문할 수 있다는 후기가 있어요.','Reviewers ordered bibimbap and kimbap without egg.'],src:'jangteo-son-kalguksu-busan-404051'},
- {id:'d5',area:'daeyeon',ko:'포케올데이 경성대부경대점',en:'Poke All Day KSU·PKNU',kind:'options',type:['포케','Poke'],addr:'남구 용소로 13',lat:35.136209,lng:129.100922,hours:['매일 10:30–20:00','Daily 10:30am–8pm'],note:['두부·대체육과 비건 소스를 골라 담을 수 있어요.','Choose tofu or plant-based meat and vegan sauces.'],src:'poke-all-day-busan-506458'},
- {id:'j1',area:'jangjeon',ko:'리멘시타',en:'Limensita',kind:'options',type:['이탈리안·한식','Italian & Korean'],addr:'금정구 금강로 254',lat:35.230645,lng:129.08507,hours:['금 휴무 · 그 외 11:30–21:30','11:30am–9:30pm (closed Fri)'],note:['베이컨을 뺀 토마토 파스타를 비건으로 해 준다는 후기가 있어요(2020년 후기).','Vegan tomato pasta without bacon on request (2020 review).'],src:'limmensita-busan-160082'},
- {id:'j2',area:'jangjeon',ko:'보리종 파티세리 본점',en:'Borijong Patisserie',kind:'options',type:['베이커리','Bakery'],addr:'금정구 중앙대로 1667',lat:35.233188,lng:129.091384,hours:['매일 08:30–22:00','Daily 8:30am–10pm'],note:['비건 빵에 표시가 있대요(2022년 정보라 바뀌었을 수 있어요).','Vegan items are labeled (2022 info — may have changed).'],src:'borijong-patisserie-busan-318808'}
-];
-const KIND={vegan:{ko:'전부 비건 (공개 정보)',en:'All vegan (public info)',c:'#2A6A4C'},options:{ko:'비건 선택 가능',en:'Vegan options',c:'#C9821F'}};
+/* ---------- 부산 전역 채식 메뉴가 있는 실제 식당 (공개 정보, 리프맵 확인 전) ----------
+   출처: HappyCow 부산 공개 목록(2026-11 확인). 채식 메뉴가 하나라도 있는 식당·베이커리만 넣고, 메뉴 이름은 공개 설명을 요약함.
+   좌표·한글 이름·카카오맵 링크(kk)는 카카오 장소 검색으로 맞춤. 성분 판정은 넣지 않음.
+   kind: vegan 전부 비건 / vegetarian 전부 채식 / options 비건·채식 메뉴 있음. rt: HappyCow 평점(없으면 null) */
+const PLACES=[{"id":"b1","en":"April and May 45","ko":"꽃피는4월밀익는5월","d":["Suyeong-gu","수영구"],"addr":"수영구 망미번영로70번길 16","lat":35.17275,"lng":129.11099,"kind":"vegan","rt":4.5,"type":["Vegan bakery & brunch","비건 베이커리·브런치"],"menu":[["Gluten-free, sugar-free breads","Weekend brunch sandwiches","Pasta salad"],["글루텐·설탕 없는 빵","주말 브런치 샌드위치","파스타 샐러드"]],"hours":"Fri–Sun 10:30–17:00","note":["",""],"kk":"35210627"},
+{"id":"b2","en":"ARP Eulsuk","ko":"아르프 을숙","d":["Saha-gu","사하구"],"addr":"사하구 낙동남로 1191","lat":35.10933,"lng":128.94269,"kind":"vegan","rt":5,"type":["Vegan Korean fusion","비건 한식 퓨전"],"menu":[["Vegan Korean set menu","Bracken pasta","Vegan black burger"],["비건 한식 코스","고사리 파스타","비건 블랙버거"]],"hours":"Tue–Sun 11:00–18:00","note":["",""],"kk":"1399627374"},
+{"id":"b3","en":"HOME Bistro and Cafe","ko":"홈비스트로","d":["Haeundae-gu","해운대구"],"addr":"해운대구 달맞이길117번길 17-11","lat":35.15859,"lng":129.17499,"kind":"vegan","rt":5,"type":["Vegan bistro","비건 비스트로"],"menu":[["Vegan pizza","Vegan Western dishes"],["비건 피자","비건 양식"]],"hours":"Wed–Sun 17:00–22:00","note":["Serves alcohol.","술도 팔아요."],"kk":"1900939239"},
+{"id":"b4","en":"Love and Communication","ko":"러브앤커뮤니케이션","d":["Jung-gu","중구"],"addr":"중구 광복중앙로34번길 14","lat":35.10219,"lng":129.03153,"kind":"vegan","rt":5,"type":["Vegan cafe","비건 카페"],"menu":[["Sandwiches","Pasta","Korean fusion dishes","Desserts"],["샌드위치","파스타","한식 퓨전 요리","디저트"]],"hours":"Tue–Sun 12:00–21:00","note":["Serves wine and cocktails.","와인·칵테일도 팔아요."],"kk":"1088115122"},
+{"id":"b5","en":"Nayuta's Kitchen","ko":"나유타의 부엌","d":["Geumjeong-gu","금정구"],"addr":"금정구 오륜대로 262","lat":35.24763,"lng":129.11644,"kind":"vegan","rt":4.5,"type":["Organic vegan","유기농 비건"],"menu":[["Mushroom pho","Carrot cream pasta"],["버섯 쌀국수","당근 크림 파스타"]],"hours":"Sat–Sun 12:00–19:00","note":["Reservation required.","예약이 필요해요."],"kk":"213076361"},
+{"id":"b6","en":"Pyeonhan Jipbap","ko":"편한집밥","d":["Buk-gu","북구"],"addr":"북구 만덕3로 28-10","lat":35.21148,"lng":129.02624,"kind":"vegan","rt":5,"type":["Vegan Korean home food","비건 한식 집밥"],"menu":[["Korean home-style meals"],["한식 집밥 정식"]],"hours":"Tue–Sun 11:30–19:00","note":["",""],"kk":"1145683883"},
+{"id":"b7","en":"Soban Vegan","ko":"소반비건식당","d":["Seo-gu","서구"],"addr":"서구 대영로85번길 21","lat":35.11195,"lng":129.01994,"kind":"vegan","rt":5,"type":["Vegan Korean","비건 한식"],"menu":[["Soy chicken","Soft tofu stew","Many side dishes"],["콩 치킨","순두부찌개","다양한 반찬"]],"hours":"Mon, Tue, Thu–Sat 11:30–19:00","note":["",""],"kk":"1269247840"},
+{"id":"b8","en":"Vegenarang","ko":"베지나랑 부산광안리점","d":["Suyeong-gu","수영구"],"addr":"수영구 광안해변로370번길 9-32","lat":35.15675,"lng":129.13427,"kind":"vegan","rt":4.5,"type":["Vegan temple food","비건 사찰음식"],"menu":[["Lotus leaf rice set","Fried oyster mushrooms","Avocado rolls","Soy yogurt"],["연잎밥 정식","느타리버섯 튀김","아보카도 롤","두유 요거트"]],"hours":"Daily 11:30–15:00, 17:00–21:00","note":["9th floor, sea view. Temple food: no garlic or onion.","9층 바다 전망. 사찰음식이라 마늘·양파를 쓰지 않아요."],"kk":"26235666"},
+{"id":"b9","en":"Yaein Tea House","ko":"예인","d":["Yeonje-gu","연제구"],"addr":"연제구 토곡로 4","lat":35.18311,"lng":129.10675,"kind":"vegan","rt":4.5,"type":["Vegan tea house","비건 찻집"],"menu":[["Korean teas","A few Korean dishes"],["전통차","한식 몇 가지"]],"hours":"Mon–Sat 12:00–22:00","note":["2nd floor. Saturdays by reservation.","2층. 토요일은 예약제예요."],"kk":"864131197"},
+{"id":"b10","en":"Chungmu Gimbap Kimchi Sujebi","ko":"충무김밥 김치수제비","d":["Haeundae-gu","해운대구"],"addr":"해운대구 중동1로 15-1","lat":35.16365,"lng":129.16141,"kind":"options","rt":5,"type":["Korean","한식"],"menu":[["Bibimbap","Kimchi fried rice","Dumpling soup (vegan on request)"],["비빔밥","김치볶음밥","만두국 (요청 시 비건)"]],"hours":"Daily 09:00–21:00","note":["Cash only.","현금만 받아요."],"kk":"9463372"},
+{"id":"b11","en":"Dohyeongdang","ko":"도형당","d":["Haeundae-gu","해운대구"],"addr":"해운대구 해운대해변로 257","lat":35.15968,"lng":129.15952,"kind":"options","rt":4,"type":["Organic gluten-free bakery","유기농 글루텐프리 베이커리"],"menu":[["Red bean buns","Gluten-free breads"],["팥빵","글루텐프리 빵"]],"hours":"Weekdays 09:00–21:00, weekends 08:00–22:00","note":["Not fully vegan — ask.","전부 비건은 아니니 물어보세요."],"kk":""},
+{"id":"b13","en":"Hongjubang Nampo","ko":"홍주방 남포본점","d":["Jung-gu","중구"],"addr":"중구 구덕로 72","lat":35.0979,"lng":129.02793,"kind":"options","rt":2.5,"type":["Chinese","중식"],"menu":[["Build-your-own noodle bowl (vegan possible)"],["직접 고르는 면 요리 (비건 가능)"]],"hours":"Daily 11:00–22:00","note":["",""],"kk":""},
+{"id":"b14","en":"Agra (Shinsegae Centum)","ko":"아그라 센텀시티몰점","d":["Haeundae-gu","해운대구"],"addr":"해운대구 센텀4로 15","lat":35.1698,"lng":129.12841,"kind":"options","rt":3,"type":["Indian","인도 음식"],"menu":[["Gao curry","Dal","Naan","Aloo palak"],["가오 커리","달","난","알루 팔락"]],"hours":"Tue–Sun 11:00–21:00","note":["",""],"kk":"651798723"},
+{"id":"b15","en":"Arirang Kimbap","ko":"아리랑김밥","d":["Saha-gu","사하구"],"addr":"사하구 감내2로 175-4","lat":35.09864,"lng":129.01021,"kind":"options","rt":3.5,"type":["Korean","한식"],"menu":[["Vegan gimbap","Japchae","Vegan K-ramen"],["비건 김밥","잡채","비건 라면"]],"hours":"Daily 09:00–19:00","note":["Gamcheon Culture Village.","감천문화마을 안이에요."],"kk":"888863948"},
+{"id":"b16","en":"Azimae Kitchen","ko":"아즈매부엌","d":["Jung-gu","중구"],"addr":"중구 광복로35번길 25-1","lat":35.10156,"lng":129.0287,"kind":"options","rt":4,"type":["Korean street food","한국 길거리 음식"],"menu":[["Yeolmu bibimbap","Kimchi fried rice"],["열무비빔밥","김치볶음밥"]],"hours":"Mon–Sat 11:30–18:30","note":["Vegan dishes are labeled; English-speaking staff.","비건 메뉴가 표시돼 있고 영어가 통해요."],"kk":"1928007784"},
+{"id":"b17","en":"Banpin","ko":"반핀","d":["Busanjin-gu","부산진구"],"addr":"부산진구 동천로108번길 9","lat":35.15839,"lng":129.06279,"kind":"options","rt":4,"type":["Taiwanese","대만 음식"],"menu":[["Fried eggplant","Vegan mapo tofu","Fried rice"],["가지튀김","비건 마파두부","볶음밥"]],"hours":"Mon 09:00–21:00, Wed–Sun 11:30–21:00","note":["Ask for no egg or oyster sauce. Fewer vegan options reported in 2024.","달걀·굴소스를 빼 달라고 하세요. 2024년에 비건 메뉴가 줄었다는 제보가 있어요."],"kk":"353792752"},
+{"id":"b18","en":"Bao Haus","ko":"바오하우스","d":["Busanjin-gu","부산진구"],"addr":"부산진구 서전로38번길 62-9","lat":35.15488,"lng":129.06334,"kind":"options","rt":4,"type":["Taiwanese","대만 음식"],"menu":[["Fried eggplant","Dan dan noodles","Mapo tofu"],["가지튀김","탄탄면","마파두부"]],"hours":"Weekdays 11:30–15:00, 17:00–20:00 · Weekends 11:30–20:00","note":["",""],"kk":"950075258"},
+{"id":"b19","en":"BAOHAUS Gwangalli","ko":"바오하우스 광안점","d":["Suyeong-gu","수영구"],"addr":"수영구 광안로48번길 5","lat":35.15489,"lng":129.11738,"kind":"options","rt":4,"type":["Taiwanese","대만 음식"],"menu":[["Fried eggplant","Dan dan noodles","Mapo tofu"],["가지튀김","탄탄면","마파두부"]],"hours":"Weekdays 11:00–15:00, 17:00–20:00 · Weekends 11:00–20:00","note":["Vegan dishes are labeled.","비건 메뉴가 표시돼 있어요."],"kk":"661817108"},
+{"id":"b20","en":"Bapjangin (Busan Central)","ko":"밥장인 부산중앙점","d":["Jung-gu","중구"],"addr":"중구 해관로 72-1","lat":35.10535,"lng":129.03565,"kind":"options","rt":4,"type":["Korean","한식"],"menu":[["Vegan soft tofu & potato stew"],["비건 순두부 감자찌개"]],"hours":"Weekdays 10:00–21:00","note":["",""],"kk":"1760443705"},
+{"id":"b21","en":"Bengal Cuisine","ko":"벵갈 퀴진","d":["Nam-gu","남구"],"addr":"남구 수영로266번길 61","lat":35.1342,"lng":129.09842,"kind":"options","rt":4,"type":["Bangladeshi","방글라데시 음식"],"menu":[["Vegetable curry","Roti","Pakora"],["채소 커리","로티","파코라"]],"hours":"Daily 12:00–02:00","note":["",""],"kk":""},
+{"id":"b22","en":"Bhavan Indian Restaurant","ko":"바반인도레스토랑","d":["Nam-gu","남구"],"addr":"남구 유엔로 171-1","lat":35.13038,"lng":129.09508,"kind":"options","rt":4,"type":["Indian","인도 음식"],"menu":[["Dosa","Samosa","Paratha","Vegetable thali"],["도사","사모사","파라타","채소 탈리"]],"hours":"Daily 11:00–21:00","note":["Ask for no dairy.","유제품을 빼 달라고 하세요."],"kk":"1406348568"},
+{"id":"b23","en":"Bibibim","ko":"비비빔","d":["Saha-gu","사하구"],"addr":"사하구 옥천로 121","lat":35.09705,"lng":129.00995,"kind":"options","rt":4,"type":["Korean","한식"],"menu":[["Bibimbap burrito","Japchae","Potato pancake","Tteokbokki"],["비빔밥 부리토","잡채","감자전","떡볶이"]],"hours":"Daily 09:30–18:00","note":["Gamcheon Culture Village; separate veggie menu.","감천문화마을. 채식 메뉴판이 따로 있어요."],"kk":"880483801"},
+{"id":"b24","en":"Bollywood Indian Restaurant","ko":"발리우드","d":["Suyeong-gu","수영구"],"addr":"수영구 광남로130번길 9","lat":35.15305,"lng":129.11725,"kind":"options","rt":3.5,"type":["Indian","인도 음식"],"menu":[["Veggie starters","Vegetable curries","Naan"],["채소 애피타이저","채소 커리","난"]],"hours":"Mon, Wed–Sun 12:00–22:00","note":["Staff can confirm vegan items.","직원이 비건 메뉴를 알려줘요."],"kk":"578182032"},
+{"id":"b25","en":"Bombay Brau (Gwangbok)","ko":"봄베이브라우 광복점","d":["Jung-gu","중구"],"addr":"중구 광복로 75","lat":35.09871,"lng":129.03324,"kind":"options","rt":3,"type":["Indian","인도 음식"],"menu":[["Chana masala","Samosa"],["차나 마살라","사모사"]],"hours":"Daily 11:00–22:00","note":["",""],"kk":""},
+{"id":"b26","en":"Bombay Brau (BIFC Mall)","ko":"봄베이브라우 BIFC몰점","d":["Nam-gu","남구"],"addr":"남구 문현금융로 40","lat":35.14649,"lng":129.06585,"kind":"options","rt":3.5,"type":["Indian","인도 음식"],"menu":[["Curries","Naan","Samosa (vegan on request)"],["커리","난","사모사 (요청 시 비건)"]],"hours":"Daily 10:00–21:30","note":["Ask for no butter, ghee, cream or curd.","버터·기·크림·커드를 빼 달라고 하세요."],"kk":""},
+{"id":"b27","en":"Bombay Brau (U-dong)","ko":"봄베이브라우 해운대점","d":["Haeundae-gu","해운대구"],"addr":"해운대구 구남로 30","lat":35.16142,"lng":129.1604,"kind":"options","rt":3,"type":["Indian","인도 음식"],"menu":[["Vegetable curries","Naan"],["채소 커리","난"]],"hours":"Daily 11:00–22:00","note":["Check which dishes are vegan.","어떤 메뉴가 비건인지 물어보세요."],"kk":""},
+{"id":"b28","en":"Bowls Poke Salad","ko":"보울스 전포점","d":["Busanjin-gu","부산진구"],"addr":"부산진구 서전로58번길 86","lat":35.15388,"lng":129.06603,"kind":"options","rt":3.5,"type":["Poke","포케"],"menu":[["Bowls with soy protein or chickpeas"],["콩단백·병아리콩 포케"]],"hours":"Daily 10:00–20:30","note":["",""],"kk":"2040851511"},
+{"id":"b29","en":"Cheese Forest Pizza & Pasta","ko":"치즈숲화덕피자파스타","d":["Dong-gu","동구"],"addr":"동구 중앙대로180번길 12-4","lat":35.11275,"lng":129.03978,"kind":"options","rt":3,"type":["Italian","이탈리안"],"menu":[["Vegetable pizza","Pasta (vegan on request)"],["채소 피자","파스타 (요청 시 비건)"]],"hours":"Daily 11:00–23:30","note":["",""],"kk":"1940497127"},
+{"id":"b30","en":"Dunnae Makguksu","ko":"둔내막국수","d":["Suyeong-gu","수영구"],"addr":"수영구 수영로725번길 62-3","lat":35.16851,"lng":129.11523,"kind":"options","rt":4,"type":["Buckwheat noodles","메밀국수"],"menu":[["Buckwheat pancake","Cold noodles without egg"],["메밀전","달걀 뺀 막국수"]],"hours":"Mon–Sat 11:30–22:30","note":["",""],"kk":"16639272"},
+{"id":"b31","en":"Ecotopia","ko":"에코토피아","d":["Suyeong-gu","수영구"],"addr":"수영구 수영로408번길 30-6","lat":35.14148,"lng":129.10951,"kind":"vegetarian","rt":4.5,"type":["Organic vegetarian","유기농 채식"],"menu":[["Tofu bibimbap","Homemade soups","Gratin (vegan on request)"],["두부 비빔밥","수제 수프","그라탕 (요청 시 비건)"]],"hours":"Tue–Sun 11:00–15:00 (+ some evenings)","note":["All vegetarian; kimchi contains fish sauce.","모두 채식이지만 김치에는 액젓이 들어가요."],"kk":"13311087"},
+{"id":"b32","en":"Gamnae Restaurant","ko":"감내식당","d":["Saha-gu","사하구"],"addr":"사하구 감내2로 177","lat":35.09855,"lng":129.01016,"kind":"options","rt":2,"type":["Korean snacks","한식 분식"],"menu":[["Fried dumplings","Japchae","Vegetable gimbap","Rice balls"],["군만두","잡채","야채김밥","주먹밥"]],"hours":"Daily 09:30–17:30","note":["",""],"kk":""},
+{"id":"b33","en":"Gavi Wine Restaurant","ko":"가비 와인 레스토랑","d":["Haeundae-gu","해운대구"],"addr":"해운대구 좌동순환로78번길 8","lat":35.17326,"lng":129.16756,"kind":"options","rt":4,"type":["Italian","이탈리안"],"menu":[["Marked vegan pasta","Vegan sides"],["비건 표시 파스타","비건 사이드"]],"hours":"Mon–Sat 18:00–24:00","note":["",""],"kk":""},
+{"id":"b34","en":"Ggulggeok House","ko":"꿀꺽하우스","d":["Suyeong-gu","수영구"],"addr":"수영구 광남로 184-1","lat":35.15718,"lng":129.12008,"kind":"options","rt":4,"type":["Korean brewery pub","수제 막걸리 펍"],"menu":[["Mushroom ragout","Fried mushrooms","Grilled rice cakes"],["버섯 라구","버섯 튀김","구운 떡"]],"hours":"Evenings (closed Tue)","note":["Brewery — serves alcohol.","양조장 펍이라 술을 팔아요."],"kk":"1182469952"},
+{"id":"b35","en":"Gordon Ramsay Burger (Shinsegae Centum)","ko":"고든램지 버거 신세계센텀","d":["Haeundae-gu","해운대구"],"addr":"해운대구 센텀4로 15","lat":35.16986,"lng":129.12829,"kind":"options","rt":2.5,"type":["Burgers","버거"],"menu":[["Vegan vegetable burger","French fries"],["비건 채소 버거","감자튀김"]],"hours":"Department store hours","note":["",""],"kk":""},
+{"id":"b36","en":"Greener (Jeonpo)","ko":"그리너 전포","d":["Busanjin-gu","부산진구"],"addr":"부산진구 서전로46번길 80","lat":35.15416,"lng":129.06473,"kind":"options","rt":3.5,"type":["Poke & salad","포케·샐러드"],"menu":[["Build-your-own bowl with labeled vegan ingredients"],["비건 표시 재료로 고르는 볼"]],"hours":"Daily 09:00–23:00","note":["",""],"kk":""},
+{"id":"b38","en":"Greener (Centum City)","ko":"그리너 센텀시티","d":["Haeundae-gu","해운대구"],"addr":"해운대구 센텀동로 9","lat":35.16987,"lng":129.13246,"kind":"options","rt":1,"type":["Poke & salad","포케·샐러드"],"menu":[["Build-your-own bowl with labeled vegan ingredients"],["비건 표시 재료로 고르는 볼"]],"hours":"Daily 09:00–20:00","note":["",""],"kk":""},
+{"id":"b39","en":"Greener (Deokcheon)","ko":"그리너 덕천점","d":["Buk-gu","북구"],"addr":"북구 금곡대로8번길 87","lat":35.21207,"lng":129.01003,"kind":"options","rt":3,"type":["Poke & salad","포케·샐러드"],"menu":[["Build-your-own bowl with labeled vegan ingredients"],["비건 표시 재료로 고르는 볼"]],"hours":"Weekdays 10:00–21:30, weekends 10:00–20:00","note":["",""],"kk":"1552389049"},
+{"id":"b40","en":"Greener (Jangsan)","ko":"그리너 해운대장산점","d":["Haeundae-gu","해운대구"],"addr":"해운대구 해운대로 802","lat":35.16898,"lng":129.17642,"kind":"options","rt":4,"type":["Poke & salad","포케·샐러드"],"menu":[["Build-your-own bowl with labeled vegan ingredients"],["비건 표시 재료로 고르는 볼"]],"hours":"Tue–Sun 09:00–21:30","note":["",""],"kk":"275978131"},
+{"id":"b41","en":"Greener (Yeonsan)","ko":"그리너 연산점","d":["Yeonje-gu","연제구"],"addr":"연제구 중앙대로 1063","lat":35.18314,"lng":129.07904,"kind":"options","rt":null,"type":["Poke & salad","포케·샐러드"],"menu":[["Build-your-own bowl with labeled vegan ingredients"],["비건 표시 재료로 고르는 볼"]],"hours":"Daily 09:00–22:00","note":["",""],"kk":"668435228"},
+{"id":"b42","en":"Happy Salad Club","ko":"해피샐러드클럽","d":["Haeundae-gu","해운대구"],"addr":"해운대구 좌동순환로8번길 54-14","lat":35.16897,"lng":129.16991,"kind":"options","rt":4,"type":["Salad & juice","샐러드·주스"],"menu":[["Labeled vegan salads","Smoothie bowls","Hummus with pita"],["비건 표시 샐러드","스무디 볼","후무스와 피타"]],"hours":"Tue–Sun 11:00–20:00","note":["",""],"kk":"960642630"},
+{"id":"b43","en":"Jangteo Son Kalguksu","ko":"장터손칼국수","d":["Nam-gu","남구"],"addr":"남구 용소로8번길 8","lat":35.13671,"lng":129.09984,"kind":"options","rt":4,"type":["Korean noodles","칼국수"],"menu":[["Bibimbap","Kimbap without egg"],["비빔밥","달걀 뺀 김밥"]],"hours":"Hours not listed","note":["",""],"kk":""},
+{"id":"b44","en":"Kantipur","ko":"칸티푸르 레스토랑","d":["Nam-gu","남구"],"addr":"남구 용소로13번길 16","lat":35.13641,"lng":129.10152,"kind":"options","rt":3,"type":["Nepali & Indian","네팔·인도 음식"],"menu":[["Aloo gobi","Dal fry","Thali (vegan on request)"],["알루 고비","달 프라이","탈리 (요청 시 비건)"]],"hours":"Daily 11:00–01:30","note":["English menu labels vegan dishes; a reviewer says this means “can be made vegan”.","영어 메뉴판에 비건 표시가 있어요. “비건으로 만들 수 있음”이라는 뜻이라는 후기도 있어요."],"kk":"922827607"},
+{"id":"b45","en":"Kimchizip (Sundubu & Kimchijjim)","ko":"맛있는 순두부&김치찜","d":["Nam-gu","남구"],"addr":"남구 용소로8번길 20","lat":35.13628,"lng":129.09925,"kind":"options","rt":3.5,"type":["Korean","한식"],"menu":[["Soft tofu steak set with chosen sides"],["순두부 스테이크와 고르는 반찬"]],"hours":"Daily 10:00–22:30","note":["Reviews disagree — kimchi and broths may contain fish or shrimp.","후기가 엇갈려요. 김치·육수에 생선·새우가 들어갈 수 있어요."],"kk":""},
+{"id":"b46","en":"Kkachi Kkachi","ko":"까치까치","d":["Seo-gu","서구"],"addr":"서구 옥천로 144","lat":35.0984,"lng":129.01154,"kind":"options","rt":4,"type":["Brunch cafe","브런치 카페"],"menu":[["Daily vegan salad","Oat-milk coffee"],["오늘의 비건 샐러드","귀리우유 커피"]],"hours":"Mon, Tue, Fri–Sun 10:00–17:00","note":["",""],"kk":"1912285316"},
+{"id":"b47","en":"Kongsiru","ko":"콩시루","d":["Haeundae-gu","해운대구"],"addr":"해운대구 센텀동로 51","lat":35.17356,"lng":129.13018,"kind":"options","rt":3,"type":["Korean","한식"],"menu":[["Bibimbap without fried egg"],["달걀프라이 뺀 비빔밥"]],"hours":"Daily 06:00–24:00","note":["",""],"kk":""},
+{"id":"b48","en":"DongNyeok (Korean casual dining)","ko":"동녘돈까스","d":["Seo-gu","서구"],"addr":"서구 충무대로82번길 5","lat":35.07917,"lng":129.02146,"kind":"options","rt":4,"type":["Korean fusion","한식 퓨전"],"menu":[["Salad","Noodles","Fried potatoes","Soup"],["샐러드","국수","감자튀김","수프"]],"hours":"Daily 10:00–23:00","note":["Ask for no egg or dairy.","달걀·유제품을 빼 달라고 하세요."],"kk":"1267863389"},
+{"id":"b49","en":"Woori Kong Sundubu","ko":"우리콩순두부","d":["Haeundae-gu","해운대구"],"addr":"해운대구 해운대해변로265번길 11-1","lat":35.16055,"lng":129.16086,"kind":"options","rt":3.5,"type":["Korean","한식"],"menu":[["Bibimbap","Green onion pancake (on request)"],["비빔밥","파전 (요청 시)"]],"hours":"Hours not listed","note":["Stews contain anchovy; some sides contain fish.","찌개에 멸치, 일부 반찬에 생선이 들어가요."],"kk":"16461485"},
+{"id":"b50","en":"La Cha Ta","ko":"라차타","d":["Jung-gu","중구"],"addr":"중구 광복로97번길 16","lat":35.10001,"lng":129.03527,"kind":"options","rt":2.5,"type":["Mexican","멕시칸"],"menu":[["Truffle mushroom quesadilla"],["트러플 버섯 퀘사디아"]],"hours":"Daily 11:30–21:00","note":["",""],"kk":"1946545140"},
+{"id":"b51","en":"Limensita","ko":"리멘시타","d":["Geumjeong-gu","금정구"],"addr":"금정구 금강로 254","lat":35.23064,"lng":129.08506,"kind":"options","rt":4,"type":["Italian & Korean","이탈리안·한식"],"menu":[["Tomato pasta without bacon","Tofu rice dish"],["베이컨 뺀 토마토 파스타","두부 덮밥"]],"hours":"11:30–21:30 (closed Fri)","note":["Near Pusan National University.","부산대 근처예요."],"kk":"12664027"},
+{"id":"b52","en":"Little Aus","ko":"리틀오스","d":["Suyeong-gu","수영구"],"addr":"수영구 수영로510번길 42","lat":35.15073,"lng":129.11375,"kind":"options","rt":4,"type":["Australian brunch","호주식 브런치"],"menu":[["Labeled vegan brunch dishes","Vegan baked goods"],["비건 표시 브런치","비건 빵"]],"hours":"Mon, Wed–Sun 10:00–17:00","note":["Free soy milk.","두유는 추가 요금이 없어요."],"kk":"676392586"},
+{"id":"b53","en":"Lotteria (Yeongdo)","ko":"롯데리아 영도동삼점","d":["Yeongdo-gu","영도구"],"addr":"영도구 동삼로 25","lat":35.07607,"lng":129.07182,"kind":"options","rt":3.5,"type":["Fast food","패스트푸드"],"menu":[["Vegan burger"],["비건 버거"]],"hours":"Daily 09:00–23:00","note":["",""],"kk":"8343957"},
+{"id":"b54","en":"Lust","ko":"러스트","d":["Suyeong-gu","수영구"],"addr":"수영구 연수로357번길 27","lat":35.17208,"lng":129.11082,"kind":"options","rt":2,"type":["Italian","이탈리안"],"menu":[["Aglio e olio"],["알리오 올리오"]],"hours":"Tue–Sun 11:30–20:00","note":["",""],"kk":""},
+{"id":"b55","en":"Namaste Haeundae","ko":"나마스테 해운대점","d":["Haeundae-gu","해운대구"],"addr":"해운대구 해운대해변로265번길 7","lat":35.16021,"lng":129.16065,"kind":"options","rt":3.5,"type":["Indian & Nepali","인도·네팔 음식"],"menu":[["Aloo gobi","Dal","Roti"],["알루 고비","달","로티"]],"hours":"Daily 11:00–23:00","note":["",""],"kk":"12541315"},
+{"id":"b56","en":"New Little India (BIFF)","ko":"뉴리틀인디아","d":["Jung-gu","중구"],"addr":"중구 비프광장로 33-1","lat":35.09896,"lng":129.02889,"kind":"options","rt":3,"type":["Indian","인도 음식"],"menu":[["Vegetarian & vegan entrées"],["채식·비건 요리"]],"hours":"Daily 10:00–22:00","note":["3rd floor.","3층이에요."],"kk":"545100333"},
+{"id":"b57","en":"New Little India (Dong-gu)","ko":"뉴리틀인디아 부산역점","d":["Dong-gu","동구"],"addr":"동구 중앙대로 205","lat":35.1157,"lng":129.03957,"kind":"options","rt":3,"type":["Indian","인도 음식"],"menu":[["Vegetable dishes (ask for vegan)"],["채소 요리 (비건 요청)"]],"hours":"Daily 10:00–21:00","note":["",""],"kk":"26596460"},
+{"id":"b58","en":"No Brand Burger (Myeongji)","ko":"노브랜드버거 부산명지점","d":["Gangseo-gu","강서구"],"addr":"강서구 명지국제2로28번길 3","lat":35.09394,"lng":128.90751,"kind":"options","rt":2,"type":["Fast food","패스트푸드"],"menu":[["Veggie burger (vegan on request)","Vegan cheese"],["베지 버거 (요청 시 비건)","비건 치즈"]],"hours":"Daily 10:00–22:00","note":["",""],"kk":"1608759524"},
+{"id":"b59","en":"Or Whatever","ko":"오어왓에버","d":["Busanjin-gu","부산진구"],"addr":"부산진구 전포대로186번길","lat":35.15309,"lng":129.06688,"kind":"options","rt":3.5,"type":["Australian brunch","호주식 브런치"],"menu":[["Veggie bowl","Avocado toast","Oat-milk coffee"],["베지 볼","아보카도 토스트","귀리우유 커피"]],"hours":"Mon, Wed–Sun 09:30–18:00","note":["Say “vegan” when ordering. Cash only.","주문할 때 비건이라고 말하세요. 현금만 받아요."],"kk":""},
+{"id":"b60","en":"Poke All Day (KSU·PKNU)","ko":"포케올데이 경성대부경대점","d":["Nam-gu","남구"],"addr":"남구 용소로 13","lat":35.13621,"lng":129.10092,"kind":"options","rt":4,"type":["Poke","포케"],"menu":[["Tofu or plant-based meat bowl","Vegan sauces"],["두부·대체육 포케","비건 소스"]],"hours":"Daily 10:30–20:00","note":["",""],"kk":""},
+{"id":"b62","en":"Polani Poke (Yeonsan)","ko":"폴라니포케","d":["Yeonje-gu","연제구"],"addr":"연제구 중앙대로1134번길 34","lat":35.18896,"lng":129.0831,"kind":"options","rt":4,"type":["Poke","포케"],"menu":[["Fried soft tofu bowl","Falafel bowl"],["순두부튀김 포케","팔라펠 포케"]],"hours":"Weekdays & Sun 09:30–20:30","note":["",""],"kk":"1930063732"},
+{"id":"b63","en":"Polani Poke (Haeundae)","ko":"폴라니포케 해운대","d":["Haeundae-gu","해운대구"],"addr":"해운대구 해운대로 539","lat":35.16026,"lng":129.15085,"kind":"options","rt":4,"type":["Poke","포케"],"menu":[["Falafel bowl","Fried soft tofu bowl","Build your own"],["팔라펠 포케","순두부튀김 포케","직접 고르는 볼"]],"hours":"Weekdays & Sun 09:30–20:30","note":["",""],"kk":""},
+{"id":"b64","en":"Punjab","ko":"펀잡","d":["Haeundae-gu","해운대구"],"addr":"해운대구 구남로 24","lat":35.16169,"lng":129.16013,"kind":"options","rt":3.5,"type":["Indian","인도 음식"],"menu":[["Vegetable curries without butter or cream"],["버터·크림 뺀 채소 커리"]],"hours":"Daily 11:00–23:00","note":["3rd floor near Haeundae Beach.","해운대해수욕장 근처 3층이에요."],"kk":""},
+{"id":"b65","en":"Royal India Seomyeon","ko":"로얄인디아 서면점","d":["Busanjin-gu","부산진구"],"addr":"부산진구 중앙대로 672","lat":35.15301,"lng":129.05961,"kind":"options","rt":4,"type":["Indian & Nepali","인도·네팔 음식"],"menu":[["Vegan appetizers","8 vegetarian curries (vegan on request)"],["비건 애피타이저","채식 커리 8종 (요청 시 비건)"]],"hours":"Mon–Tue 11:00–22:00, Wed–Sun 11:00–22:30","note":["Samjung Tower 6F.","삼정타워 6층이에요."],"kk":"1025848278"},
+{"id":"b66","en":"Salad Basket","ko":"샐러드 바구니","d":["Busanjin-gu","부산진구"],"addr":"부산진구 서면로 55","lat":35.15564,"lng":129.05759,"kind":"options","rt":3.5,"type":["Salad & pasta","샐러드·파스타"],"menu":[["Basil oil pasta","Tofu noodle tomato pasta","Avocado salad"],["바질오일 파스타","두부면 토마토 파스타","아보카도 샐러드"]],"hours":"Daily 09:00–22:00","note":["",""],"kk":""},
+{"id":"b67","en":"Salad Box","ko":"샐러드박스 부산역점","d":["Dong-gu","동구"],"addr":"동구 중앙대로 169","lat":35.11294,"lng":129.03817,"kind":"options","rt":4,"type":["Salad","샐러드"],"menu":[["Tofu salad","Vegan steak salad"],["두부 샐러드","비건 스테이크 샐러드"]],"hours":"Weekdays 07:30–21:00, weekends 08:30–21:00","note":["Vegan items are labeled.","비건 메뉴가 표시돼 있어요."],"kk":"797705611"},
+{"id":"b68","en":"Salad Mavie","ko":"샐러드마비에","d":["Busanjin-gu","부산진구"],"addr":"부산진구 서전로46번길 85","lat":35.15381,"lng":129.06496,"kind":"options","rt":2.5,"type":["Salad","샐러드"],"menu":[["Avocado salad","Grilled mushroom salad (vegan on request)"],["아보카도 샐러드","구운 버섯 샐러드 (요청 시 비건)"]],"hours":"Daily 11:00–23:00","note":["",""],"kk":"868906076"},
+{"id":"b72","en":"Soup or Salad","ko":"숲오어샐러드","d":["Suyeong-gu","수영구"],"addr":"수영구 남천바다로 8","lat":35.14983,"lng":129.11177,"kind":"options","rt":3,"type":["Brunch","브런치"],"menu":[["Vegan shakshuka (on request)","Avocado toast","Juices"],["비건 샥슈카 (요청 시)","아보카도 토스트","주스"]],"hours":"Daily 09:00–17:30","note":["",""],"kk":""},
+{"id":"b73","en":"Spring Hill","ko":"스프링힐","d":["Haeundae-gu","해운대구"],"addr":"해운대구 달맞이길117번나길 75","lat":35.16028,"lng":129.1822,"kind":"options","rt":4,"type":["Australian brunch","호주식 브런치"],"menu":[["Mushroom salad bowl","Tofu curry","Avocado toast"],["버섯 샐러드 볼","두부 커리","아보카도 토스트"]],"hours":"Mon, Tue, Thu–Sun from 08:30–09:00 to 16:00","note":["",""],"kk":"1411341861"},
+{"id":"b74","en":"Sulgodang","ko":"술고당","d":["Jung-gu","중구"],"addr":"중구 대청로137번길 11-1","lat":35.10385,"lng":129.03487,"kind":"options","rt":4,"type":["Korean","한식"],"menu":[["Vegan menu page (e.g. tofu steak, spicy ramen)","Vegan side dishes"],["비건 메뉴판 (두부 스테이크, 매운 라면 등)","비건 반찬"]],"hours":"Daily 10:00–20:00","note":["",""],"kk":""},
+{"id":"b75","en":"Tae Tae Tae","ko":"태태태","d":["Busanjin-gu","부산진구"],"addr":"부산진구 서전로10번길 22-9","lat":35.15704,"lng":129.05989,"kind":"options","rt":4,"type":["Asian pub","아시안 펍"],"menu":[["Pad Thai","Truffle fries","Mapo tofu","Cauliflower wings","Fried eggplant"],["팟타이","트러플 감자튀김","마파두부","콜리플라워 윙","가지튀김"]],"hours":"Daily 15:00–03:00","note":["Separate vegan menu; it is a pub.","비건 메뉴판이 따로 있어요. 술을 파는 펍이에요."],"kk":"102506388"},
+{"id":"b76","en":"The Plate","ko":"더플레이트","d":["Saha-gu","사하구"],"addr":"사하구 감내2로 113","lat":35.09747,"lng":129.00779,"kind":"options","rt":4,"type":["Western","양식"],"menu":[["Tomato spaghetti"],["토마토 스파게티"]],"hours":"Daily 11:00–21:30","note":["Gamcheon Culture Village.","감천문화마을이에요."],"kk":"26935980"},
+{"id":"b77","en":"Union Station","ko":"유니온스테이션","d":["Suyeong-gu","수영구"],"addr":"수영구 민락동 130-2","lat":35.15787,"lng":129.12826,"kind":"options","rt":null,"type":["Makgeolli brewery","막걸리 양조장"],"menu":[["Vegan Korean pancakes (jeon)","Vegetable army stew"],["비건 전","채소 부대찌개"]],"hours":"Thu–Sun 17:00–22:00","note":["Brewery — serves alcohol.","양조장이라 술을 팔아요."],"kk":""},
+{"id":"b78","en":"Unnamed Island","ko":"이름없는섬","d":["Saha-gu","사하구"],"addr":"사하구 옥천로 123","lat":35.09732,"lng":129.01022,"kind":"options","rt":4,"type":["Japanese & Korean","일식·한식"],"menu":[["Vegan ramyeon"],["비건 라면"]],"hours":"Tue–Sun 10:00–17:00","note":["Gamcheon Village.","감천마을이에요."],"kk":""},
+{"id":"b79","en":"Woojung Dolsot Bibimbap (Seomyeon)","ko":"우정돌솥비빔밥 서면점","d":["Busanjin-gu","부산진구"],"addr":"부산진구 동천로85번길 3","lat":35.15621,"lng":129.06201,"kind":"options","rt":3.5,"type":["Korean","한식"],"menu":[["Vegan bibimbap","Vegan premium bibimbap","Kimchi soup"],["비건 비빔밥","비건 프리미엄 비빔밥","김치찌개"]],"hours":"Daily 09:00–20:30","note":["Vegan bibimbap may come with an egg — ask for none.","비건 비빔밥에 달걀이 올라올 수 있어 빼 달라고 하세요."],"kk":"279263280"},
+{"id":"b80","en":"ARP","ko":"아르프 영도","d":["Yeongdo-gu","영도구"],"addr":"영도구 태종로99번길 35","lat":35.09293,"lng":129.04256,"kind":"vegan","rt":4.5,"type":["Vegan","비건"],"menu":[["Asparagus & lemon","Vegan burger","Bracken pasta"],["아스파라거스 레몬","비건 버거","고사리 파스타"]],"hours":"Mon–Wed 11:30–16:00, Fri–Sun 11:30–20:00","note":["Small, limited seating.","작아서 자리가 적어요."],"kk":"1618376903"},
+{"id":"b81","en":"Bakery Hanmil","ko":"베이커리한밀","d":["Suyeong-gu","수영구"],"addr":"수영구 망미배산로 56","lat":35.17453,"lng":129.10282,"kind":"vegan","rt":5,"type":["Vegan bakery","비건 베이커리"],"menu":[["Organic breads","Sandwiches","Croissants","Focaccia"],["유기농 빵","샌드위치","크루아상","포카치아"]],"hours":"Mon–Sat 10:00–19:00","note":["",""],"kk":"85081496"},
+{"id":"b82","en":"Cafe ohh good thing","ko":"오굳띵","d":["Busanjin-gu","부산진구"],"addr":"부산진구 전포대로246번길 14","lat":35.15847,"lng":129.06632,"kind":"vegan","rt":5,"type":["Vegan dessert cafe","비건 디저트 카페"],"menu":[["Seasonal vegan desserts","Gluten-free cakes","Bingsu"],["계절 비건 디저트","글루텐프리 케이크","빙수"]],"hours":"Mon, Thu–Sun 12:30–21:00","note":["Ask for plant milk in drinks.","음료는 식물성 우유를 요청하세요."],"kk":"2038764037"},
+{"id":"b84","en":"Different Today","ko":"매일이 다르다","d":["Jung-gu","중구"],"addr":"중구 대청로126번길 26-1","lat":35.1005,"lng":129.03425,"kind":"vegan","rt":5,"type":["Vegan cafe","비건 카페"],"menu":[["Puddings","Affogato","Vegan lattes"],["푸딩","아포가토","비건 라떼"]],"hours":"Hours not listed","note":["Near Yongdusan Park.","용두산공원 근처예요."],"kk":"472808174"},
+{"id":"b85","en":"Heeso","ko":"희소","d":["Busanjin-gu","부산진구"],"addr":"부산진구 전포대로186번길 16","lat":35.15298,"lng":129.06644,"kind":"vegan","rt":5,"type":["Vegan bakery","비건 베이커리"],"menu":[["Breads","Bagels","Scones","Cookies"],["빵","베이글","스콘","쿠키"]],"hours":"Mon, Wed–Sun 11:00–20:00","note":["May close early when sold out.","다 팔리면 일찍 닫아요."],"kk":"1889302199"},
+{"id":"b86","en":"Joseon Snack (Shinsegae Centum)","ko":"조선스낵 신세계센텀점","d":["Haeundae-gu","해운대구"],"addr":"해운대구 센텀남대로 35","lat":35.16882,"lng":129.12952,"kind":"vegan","rt":4.5,"type":["Vegan buns","비건 찐빵"],"menu":[["Vegan steamed buns"],["비건 찐빵"]],"hours":"Daily 10:30–20:00","note":["B1 food court.","지하 1층 푸드코트예요."],"kk":""},
+{"id":"b87","en":"Ksana","ko":"크샤나","d":["Gijang-gun","기장군"],"addr":"기장군 일광읍 물방길 98","lat":35.26416,"lng":129.21146,"kind":"vegan","rt":5,"type":["Vegan French bakery","비건 프렌치 베이커리"],"menu":[["Carrot cake","Apple crumble","Blueberry crumble"],["당근 케이크","사과 크럼블","블루베리 크럼블"]],"hours":"Mon, Wed–Sun 11:00–18:00","note":["",""],"kk":"1648645702"},
+{"id":"b88","en":"Milhanjum","ko":"밀한줌","d":["Dongnae-gu","동래구"],"addr":"동래구 안락동 221-4","lat":35.19151,"lng":129.10456,"kind":"vegan","rt":5,"type":["Vegan bakery","비건 베이커리"],"menu":[["Small-batch vegan breads"],["소량 굽는 비건 빵"]],"hours":"Daily 10:00–21:00","note":["",""],"kk":""},
+{"id":"b89","en":"Moonggoojeom","ko":"뭉구점 비건베이커리","d":["Busanjin-gu","부산진구"],"addr":"부산진구 서전로37번길 26","lat":35.15888,"lng":129.06429,"kind":"vegan","rt":5,"type":["Vegan bakery","비건 베이커리"],"menu":[["Cookies","Pound cakes","Bingsu"],["쿠키","파운드케이크","빙수"]],"hours":"Mon, Thu–Sun 12:00–18:30","note":["",""],"kk":"1237462821"},
+{"id":"b90","en":"Onhwadang","ko":"온화당","d":["Yeonje-gu","연제구"],"addr":"연제구 중앙대로1043번길 34","lat":35.18195,"lng":129.07622,"kind":"vegan","rt":2,"type":["Vegan bakery","비건 베이커리"],"menu":[["Vegan breads"],["비건 빵"]],"hours":"Tue–Sat 12:00–19:00","note":["",""],"kk":"1548069579"},
+{"id":"b91","en":"R&B Bakery","ko":"알앤비","d":["Sasang-gu","사상구"],"addr":"사상구 백양대로 930","lat":35.18923,"lng":128.99155,"kind":"vegan","rt":null,"type":["Vegan rice bakery","비건 쌀빵"],"menu":[["Chestnut rice bread","Black sesame cream bread","Mugwort rice cake bread"],["밤 쌀빵","흑임자 크림빵","쑥 떡빵"]],"hours":"Tue–Sat 08:00–19:00","note":["",""],"kk":"1574538484"},
+{"id":"b92","en":"Rainbow Crust","ko":"레인보우크러스트","d":["Seo-gu","서구"],"addr":"서구 구덕로124번길 13","lat":35.09732,"lng":129.02247,"kind":"vegan","rt":5,"type":["Vegan rice bakery","비건 쌀빵"],"menu":[["Cinnamon nut bread","Coconut cheese bread","Blueberry bread"],["시나몬 넛 빵","코코넛 치즈 빵","블루베리 빵"]],"hours":"Weekdays 09:00–19:00, Sat 09:00–17:00","note":["Vegan Mart is upstairs.","위층에 비건마트가 있어요."],"kk":"1463068024"},
+{"id":"b93","en":"Rice Bread Man","ko":"쌀빵맨","d":["Dongnae-gu","동래구"],"addr":"동래구 사직북로63번길 55","lat":35.19795,"lng":129.05814,"kind":"vegan","rt":4.5,"type":["Vegan rice bakery","비건 쌀빵"],"menu":[["Rice bread","Chestnut bread","Olive ciabatta"],["쌀식빵","밤빵","올리브 치아바타"]],"hours":"Mon–Sat 10:00–19:00","note":["Takeout only.","포장만 돼요."],"kk":"2004661517"},
+{"id":"b94","en":"Sucre Potager","ko":"슈크레포타제","d":["Busanjin-gu","부산진구"],"addr":"부산진구 서전로37번길 26","lat":35.15892,"lng":129.06421,"kind":"vegan","rt":null,"type":["Vegan cookies","비건 쿠키"],"menu":[["Cookies","Granola"],["쿠키","그래놀라"]],"hours":"Tue–Sun 12:00–19:00","note":["Takeout only.","포장만 돼요."],"kk":""},
+{"id":"b96","en":"Artisan Boulangerie Pain Pain Pain","ko":"팡팡팡 마린시티","d":["Haeundae-gu","해운대구"],"addr":"해운대구 마린시티1로 91","lat":35.15453,"lng":129.14454,"kind":"options","rt":3,"type":["Organic bakery","유기농 베이커리"],"menu":[["Vegan pastries","Sourdough","Ciabatta","Baguette"],["비건 페이스트리","사워도우","치아바타","바게트"]],"hours":"Daily 09:00–19:30","note":["",""],"kk":""},
+{"id":"b97","en":"bbangnaoda","ko":"빵나오다","d":["Suyeong-gu","수영구"],"addr":"수영구 좌수영로173번길 12","lat":35.17929,"lng":129.11623,"kind":"vegan","rt":5,"type":["Vegan bakery","비건 베이커리"],"menu":[["Breads","Cakes","Cookies","Savory bakes"],["빵","케이크","쿠키","식사빵"]],"hours":"Tue–Sat 11:00–18:00","note":["",""],"kk":"781663360"},
+{"id":"b99","en":"BIBIBIDANG","ko":"비비비당","d":["Haeundae-gu","해운대구"],"addr":"해운대구 달맞이길 239-16","lat":35.16255,"lng":129.18501,"kind":"options","rt":4.5,"type":["Traditional tea house","전통 찻집"],"menu":[["Vegan bingsu","Traditional snacks"],["비건 빙수","전통 다과"]],"hours":"Weekdays 10:30–21:30, weekends 10:30–22:00","note":["4th floor, sea view.","4층 바다 전망이에요."],"kk":"18451449"},
+{"id":"b100","en":"Bichae","ko":"카페비채","d":["Haeundae-gu","해운대구"],"addr":"해운대구 해운대해변로 83","lat":35.16164,"lng":129.14232,"kind":"vegetarian","rt":4.5,"type":["Vegetarian wheat-free bakery","채식 밀가루 없는 베이커리"],"menu":[["Savory rice breads","Sweet bakes (many vegan)"],["식사용 쌀빵","디저트 빵 (다수 비건)"]],"hours":"Hours not listed","note":["",""],"kk":"645458099"},
+{"id":"b101","en":"Borijong Patisserie","ko":"보리종파티세리 본점","d":["Geumjeong-gu","금정구"],"addr":"금정구 중앙대로 1667","lat":35.23318,"lng":129.09138,"kind":"options","rt":4,"type":["Bakery","베이커리"],"menu":[["Labeled vegan baguettes, cakes and cookies"],["비건 표시 바게트·케이크·쿠키"]],"hours":"Daily 08:30–22:00","note":["Info from 2022 — may have changed.","2022년 정보라 바뀌었을 수 있어요."],"kk":"1366849652"},
+{"id":"b103","en":"Café 1945","ko":"카페1945","d":["Yeonje-gu","연제구"],"addr":"연제구 중앙천로19번길 32","lat":35.17679,"lng":129.08184,"kind":"options","rt":null,"type":["Cafe","카페"],"menu":[["Oatmeal cookies","Fruit chips","Vegan drinks"],["오트밀 쿠키","과일칩","비건 음료"]],"hours":"Hours not listed","note":["",""],"kk":""},
+{"id":"b108","en":"Churros 1500","ko":"츄러스1500","d":["Gijang-gun","기장군"],"addr":"기장군 기장읍 시랑리 산83-11","lat":35.18942,"lng":129.22091,"kind":"options","rt":4.5,"type":["Food truck","푸드트럭"],"menu":[["Original churro (no milk, egg or butter)"],["오리지널 츄러스 (우유·달걀·버터 없음)"]],"hours":"Weekdays 10:00–18:00, weekends 09:00–18:00","note":["Contains peanuts.","땅콩이 들어가요."],"kk":""},
+{"id":"b109","en":"Daily Lucky","ko":"데일리럭키","d":["Suyeong-gu","수영구"],"addr":"수영구 수영로540번길 7","lat":35.15397,"lng":129.11266,"kind":"options","rt":3.5,"type":["Bakery cafe","베이커리 카페"],"menu":[["Vegan-friendly sourdough sandwiches","Plant milks"],["비건 사워도우 샌드위치","식물성 우유"]],"hours":"Daily 07:00–20:00","note":["",""],"kk":"1521380547"},
+{"id":"b110","en":"Doco City Farm House Cafe","ko":"도시농가코페","d":["Busanjin-gu","부산진구"],"addr":"부산진구 중앙대로666번길 17","lat":35.15228,"lng":129.06027,"kind":"options","rt":4,"type":["Bakery cafe","베이커리 카페"],"menu":[["Soy cream buns","Cinnamon rolls","Vegan pastries"],["두유 크림빵","시나몬 롤","비건 페이스트리"]],"hours":"Mon–Thu 10:00–22:00, Fri–Sun 11:00–22:00","note":["Non-vegan desserts too — check labels.","비건이 아닌 디저트도 있으니 표시를 확인하세요."],"kk":"2046081820"},
+{"id":"b112","en":"Fruto Fruta","ko":"프루토프루타","d":["Busanjin-gu","부산진구"],"addr":"부산진구 전포대로224번길 28","lat":35.15643,"lng":129.06702,"kind":"options","rt":null,"type":["Juice bar","주스 바"],"menu":[["Vegan fruit bowls","Vegan shakes"],["비건 과일 볼","비건 셰이크"]],"hours":"Tue–Sun 12:00–20:00","note":["",""],"kk":"1731570544"},
+{"id":"b114","en":"Greegu","ko":"그리구요거트 전포본점","d":["Busanjin-gu","부산진구"],"addr":"부산진구 전포대로186번길 33","lat":35.15317,"lng":129.06738,"kind":"options","rt":4,"type":["Yogurt shop","요거트 가게"],"menu":[["Vegan soy yogurt","Tarts","Tiramisu"],["비건 두유 요거트","타르트","티라미수"]],"hours":"Mon–Thu, Sat–Sun 12:00–20:00","note":["Takeout only.","포장만 돼요."],"kk":"1243425187"},
+{"id":"b118","en":"Jinny Bakery (Bexco)","ko":"지니베이커리 벡스코점","d":["Haeundae-gu","해운대구"],"addr":"해운대구 센텀2로 25","lat":35.1671,"lng":129.1329,"kind":"options","rt":4,"type":["Bakery","베이커리"],"menu":[["Labeled vegan bread","Buns","Focaccia"],["비건 표시 식빵","번","포카치아"]],"hours":"Mon–Sat 09:00–21:00","note":["Takeout only.","포장만 돼요."],"kk":"2033560213"},
+{"id":"b119","en":"Joseon Snack (Suyeong)","ko":"조선스낵","d":["Suyeong-gu","수영구"],"addr":"수영구 무학로52번길 36-1","lat":35.15958,"lng":129.11985,"kind":"vegan","rt":4.5,"type":["Vegan Korean snacks","비건 한국 간식"],"menu":[["Steamed buns","Yugwa","Nut bars"],["찐빵","유과","견과 바"]],"hours":"Mon–Sat 11:00–20:00","note":["",""],"kk":"1987316298"},
+{"id":"b120","en":"Kim Yu-il's Rice Bread","ko":"김유일쌀빵제빵소","d":["Busanjin-gu","부산진구"],"addr":"부산진구 가야대로 488","lat":35.15293,"lng":129.0254,"kind":"options","rt":3,"type":["Rice bakery","쌀빵"],"menu":[["Sugar-free vegan rice bread"],["설탕 없는 비건 쌀빵"]],"hours":"Daily from 07:30","note":["",""],"kk":"1612091859"},
+{"id":"b121","en":"Missem Rice Bread","ko":"미쌤쌀빵","d":["Haeundae-gu","해운대구"],"addr":"해운대구 센텀중앙로 145","lat":35.18074,"lng":129.12063,"kind":"options","rt":5,"type":["Gluten-free rice bakery","글루텐프리 쌀빵"],"menu":[["Vegan loaves","Buns","Cookies"],["비건 식빵","번","쿠키"]],"hours":"Mon–Sat 08:00–20:00","note":["",""],"kk":"930661152"},
+{"id":"b122","en":"Mochiui Haru (Seomyeon)","ko":"모찌의하루 서면본점","d":["Busanjin-gu","부산진구"],"addr":"부산진구 중앙대로691번길 28","lat":35.15455,"lng":129.05749,"kind":"options","rt":null,"type":["Mochi dessert","모찌 디저트"],"menu":[["Fresh fruit mochi","Red bean desserts"],["과일 모찌","팥 디저트"]],"hours":"Daily 11:00–22:00","note":["",""],"kk":"26874306"},
+{"id":"b123","en":"Momongve","ko":"모몽비","d":["Dongnae-gu","동래구"],"addr":"동래구 안락로 8","lat":35.20096,"lng":129.09785,"kind":"options","rt":4,"type":["Mostly vegan bakery","대부분 비건 베이커리"],"menu":[["Cream buns","Pound cakes","Melon bread","Scones"],["크림빵","파운드케이크","멜론빵","스콘"]],"hours":"Tue–Sat 12:00–19:00","note":["Non-vegan items are labeled.","비건이 아닌 빵에 표시가 있어요."],"kk":"665580690"},
+{"id":"b126","en":"Olimp Cake & Dessert","ko":"올림프케이크&디저트","d":["Haeundae-gu","해운대구"],"addr":"해운대구 해운대해변로197번길 22","lat":35.15986,"lng":129.15266,"kind":"options","rt":3,"type":["Bakery cafe","베이커리 카페"],"menu":[["Vegan scones","Avocado sandwich"],["비건 스콘","아보카도 샌드위치"]],"hours":"Mon–Sat 10:00–21:30, Sun 10:00–19:30","note":["",""],"kk":"834663663"},
+{"id":"b129","en":"Plain Bakery","ko":"플레인베이커리","d":["Buk-gu","북구"],"addr":"북구 금곡대로303번길 36","lat":35.23572,"lng":129.01204,"kind":"options","rt":4,"type":["Bakery","베이커리"],"menu":[["Labeled vegan breads"],["비건 표시 빵"]],"hours":"Mon, Wed–Sun 10:00–22:00","note":["",""],"kk":"1179986329"},
+{"id":"b131","en":"Sejamea","ko":"세자매바른빵","d":["Busanjin-gu","부산진구"],"addr":"부산진구 범양로120번길 6","lat":35.17367,"lng":129.06598,"kind":"vegan","rt":1,"type":["Vegan bakery","비건 베이커리"],"menu":[["Vegan baked goods"],["비건 빵"]],"hours":"Weekdays 11:00–20:00","note":["Sandwiches may not be vegan.","샌드위치는 비건이 아닐 수 있어요."],"kk":""},
+{"id":"b136","en":"Vegan Food (Gamcheon stall)","ko":"비건푸드 감천","d":["Saha-gu","사하구"],"addr":"사하구 감내2로 161","lat":35.09901,"lng":129.00945,"kind":"options","rt":4,"type":["Street stall","노점"],"menu":[["Water drop mochi"],["물방울 떡"]],"hours":"Hours not listed","note":["Ask to leave out honey.","꿀은 빼 달라고 하세요."],"kk":""}];
+const KIND={vegan:{ko:'전부 비건',en:'All vegan',c:'#2A6A4C'},vegetarian:{ko:'전부 채식',en:'All vegetarian',c:'#3E8E7E'},options:{ko:'채식 메뉴 있음',en:'Veg options',c:'#C9821F'}};
 const DICT=[
  ['pork',['돼지','돈육','돈지','베이컨','햄','라드','pork','bacon','ham','lard']],
  ['beef',['소고기','쇠고기','우육','한우','우지','사골','beef','tallow']],
@@ -622,9 +714,9 @@ function enSentence(ex,menu){if(!ex.length)return 'Could you tell me what ingred
 
 
 /* ---------- 상태(개인 설정은 이 브라우저에만) ---------- */
-const PKEY='leafmap-traveler-v2';
-const AREAS={all:['전체','All'],seomyeon:['서면·전포','Seomyeon·Jeonpo'],daeyeon:['대연동 (경성대·부경대)','Daeyeon (KSU·PKNU)'],jangjeon:['장전동 (부산대)','Jangjeon (PNU)']};
-let P={lang:(navigator.language||'ko').toLowerCase().startsWith('ko')?'ko':'en',diet:'vegan',ex:[...DIETS.vegan.ex],area:'all',showChk:true,view:'resto',veganOnly:false,q:''};
+const PKEY='leafmap-traveler-v3';
+const AREAS={all:['부산 전체','All Busan']};
+let P={lang:'en',diet:'vegan',ex:[...DIETS.vegan.ex],area:'all',showChk:true,view:'resto',veganOnly:false,q:''};
 try{const s=JSON.parse(localStorage.getItem(PKEY)||'null');if(s)P={...P,...s,q:''}}catch(e){}
 if(!['menu','resto'].includes(P.view))P.view='resto';if(!AREAS[P.area])P.area='all';
 if(DIETS[P.diet]&&DIETS[P.diet].ex)P.ex=[...DIETS[P.diet].ex];else if(!DIETS[P.diet])P.diet='custom';
@@ -734,10 +826,14 @@ function closeFilters(){$('#filters').classList.remove('on');$('#ov').classList.
 
 /* ---------- 결과(찾기 탭): 실제 식당 + 리프맵이 확인한 메뉴 ---------- */
 const areaName=a=>L(AREAS[a]?.[0]||'',AREAS[a]?.[1]||'');
+const dist=r=>L(r.d[1],r.d[0]);
+let REV={};const revOf=id=>REV[id]||[];
+const revAvg=id=>{const a=revOf(id).filter(v=>v.n);return a.length?(a.reduce((s,v)=>s+v.n,0)/a.length):null};
+const menuL=r=>(P.lang==='en'?r.menu[0]:r.menu[1])||[];
 let myPos=null;
 function distKm(r){if(!myPos)return null;const R=6371,toR=x=>x*Math.PI/180,dLa=toR(r.lat-myPos[0]),dLo=toR(r.lng-myPos[1]);const a=Math.sin(dLa/2)**2+Math.cos(toR(myPos[0]))*Math.cos(toR(r.lat))*Math.sin(dLo/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
 const fmtKm=d=>d==null?'':d<1?Math.round(d*1000)+'m':d.toFixed(1)+'km';
-function matchP(r){if(!P.q)return true;const q=P.q.toLowerCase();return [r.ko,r.en,r.addr,...(r.type||[]),...(r.menus||[]).flatMap(m=>[m.ko,m.en])].some(x=>String(x||'').toLowerCase().includes(q))}
+function matchP(r){if(!P.q)return true;const q=P.q.toLowerCase();return [r.ko,r.en,r.addr,...r.d,...(r.type||[]),...r.menu[0],...r.menu[1],...(r.menus||[]).flatMap(m=>[m.ko,m.en])].some(x=>String(x||'').toLowerCase().includes(q))}
 function matchQ(m,r){if(!P.q)return true;const q=P.q.toLowerCase();return [m.ko,m.en,r.ko,r.en,...(m.ing||[])].some(x=>String(x||'').toLowerCase().includes(q))}
 function whyLine(m,j){
   if(j.s==='excl')return {c:'excl',t:L('포함: ','Contains: ')+j.hit.map(catName).join(', ')};
@@ -747,20 +843,24 @@ function whyLine(m,j){
 }
 function menuCard(m,r,dim){
   const j=judge(m,P.ex),w=whyLine(m,j);
-  return `<button class="mc ${dim?'dim':''}" data-m="${esc(m.id)}"><div class="top"><span class="area">${esc(areaName(r.area))}</span>${pill(j.s)}</div>
+  return `<button class="mc ${dim?'dim':''}" data-m="${esc(m.id)}"><div class="top"><span class="area">${esc(dist(r))}</span>${pill(j.s)}</div>
    <h3>${esc(L(m.ko,m.en))}</h3><div class="en">${esc(L(m.en,m.ko))}</div><div class="rest">${esc(L(r.ko,r.en))}</div>
    <div class="why ${w.c}">${esc(w.t)}</div></button>`;
 }
-const kindPill=r=>`<span class="pill ${r.kind==='vegan'?'vg':'op'}"><span class="dot"></span>${L(KIND[r.kind].ko,KIND[r.kind].en)}</span>`;
+const kindPill=r=>`<span class="pill ${r.kind==='vegan'?'vg':r.kind==='vegetarian'?'vt':'op'}"><span class="dot"></span>${L(KIND[r.kind].ko,KIND[r.kind].en)}</span>`;
+const ratePill=r=>{const a=revAvg(r.id),n=revOf(r.id).length;return (r.rt?`<span class="rate">★ ${r.rt} HappyCow</span>`:'')+(n?`<span class="rate" style="color:var(--g7)">★ ${a?a.toFixed(1):'-'} LeafMap (${n})</span>`:'')};
 const verPill=r=>(r.menus||[]).length?`<span class="pill ok"><span class="dot"></span>${L('확인된 메뉴 ','Verified dishes ')}${r.menus.length}</span>`:`<span class="pill pend">${L('리프맵 확인 전','Not yet verified')}</span>`;
-function placeCard(r,sel){const d=distKm(r);
-  return `<button class="rc ${sel?'sel':''}" data-r="${esc(r.id)}"><span class="small">${esc(areaName(r.area))} · ${esc(L(r.type[0],r.type[1]))}${d!=null?` · ${fmtKm(d)}`:''}</span><h3>${esc(L(r.ko,r.en))}</h3><div class="sub">${esc(r.addr)}</div><div class="pills">${kindPill(r)}${verPill(r)}</div></button>`}
+function placeCard(r,sel){const d=distKm(r),ms=menuL(r);
+  return `<button class="rc ${sel?'sel':''}" data-r="${esc(r.id)}"><span class="small">${esc(L(r.type[1],r.type[0]))} · ${esc(dist(r))}${d!=null?` · ${fmtKm(d)}`:''}</span><h3>${esc(L(r.ko,r.en))}</h3>
+   <div class="mi-list">${ms.slice(0,4).map(m=>`<span>🌱 ${esc(m)}</span>`).join('')}</div>
+   <div class="pills">${kindPill(r)}${ratePill(r)}</div></button>`}
 function placesShown(){
-  const rs=(restos||[]).filter(r=>(P.area==='all'||r.area===P.area)&&(!P.veganOnly||r.kind==='vegan')&&matchP(r));
-  return rs.sort((a,b)=>(myPos?distKm(a)-distKm(b):0)||(a.kind==='vegan'?0:1)-(b.kind==='vegan'?0:1));
+  const rs=(restos||[]).filter(r=>(!P.veganOnly||r.kind==='vegan')&&matchP(r));
+  const kr={vegan:0,vegetarian:1,options:2};
+  return rs.sort((a,b)=>(myPos?distKm(a)-distKm(b):0)||kr[a.kind]-kr[b.kind]||(b.rt||0)-(a.rt||0));
 }
 function stats(){
-  const rows=allMenus().filter(({m,r})=>(P.area==='all'||r.area===P.area)&&matchQ(m,r));
+  const rows=allMenus().filter(({m,r})=>matchQ(m,r));
   const by={ok:[],check:[],excl:[]};rows.forEach(x=>by[judge(x.m,P.ex).s].push(x));return by;
 }
 function renderResults(){
@@ -780,9 +880,9 @@ function renderResults(){
     if($('#goOwner'))$('#goOwner').onclick=goOwner;
   }else{
     const rs=placesShown(),v=rs.filter(r=>r.kind==='vegan').length;
-    $('#rTitle').textContent=P.q?L(`‘${P.q}’ 검색 결과`,`Results for “${P.q}”`):L(`${P.area==='all'?'':areaName(P.area)+' '}채식 식당 ${rs.length}곳`,`${rs.length} veggie-friendly places${P.area==='all'?'':' in '+areaName(P.area)}`);
-    $('#rCount').textContent=L(`전부 비건 ${v}곳 · 비건 선택 가능 ${rs.length-v}곳 · 공개 정보 기준`,`${v} all-vegan · ${rs.length-v} with vegan options · public info`);
-    box.innerHTML=rs.length?`<div class="list">${rs.map(r=>placeCard(r)).join('')}</div>`:`<div class="empty"><b>${L('검색 결과가 없어요','No places found')}</b>${L('다른 지역을 고르거나 검색어를 바꿔 보세요.','Try another area or keyword.')}</div>`;
+    $('#rTitle').textContent=P.q?L(`‘${P.q}’ 검색 결과`,`Results for “${P.q}”`):L(`부산 채식 메뉴가 있는 곳 ${rs.length}곳`,`${rs.length} places with veggie dishes in Busan`);
+    $('#rCount').textContent=L(`전부 비건 ${v}곳 · 채식 메뉴 있음 ${rs.length-v}곳 · 공개 정보 기준`,`${v} all-vegan · ${rs.length-v} with veg options · public info`);
+    box.innerHTML=rs.length?`<div class="list">${rs.map(r=>placeCard(r)).join('')}</div>`:`<div class="empty"><b>${L('검색 결과가 없어요','No places found')}</b>${L('검색어를 바꿔 보세요.','Try another keyword.')}</div>`;
   }
   $$('#results .mc').forEach(e=>e.onclick=()=>go('menu/'+e.dataset.m));
   $$('#results .rc').forEach(e=>e.onclick=()=>go('place/'+e.dataset.r));
@@ -797,9 +897,9 @@ function areaBounds(a){const ps=PLACES.filter(p=>a==='all'||p.area===a);return p
 function sheetPx(st){const h=$('#s-map').clientHeight||600;return st==='peek'?150:st==='mid'?Math.round(h*.5):h-70}
 function sheetTo(st,instant){sheetState=st;const el=$('#msheet'),px=sheetPx(st);if(instant)el.classList.add('drag');el.style.height=px+'px';fabPos(px);if(instant)requestAnimationFrame(()=>el.classList.remove('drag'))}
 function fabPos(px){const hide=px>($('#s-map').clientHeight||600)*.62;['#mfab','#mlegend'].forEach(q=>{const e=$(q);e.style.bottom=(px+(q==='#mfab'?28:12))+'px';e.style.opacity=hide?0:1;e.style.pointerEvents=hide?'none':''});$('#lmap').style.setProperty('--shb',px+'px')}
-function mapPad(){return{paddingTopLeft:[28,172],paddingBottomRight:[28,sheetPx(sheetState)+28]}}
+function mapPad(){return{paddingTopLeft:[28,132],paddingBottomRight:[28,sheetPx(sheetState)+28]}}
 function mapFitArea(a,anim){
-  if(KM){const pts=areaBounds(a);if(!pts.length)return;const b=new kk.maps.LatLngBounds();pts.forEach(p=>b.extend(new kk.maps.LatLng(p[0],p[1])));KM.setBounds(b,172,28,28,28);return}
+  if(KM){const pts=areaBounds(a);if(!pts.length)return;const b=new kk.maps.LatLngBounds();pts.forEach(p=>b.extend(new kk.maps.LatLng(p[0],p[1])));KM.setBounds(b,132,28,28,28);return}
   if(!LM)return;const b=areaBounds(a);if(!b.length)return;LM.fitBounds(b,{...mapPad(),maxZoom:16,animate:!!anim})}
 let KM=null,kk=null,kClu=null,kOv={},kMe=null;
 function loadKakao(){return new Promise((res,rej)=>{
@@ -858,13 +958,13 @@ function drawMarkers(){
 }
 function mapShow(){
   sheetTo(MV.sel?'mid':sheetState,true);
-  if(KM){KM.relayout();if(!mapFitted){mapFitArea(P.area,false);mapFitted=true}return}
+  if(KM){KM.relayout();if(!mapFitted){mapFitArea('all',false);mapFitted=true}return}
   if(!LM)return;
   LM.invalidateSize();
-  if(!mapFitted){mapFitArea(P.area,false);mapFitted=true}
+  if(!mapFitted){mapFitArea('all',false);mapFitted=true}
 }
 function flyToPlace(r){
-  if(KM){if(KM.getLevel()>3)KM.setLevel(3);KM.setCenter(new kk.maps.LatLng(r.lat,r.lng));KM.panBy(0,Math.round((sheetPx('mid')-322)/2));return}
+  if(KM){if(KM.getLevel()>3)KM.setLevel(3);KM.setCenter(new kk.maps.LatLng(r.lat,r.lng));KM.panBy(0,Math.round((sheetPx('mid')-282)/2));return}
   if(!LM)return;const z=Math.max(LM.getZoom(),16.5);
   const p=LM.project([r.lat,r.lng],z);p.y+=sheetPx('mid')/2-50;
   LM.flyTo(LM.unproject(p,z),z,{duration:.6});
@@ -875,6 +975,7 @@ function bindMapUI(){
   $('#zHome').onclick=locateMe;
   $('#mq').onclick=()=>{go('home');setTimeout(()=>$('#q').focus(),60)};
   $('#mAv').onclick=()=>go('more');
+  $('#mLang').onclick=()=>{P.lang=P.lang==='en'?'ko':'en';update();route()};
 }
 function locateMe(){
   if(!navigator.geolocation){toast(L('이 브라우저에서는 위치를 쓸 수 없어요','Location is not available'));return}
@@ -904,6 +1005,7 @@ function mapSelect(id,center){
   else sheetTo('peek');
   drawMarkers();renderSheet();
 }
+const kakaoUrl=r=>r.kk?'https://place.map.kakao.com/'+r.kk:'https://map.kakao.com/link/map/'+encodeURIComponent(r.ko||r.en)+','+r.lat+','+r.lng;
 const naverUrl=r=>'https://map.naver.com/p/search/'+encodeURIComponent(r.ko+' '+r.addr.split(' ').slice(0,2).join(' '));
 function renderSheet(){
   if(!restos)return;
@@ -912,17 +1014,17 @@ function renderSheet(){
     const r=restos.find(x=>x.id===MV.sel);if(!r){MV.sel=null;return renderSheet()}
     const d=distKm(r);
     $('#msT').textContent=L(r.ko,r.en);
-    $('#msS').textContent=`${L(r.type[0],r.type[1])} · ${r.addr}${d!=null?' · '+fmtKm(d):''}`;
-    b.innerHTML=`<div class="pc-pills">${kindPill(r)}${verPill(r)}</div>
-      <div class="pc-note">${esc(L(r.note[0],r.note[1]))}<div class="small" style="margin-top:6px">🕑 ${esc(L(r.hours[0],r.hours[1]))}</div></div>
-      <div class="pc-acts"><button class="btn sm" id="pcGo">${L('자세히 보기','Details')}</button><a class="btn sm ghost" href="${naverUrl(r)}" target="_blank" rel="noopener">${L('네이버 지도로 길찾기','Open in Naver Map')}</a></div>
+    $('#msS').textContent=`${L(r.type[1],r.type[0])} · ${dist(r)}${d!=null?' · '+fmtKm(d):''}`;
+    b.innerHTML=`<div class="pc-pills">${kindPill(r)}${ratePill(r)}${verPill(r)}</div>
+      <div class="pc-note"><b style="font-size:12.5px;color:var(--g7)">${L('채식으로 먹을 수 있는 메뉴 (공개 정보)','Veggie dishes (public info)')}</b><div class="mi-list">${menuL(r).map(m=>`<span>🌱 ${esc(m)}</span>`).join('')}</div>${(L(r.note[1],r.note[0]))?`<div class="small" style="margin-top:8px">ⓘ ${esc(L(r.note[1],r.note[0]))}</div>`:''}<div class="small" style="margin-top:6px">🕑 ${esc(r.hours)}</div></div>
+      <div class="pc-acts"><button class="btn sm" id="pcGo">${L('메뉴·리뷰 보기','Dishes & reviews')}</button><a class="btn sm ghost" href="${kakaoUrl(r)}" target="_blank" rel="noopener">${L('카카오맵 길찾기','Directions (Kakao Map)')}</a></div>
       <button class="btn sm ghost full" id="pcX">${L('← 목록으로','← Back to list')}</button>`;
     $('#pcGo').onclick=()=>go('place/'+r.id);
     $('#pcX').onclick=()=>mapSelect(null);
   }else{
     const rs=placesShown(),v=rs.filter(r=>r.kind==='vegan').length;
-    $('#msT').textContent=L(`${P.area==='all'?'부산':areaName(P.area)} 채식 식당 ${rs.length}곳`,`${rs.length} places · ${P.area==='all'?'Busan':areaName(P.area)}`);
-    $('#msS').textContent=L(`전부 비건 ${v} · 비건 선택 가능 ${rs.length-v} · 공개 정보, 리프맵 확인 전`,`${v} all-vegan · ${rs.length-v} with options · public info, not yet verified`);
+    $('#msT').textContent=L(`부산 채식 메뉴가 있는 곳 ${rs.length}곳`,`${rs.length} places with veggie dishes in Busan`);
+    $('#msS').textContent=L(`전부 비건 ${v} · 채식 메뉴 있음 ${rs.length-v} · 공개 정보, 리프맵 확인 전`,`${v} all-vegan · ${rs.length-v} with veg options · public info, not yet verified`);
     b.innerHTML=(rs.map(r=>placeCard(r)).join('')||`<div class="empty"><b>${L('식당이 없어요','No places')}</b></div>`)+`<p class="small" style="text-align:center;padding:4px 0 8px">${L('식당 정보 출처: HappyCow 공개 목록 (2026년 11월 확인) · 방문 전에 영업 여부를 확인하세요','Source: HappyCow public listings (checked Nov 2026) · confirm opening before you go')}</p>`;
     $$('#msB .rc').forEach(e=>e.onclick=()=>mapSelect(e.dataset.r,true));
   }
@@ -930,15 +1032,14 @@ function renderSheet(){
 }
 function renderMap(){
   if(!restos)return;
-  $('#mapArea').innerHTML=Object.entries(AREAS).map(([k,v])=>`<button type="button" class="chip ${P.area===k?'on':''}" data-a="${k}">${L(v[0],v[1])}</button>`).join('')
-    +`<button type="button" class="chip ${P.veganOnly?'on':''}" id="mVeg">🌱 ${L('전부 비건만','All-vegan only')}</button>`;
-  $('#mapDiet').innerHTML=`<span class="dl">${L('내 식단','My diet')}</span>`+['vegan','lacto','pesco','nopork','nobeef'].map(k=>`<button type="button" class="chip ${P.diet===k?'on':''}" data-d="${k}" aria-pressed="${P.diet===k}">${L(DIETS[k].ko,DIETS[k].en)}</button>`).join('')
+  $('#mapArea').innerHTML=`<button type="button" class="chip ${P.veganOnly?'on':''}" id="mVeg">🌱 ${L('전부 비건만','All-vegan only')}</button><span class="dl">${L('내 식단','My diet')}</span>`
+    +['vegan','lacto','pesco','nopork','nobeef'].map(k=>`<button type="button" class="chip ${P.diet===k?'on':''}" data-d="${k}" aria-pressed="${P.diet===k}">${L(DIETS[k].ko,DIETS[k].en)}</button>`).join('')
     +`<button type="button" class="chip ${P.diet==='custom'?'on':''}" id="mCond">⚙ ${L('직접 설정','Custom')}</button>`;
-  $$('#mapDiet [data-d]').forEach(e=>e.onclick=()=>{P.diet=e.dataset.d;P.ex=[...DIETS[P.diet].ex];update();toast(L(`‘${DIETS[P.diet].ko}’ 기준으로 한국어 카드와 확인된 메뉴 판정을 바꿨어요`,`Switched to “${DIETS[P.diet].en}” for the phrase card and verified dishes`))});
-  $$('#mapArea [data-a]').forEach(e=>e.onclick=()=>{P.area=e.dataset.a;MV.sel=null;sheetTo('peek');update();mapFitArea(P.area,true)});
+  $$('#mapArea [data-d]').forEach(e=>e.onclick=()=>{P.diet=e.dataset.d;P.ex=[...DIETS[P.diet].ex];update();toast(L(`‘${DIETS[P.diet].ko}’ 기준으로 한국어 카드를 바꿨어요`,`Phrase card set to “${DIETS[P.diet].en}”`))});
   $('#mVeg').onclick=()=>{P.veganOnly=!P.veganOnly;MV.sel=null;update()};
   $('#mCond').onclick=openFilters;
-  $('#mlegend').innerHTML=`<span><i style="background:${KIND.vegan.c}"></i>${L('전부 비건','All vegan')}</span><span><i style="background:${KIND.options.c}"></i>${L('비건 선택 가능','Vegan options')}</span>`;
+  $('#mLang').textContent=P.lang==='en'?'한국어':'EN';
+  $('#mlegend').innerHTML=`<span><i style="background:${KIND.vegan.c}"></i>${L('전부 비건','All vegan')}</span><span><i style="background:${KIND.vegetarian.c}"></i>${L('전부 채식','Vegetarian')}</span><span><i style="background:${KIND.options.c}"></i>${L('채식 메뉴 있음','Veg options')}</span>`;
   drawMarkers();renderSheet();
 }
 
@@ -963,21 +1064,39 @@ $('#ov').onclick=closeFilters;
 $('#dBack').onclick=()=>{if(dlgBack)history.back();else closeAndClear()};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#bigKr').classList.contains('on'))closeBig();else if($('#filters').classList.contains('on'))closeFilters();else if($('#dlg').classList.contains('on'))$('#dBack').click()}});
 
+const HC_BUSAN='https://www.happycow.net/asia/south_korea/busan/';
+function revHtml(r){const a=revOf(r.id);
+  if(!a.length)return `<p class="small">${L('아직 리프맵 리뷰가 없어요. 첫 리뷰를 남겨 주세요!','No LeafMap reviews yet. Be the first!')}</p>`;
+  return a.slice(0,20).map(v=>`<div class="rvw"><div class="h"><span><b style="color:#E0A526">${'★'.repeat(v.n||0)}${'☆'.repeat(5-(v.n||0))}</b> · ${esc(v.who||'')}</span><span>${esc(v.at||'')}</span></div>${esc(v.text||'')}</div>`).join('')}
 function showPlace(r){
   const ms=(r.menus||[]);
   const items=ms.map(m=>{const j=judge(m,P.ex),w=whyLine(m,j);return `<button class="mi" data-m="${esc(m.id)}"><div><b>${esc(L(m.ko,m.en))}</b><small>${esc(L(m.en,m.ko))} · ${esc(w.t)}</small></div>${pill(j.s)}</button>`}).join('');
-  const d=distKm(r);
-  openDlg(L(r.ko,r.en),`<div class="small" style="margin-bottom:12px">${esc(L(r.en,r.ko))} · ${esc(areaName(r.area))}${d!=null?' · '+fmtKm(d):''}</div>
+  const d=distKm(r),note=L(r.note[1],r.note[0]),avg=revAvg(r.id),n=revOf(r.id).length;
+  openDlg(L(r.ko,r.en),`<div class="small" style="margin-bottom:12px">${esc(L(r.en,r.ko))} · ${esc(dist(r))}${d!=null?' · '+fmtKm(d):''}</div>
    <div class="pc-pills" style="margin-bottom:12px">${kindPill(r)}${verPill(r)}</div>
-   ${ms.length?'':`<div class="banner check"><span style="font-weight:800">!</span><div><b>${L('리프맵 확인 전','Not yet verified by LeafMap')}</b>${L('공개된 정보로 위치와 식당 유형만 보여드려요. 메뉴의 재료·육수·양념 성분은 아직 확인하지 않았어요. 주문하기 전에 아래 한국어 카드로 직원에게 꼭 물어보세요.','We only show public info about where it is and what kind of place it is. Ingredients, broths and sauces have not been checked yet — ask the staff with the card below before ordering.')}</div></div>`}
-   <dl class="kv"><dt>${L('유형','Type')}</dt><dd>${esc(L(r.type[0],r.type[1]))} · ${esc(L(KIND[r.kind].ko,KIND[r.kind].en))}</dd>
-   <dt>${L('주소','Address')}</dt><dd>부산 ${esc(r.addr)}</dd>
-   <dt>${L('영업시간','Hours')}</dt><dd>${esc(L(r.hours[0],r.hours[1]))}</dd>
-   <dt>${L('참고','Notes')}</dt><dd>${esc(L(r.note[0],r.note[1]))}</dd>
-   <dt>${L('정보 출처','Source')}</dt><dd><a href="${SRC_HC+r.src}" target="_blank" rel="noopener" style="text-decoration:underline">HappyCow</a> · ${L('2026년 11월 확인','checked Nov 2026')}</dd></dl>
-   <div class="pc-acts" style="margin-top:14px"><a class="btn sm" href="${naverUrl(r)}" target="_blank" rel="noopener">${L('네이버 지도로 길찾기','Open in Naver Map')}</a><button class="btn sm ghost" id="pMap">${L('리프맵 지도에서 보기','Show on map')}</button></div>
+   <div class="h4" style="margin-top:0">🌱 ${L('채식으로 먹을 수 있는 메뉴','Veggie-friendly dishes')}</div>
+   <div class="mi-list" style="margin-bottom:6px">${menuL(r).map(m=>`<span>${esc(m)}</span>`).join('')}</div>
+   <p class="small" style="margin-bottom:12px">${L('공개된 식당 정보를 요약한 거예요. 메뉴는 바뀔 수 있어요.','Summarised from public listings. Menus may change.')}</p>
+   ${ms.length?'':`<div class="banner check"><span style="font-weight:800">!</span><div><b>${L('리프맵 확인 전','Not yet verified by LeafMap')}</b>${L('재료·육수·양념 성분은 아직 확인하지 않았어요. 주문하기 전에 아래 한국어 카드로 직원에게 꼭 물어보세요.','Ingredients, broths and sauces have not been checked yet. Ask the staff with the Korean card below before ordering.')}</div></div>`}
+   <dl class="kv"><dt>${L('유형','Type')}</dt><dd>${esc(L(r.type[1],r.type[0]))} · ${esc(L(KIND[r.kind].ko,KIND[r.kind].en))}</dd>
+   <dt>${L('주소','Address')}</dt><dd>${L('부산 ','Busan, ')}${esc(r.addr)}</dd>
+   <dt>${L('영업시간','Hours')}</dt><dd>${esc(r.hours||'-')}</dd>
+   ${note?`<dt>${L('참고','Notes')}</dt><dd>${esc(note)}</dd>`:''}
+   <dt>${L('정보 출처','Source')}</dt><dd><a href="${HC_BUSAN}" target="_blank" rel="noopener" style="text-decoration:underline">HappyCow</a> · ${L('2026년 11월 확인','checked Nov 2026')}</dd></dl>
+   <div class="pc-acts" style="margin-top:14px"><a class="btn sm" href="${kakaoUrl(r)}" target="_blank" rel="noopener">${L('카카오맵 길찾기','Directions (Kakao Map)')}</a><a class="btn sm ghost" href="${naverUrl(r)}" target="_blank" rel="noopener">${L('네이버 지도','Naver Map')}</a><button class="btn sm ghost" id="pMap">${L('지도에서 보기','Show on map')}</button></div>
    <div class="kr-card" style="margin-top:16px"><div class="lbl">${L('주문 전에 직원에게 보여주세요','Show this to the staff before ordering')}</div><div class="kr">${esc(krSentence(P.ex,'staff',''))}</div><div class="en">${esc(enSentence(P.ex,''))}</div>
     <div class="acts"><button class="btn sm" id="pBig">⛶ ${L('크게 보여주기','Show full screen')}</button><button class="btn sm ghost" id="pCopy">${L('문장 복사','Copy')}</button></div></div>
+   <div class="h4">${L('리뷰','Reviews')}</div>
+   <div class="pc-pills" style="margin-bottom:10px">${r.rt?`<span class="rate">★ ${r.rt} / 5 · HappyCow</span>`:''}${n?`<span class="rate" style="color:var(--g7)">★ ${avg?avg.toFixed(1):'-'} · LeafMap ${L(n+'개',n+(n>1?' reviews':' review'))}</span>`:''}</div>
+   <div id="pRevs">${revHtml(r)}</div>
+   <div class="rvw form" style="background:var(--soft)">
+    <b style="font-size:13.5px">${L('리뷰 남기기','Write a review')}</b>
+    <div class="stars" id="rvStars" role="radiogroup" aria-label="Rating" style="margin:8px 0">${[1,2,3,4,5].map(i=>`<button type="button" data-n="${i}" aria-label="${i}">★</button>`).join('')}</div>
+    <textarea id="rvText" maxlength="300" style="min-height:76px" placeholder="${L('먹은 메뉴, 직원에게 물어봤을 때 어땠는지 알려 주세요','What did you eat? How did asking the staff go?')}"></textarea>
+    <input type="text" id="rvFrom" maxlength="30" style="margin-top:8px" placeholder="${L('어디에서 오셨어요? (선택)','Where are you from? (optional)')}">
+    <button class="btn sm" id="rvSend" style="margin-top:10px">${L('리뷰 올리기','Post review')}</button>
+    <p class="small" style="margin-top:8px">${L('다른 사이트 리뷰는','More reviews on')} <a href="${kakaoUrl(r)}" target="_blank" rel="noopener" style="text-decoration:underline">Kakao Map</a> · <a href="${HC_BUSAN}" target="_blank" rel="noopener" style="text-decoration:underline">HappyCow</a></p>
+   </div>
    <div class="h4">${L('리프맵이 성분까지 확인한 메뉴','Dishes verified by LeafMap')}${ms.length?` (${ms.length})`:''}</div>
    ${ms.length?`<div class="mlist">${items}</div>`:`<p class="small">${L('아직 없어요. 식당이 메뉴와 쓰는 양념 제품을 등록하면 성분표를 확인해 메뉴마다 판정을 보여드려요.','None yet. Once the restaurant registers its dishes and sauces, we check the labels and judge each dish.')}</p>`}
    <div class="repbar"><span class="small" style="flex:1">${L('문을 닫았거나 정보가 달랐나요?','Closed or info wrong?')}</span><button class="btn sm ghost" id="pRep">⚑ ${L('정보 제보','Report')}</button></div>
@@ -988,6 +1107,23 @@ function showPlace(r){
   $('#pMap').onclick=()=>{closeAndClear();go('map');setTimeout(()=>mapSelect(r.id,true),350)};
   $('#pRep').onclick=()=>showPlaceReport(r);
   $('#pOwn').onclick=()=>{closeAndClear();goOwner();setTimeout(()=>{const i=$('#oR');if(i&&!i.value)i.value=r.ko},200)};
+  let stars=0;const paint=()=>$$('#rvStars button').forEach(b=>{const on=+b.dataset.n<=stars;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});
+  $$('#rvStars button').forEach(b=>b.onclick=()=>{stars=+b.dataset.n;paint()});
+  $('#rvSend').onclick=async()=>{
+    const t=$('#rvText').value.trim(),from=$('#rvFrom').value.trim();
+    if(!stars){toast(L('별점을 골라 주세요','Please pick a rating'));return}
+    if(t.length<4){toast(L('한 줄이라도 적어 주세요','Please write a few words'));return}
+    if(!live){toast(L('지금은 서버에 연결되지 않아 리뷰를 올릴 수 없어요','Can’t reach the server right now'));return}
+    const b=$('#rvSend');b.disabled=true;b.textContent=L('올리는 중…','Posting…');
+    const now=Date.now(),nm=(U&&U.name)||L('여행자','Traveler'),who=nm+(from?` · ${from}`:'');
+    try{
+      const e=(await db.from('reports').insert({id:'rv'+now,menu_id:'review:'+r.id,who,text:t,cat:null,at:today(),status:'리뷰',note:'rating:'+stars,ord:now})).error;if(e)throw e;
+      (REV[r.id]=REV[r.id]||[]).unshift({who,text:t,at:today(),n:stars});
+      $('#pRevs').innerHTML=revHtml(r);$('#rvText').value='';stars=0;paint();
+      toast(L('리뷰를 올렸어요. 고마워요!','Review posted. Thank you!'));
+    }catch(err){console.error('[Supabase]',err);toast(L('리뷰를 올리지 못했어요. 잠시 후 다시 시도해 주세요','Couldn’t post. Please try again'))}
+    b.disabled=false;b.textContent=L('리뷰 올리기','Post review');
+  };
 }
 function showPlaceReport(r){
   $('#dTitle').textContent=L('정보 제보','Report');
@@ -1145,6 +1281,8 @@ async function load(){
     const {data,error}=await db.from('restaurants').select('id,menus').in('id',PLACES.map(p=>p.id));
     if(error)throw error;
     (data||[]).forEach(row=>{const r=next.find(x=>x.id===row.id);if(r&&Array.isArray(row.menus))r.menus=row.menus});
+    const rv=await db.from('reports').select('id,menu_id,who,text,at,note,ord').like('menu_id','review:%').order('ord',{ascending:false}).limit(500);
+    if(!rv.error){REV={};(rv.data||[]).forEach(x=>{const id=x.menu_id.slice(7);const n=+String(x.note||'').replace('rating:','')||0;(REV[id]=REV[id]||[]).push({who:x.who,text:x.text,at:x.at,n})})}
     live=true;$('#offline').style.display='none';
   }catch(e){
     console.warn('[Supabase] 연결 실패 → 공개 식당 정보만 표시',e);live=false;

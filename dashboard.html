@@ -746,6 +746,7 @@ async function cloudLoad(seeded){
     if(!res.restaurants.length){ if(seeded)throw new Error('초기 데이터 저장 후에도 식당 목록이 비어 있습니다');
       const f=fresh();S.restos=f.restos;S.reps=f.reps;S.subs=f.subs;S.act=f.act;await upsertAll();return cloudLoad(true);}
     for(const t of Object.keys(res))S[KEYS[t]]=fromRows[t](res[t]);
+    S.reps=(S.reps||[]).filter(r=>!String(r.menu||'').startsWith('review:')); // 앱 리뷰는 제보 목록에서 뺌
     lastSynced=sharedJSON();
     try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}
     render();setSync('ok');
