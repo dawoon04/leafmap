@@ -859,7 +859,7 @@ function mapShow(){
   if(!mapFitted){mapFitArea(P.area,false);mapFitted=true}
 }
 function flyToPlace(r){
-  if(KM){if(KM.getLevel()>3)KM.setLevel(3);KM.setCenter(new kk.maps.LatLng(r.lat,r.lng));KM.panBy(0,Math.round((sheetPx('mid')-150)/2));return}
+  if(KM){if(KM.getLevel()>3)KM.setLevel(3);KM.setCenter(new kk.maps.LatLng(r.lat,r.lng));KM.panBy(0,Math.round((sheetPx('mid')-282)/2));return}
   if(!LM)return;const z=Math.max(LM.getZoom(),16.5);
   const p=LM.project([r.lat,r.lng],z);p.y+=sheetPx('mid')/2-50;
   LM.flyTo(LM.unproject(p,z),z,{duration:.6});
