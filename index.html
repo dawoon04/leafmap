@@ -259,7 +259,7 @@ input,select,textarea{font:inherit;color:inherit}
 
 /* ===== 카카오맵 스타일 지도 홈 ===== */
 #app.mapmode .abar{display:none}
-#app.mapmode #toast{bottom:auto;top:calc(122px + var(--st))}
+#app.mapmode #toast{bottom:auto;top:calc(160px + var(--st))}
 .mfab,.mlegend{transition:bottom .28s cubic-bezier(.2,.8,.2,1),opacity .2s}
 .screen.map{padding:0;overflow:hidden;animation:none}
 #lmap{position:absolute;inset:0;background:#EEF0E8;z-index:0;font-family:inherit}
@@ -286,6 +286,10 @@ input,select,textarea{font:inherit;color:inherit}
 .msearch .mq{flex:1;text-align:left;color:#8A928E;font-size:15px;height:100%;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .msearch .av{width:36px;height:36px;border-radius:50%;background:var(--g8);color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center;flex:none}
 .mchips{position:absolute;top:calc(68px + var(--st));left:0;right:0;z-index:5;margin:0;padding:2px 12px 8px}
+.mchips2{top:calc(110px + var(--st))}
+.mchips2 .chip{font-size:12.5px;padding:6px 11px}
+.mchips2 .chip.on{background:#2A6A4C}
+.mchips2 .dl{flex:none;align-self:center;font-size:11.5px;font-weight:800;color:#3A4440;background:rgba(255,255,255,.92);border-radius:8px;padding:5px 8px;box-shadow:0 1px 5px rgba(0,0,0,.12)}
 .mchips .chip{box-shadow:0 1px 5px rgba(0,0,0,.16);background:#fff;font-size:13px;padding:7px 12px}
 .mchips .chip.on{background:var(--g8);color:#fff}
 .mchips .chip.cond{color:var(--g8);font-weight:800}
@@ -323,7 +327,7 @@ input,select,textarea{font:inherit;color:inherit}
   .big-kr .x{top:56px}
   .tabbar{padding-bottom:16px}
   #toast{bottom:92px}
-  #app.mapmode #toast{top:168px}
+  #app.mapmode #toast{top:206px}
   .sheet{padding-bottom:30px}
   .login{padding-top:20px}
   .msb{padding-bottom:20px}
@@ -374,6 +378,7 @@ input,select,textarea{font:inherit;color:inherit}
       <div id="lmap" aria-label="부산 채식 식당 지도"></div>
       <div class="msearch"><span class="lg"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></span><button class="mq" id="mq" type="button"><span aria-hidden="true">⌕ </span><span data-t="mq">메뉴·식당 검색</span></button><button class="av" id="mAv" type="button" aria-label="내 정보"></button></div>
       <div class="hscroll mchips" id="mapArea"></div>
+      <div class="hscroll mchips mchips2" id="mapDiet" role="group" aria-label="내 식단"></div>
       <div class="mlegend" id="mlegend"></div>
       <div class="mfab" id="mfab"><div class="grp"><button type="button" id="zIn" aria-label="확대">+</button><button type="button" id="zOut" aria-label="축소">−</button></div><button type="button" class="solo" id="zHome" aria-label="내 위치">◎</button></div>
       <div class="msheet" id="msheet"><div class="msh" id="msh"><div class="grab"></div><h3 id="msT"></h3><div class="sub" id="msS"></div></div><div class="msb" id="msB"></div></div>
@@ -792,9 +797,9 @@ function areaBounds(a){const ps=PLACES.filter(p=>a==='all'||p.area===a);return p
 function sheetPx(st){const h=$('#s-map').clientHeight||600;return st==='peek'?150:st==='mid'?Math.round(h*.5):h-70}
 function sheetTo(st,instant){sheetState=st;const el=$('#msheet'),px=sheetPx(st);if(instant)el.classList.add('drag');el.style.height=px+'px';fabPos(px);if(instant)requestAnimationFrame(()=>el.classList.remove('drag'))}
 function fabPos(px){const hide=px>($('#s-map').clientHeight||600)*.62;['#mfab','#mlegend'].forEach(q=>{const e=$(q);e.style.bottom=(px+(q==='#mfab'?28:12))+'px';e.style.opacity=hide?0:1;e.style.pointerEvents=hide?'none':''});$('#lmap').style.setProperty('--shb',px+'px')}
-function mapPad(){return{paddingTopLeft:[28,132],paddingBottomRight:[28,sheetPx(sheetState)+28]}}
+function mapPad(){return{paddingTopLeft:[28,172],paddingBottomRight:[28,sheetPx(sheetState)+28]}}
 function mapFitArea(a,anim){
-  if(KM){const pts=areaBounds(a);if(!pts.length)return;const b=new kk.maps.LatLngBounds();pts.forEach(p=>b.extend(new kk.maps.LatLng(p[0],p[1])));KM.setBounds(b,132,28,28,28);return}
+  if(KM){const pts=areaBounds(a);if(!pts.length)return;const b=new kk.maps.LatLngBounds();pts.forEach(p=>b.extend(new kk.maps.LatLng(p[0],p[1])));KM.setBounds(b,172,28,28,28);return}
   if(!LM)return;const b=areaBounds(a);if(!b.length)return;LM.fitBounds(b,{...mapPad(),maxZoom:16,animate:!!anim})}
 let KM=null,kk=null,kClu=null,kOv={},kMe=null;
 function loadKakao(){return new Promise((res,rej)=>{
@@ -859,7 +864,7 @@ function mapShow(){
   if(!mapFitted){mapFitArea(P.area,false);mapFitted=true}
 }
 function flyToPlace(r){
-  if(KM){if(KM.getLevel()>3)KM.setLevel(3);KM.setCenter(new kk.maps.LatLng(r.lat,r.lng));KM.panBy(0,Math.round((sheetPx('mid')-282)/2));return}
+  if(KM){if(KM.getLevel()>3)KM.setLevel(3);KM.setCenter(new kk.maps.LatLng(r.lat,r.lng));KM.panBy(0,Math.round((sheetPx('mid')-322)/2));return}
   if(!LM)return;const z=Math.max(LM.getZoom(),16.5);
   const p=LM.project([r.lat,r.lng],z);p.y+=sheetPx('mid')/2-50;
   LM.flyTo(LM.unproject(p,z),z,{duration:.6});
@@ -926,7 +931,10 @@ function renderSheet(){
 function renderMap(){
   if(!restos)return;
   $('#mapArea').innerHTML=Object.entries(AREAS).map(([k,v])=>`<button type="button" class="chip ${P.area===k?'on':''}" data-a="${k}">${L(v[0],v[1])}</button>`).join('')
-    +`<button type="button" class="chip ${P.veganOnly?'on':''}" id="mVeg">🌱 ${L('전부 비건만','All-vegan only')}</button><button type="button" class="chip cond" id="mCond">⚙ ${L(DIETS[P.diet].ko,DIETS[P.diet].en)}</button>`;
+    +`<button type="button" class="chip ${P.veganOnly?'on':''}" id="mVeg">🌱 ${L('전부 비건만','All-vegan only')}</button>`;
+  $('#mapDiet').innerHTML=`<span class="dl">${L('내 식단','My diet')}</span>`+['vegan','lacto','pesco','nopork','nobeef'].map(k=>`<button type="button" class="chip ${P.diet===k?'on':''}" data-d="${k}" aria-pressed="${P.diet===k}">${L(DIETS[k].ko,DIETS[k].en)}</button>`).join('')
+    +`<button type="button" class="chip ${P.diet==='custom'?'on':''}" id="mCond">⚙ ${L('직접 설정','Custom')}</button>`;
+  $$('#mapDiet [data-d]').forEach(e=>e.onclick=()=>{P.diet=e.dataset.d;P.ex=[...DIETS[P.diet].ex];update();toast(L(`‘${DIETS[P.diet].ko}’ 기준으로 한국어 카드와 확인된 메뉴 판정을 바꿨어요`,`Switched to “${DIETS[P.diet].en}” for the phrase card and verified dishes`))});
   $$('#mapArea [data-a]').forEach(e=>e.onclick=()=>{P.area=e.dataset.a;MV.sel=null;sheetTo('peek');update();mapFitArea(P.area,true)});
   $('#mVeg').onclick=()=>{P.veganOnly=!P.veganOnly;MV.sel=null;update()};
   $('#mCond').onclick=openFilters;
