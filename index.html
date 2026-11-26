@@ -263,6 +263,7 @@ input,select,textarea{font:inherit;color:inherit}
 .mfab,.mlegend{transition:bottom .28s cubic-bezier(.2,.8,.2,1),opacity .2s}
 .screen.map{padding:0;overflow:hidden;animation:none}
 #lmap{position:absolute;inset:0;background:#EEF0E8;z-index:0;font-family:inherit}
+#lmap.kakao{bottom:150px}
 #lmap .leaflet-bottom{bottom:var(--shb,150px);transition:bottom .3s}
 #lmap .leaflet-control-attribution{font-size:10px;background:rgba(255,255,255,.8);border-radius:6px 0 0 0}
 .mapfail{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:0 30px 200px;color:var(--muted);font-size:13px}
@@ -521,6 +522,9 @@ input,select,textarea{font:inherit;color:inherit}
 /* Supabase — 운영자 대시보드(dashboard.html)와 같은 프로젝트. Publishable key는 공개용 키입니다. */
 const SUPABASE_URL='https://ovvrvpvxfhdynttscisz.supabase.co';
 const SUPABASE_KEY='sb_publishable_IRk38LWq0iZMWSv4Yg3GGw_T_ximi8O';
+/* 카카오맵 JavaScript 키 (카카오디벨로퍼스 → 내 앱 → 앱 키 → JavaScript 키).
+   웹 플랫폼 도메인에 이 사이트 주소를 등록해야 작동함. 비어 있거나 불러오지 못하면 OpenStreetMap 지도를 씀 */
+const KAKAO_JS_KEY='';
 const db=(SUPABASE_URL&&SUPABASE_KEY&&window.supabase)?window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 
 /* ---- 판정 규칙·사전·예시 데이터 (dashboard.html과 동일) ---- */
@@ -789,9 +793,32 @@ function sheetPx(st){const h=$('#s-map').clientHeight||600;return st==='peek'?15
 function sheetTo(st,instant){sheetState=st;const el=$('#msheet'),px=sheetPx(st);if(instant)el.classList.add('drag');el.style.height=px+'px';fabPos(px);if(instant)requestAnimationFrame(()=>el.classList.remove('drag'))}
 function fabPos(px){const hide=px>($('#s-map').clientHeight||600)*.62;['#mfab','#mlegend'].forEach(q=>{const e=$(q);e.style.bottom=(px+(q==='#mfab'?28:12))+'px';e.style.opacity=hide?0:1;e.style.pointerEvents=hide?'none':''});$('#lmap').style.setProperty('--shb',px+'px')}
 function mapPad(){return{paddingTopLeft:[28,132],paddingBottomRight:[28,sheetPx(sheetState)+28]}}
-function mapFitArea(a,anim){if(!LM)return;const b=areaBounds(a);if(!b.length)return;LM.fitBounds(b,{...mapPad(),maxZoom:16,animate:!!anim})}
+function mapFitArea(a,anim){
+  if(KM){const pts=areaBounds(a);if(!pts.length)return;const b=new kk.maps.LatLngBounds();pts.forEach(p=>b.extend(new kk.maps.LatLng(p[0],p[1])));KM.setBounds(b,132,28,28,28);return}
+  if(!LM)return;const b=areaBounds(a);if(!b.length)return;LM.fitBounds(b,{...mapPad(),maxZoom:16,animate:!!anim})}
+let KM=null,kk=null,kClu=null,kOv={},kMe=null;
+function loadKakao(){return new Promise((res,rej)=>{
+  if(!KAKAO_JS_KEY)return rej('no key');
+  const t=setTimeout(()=>rej('timeout'),7000);
+  const sc=document.createElement('script');
+  sc.src='https://dapi.kakao.com/v2/maps/sdk.js?appkey='+encodeURIComponent(KAKAO_JS_KEY)+'&autoload=false&libraries=clusterer';
+  sc.onload=()=>{try{window.kakao.maps.load(()=>{clearTimeout(t);res(window.kakao)})}catch(e){rej(e)}};
+  sc.onerror=()=>rej('load error');document.head.appendChild(sc);
+})}
+function initKakao(k){
+  kk=k;const el=$('#lmap');el.innerHTML='';el.classList.add('kakao');
+  KM=new k.maps.Map(el,{center:new k.maps.LatLng(35.17,129.08),level:7});
+  const cs={width:'48px',height:'48px',background:'rgba(31,77,56,.93)',border:'3px solid #fff',borderRadius:'50%',color:'#fff',textAlign:'center',fontWeight:'800',fontSize:'14px',lineHeight:'42px',boxShadow:'0 0 0 6px rgba(31,77,56,.2)'};
+  kClu=new k.maps.MarkerClusterer({map:KM,averageCenter:true,minLevel:5,gridSize:60,calculator:[1000],styles:[cs,cs],texts:n=>n+L('곳','')});
+  k.maps.event.addListener(KM,'click',()=>{if(MV.sel)mapSelect(null)});
+  k.maps.event.addListener(KM,'zoom_changed',()=>el.classList.toggle('zshow',KM.getLevel()<=3));
+}
 function mapInit(){
   bindSheet();bindMapUI();
+  loadKakao().then(k=>{initKakao(k);drawMarkers();if(tab==='map'){mapFitted=false;mapShow()}})
+    .catch(e=>{if(KAKAO_JS_KEY)console.warn('[카카오맵] 불러오지 못해 OpenStreetMap으로 표시',e);initLeaflet();drawMarkers();if(tab==='map'){mapFitted=false;mapShow()}});
+}
+function initLeaflet(){
   LF=window.L&&window.L.map?window.L:null;
   if(!LF){$('#lmap').innerHTML=`<div class="mapfail"><b>${L('지도를 불러오지 못했어요','Map could not load')}</b>${L('인터넷 연결을 확인해 주세요. 아래 목록에서 식당을 볼 수 있어요.','Check your connection. You can still browse the list below.')}</div>`;return}
   LM=LF.map('lmap',{zoomControl:false,attributionControl:true,zoomSnap:.5,tap:true}).setView([35.17,129.08],12);
@@ -805,6 +832,16 @@ function mapInit(){
 }
 function pinHtml(r,sel){return `<div class="lpw ${sel?'sel':''}"><div class="lpin" style="--c:${KIND[r.kind].c}"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#fff"/></svg></div><div class="lname">${esc(L(r.ko,r.en))}</div></div>`}
 function drawMarkers(){
+  if(KM&&restos){
+    kClu.clear();Object.values(kOv).forEach(o=>o.setMap(null));kOv={};
+    const list=restos.filter(r=>!P.veganOnly||r.kind==='vegan').map(r=>{
+      const sel=r.id===MV.sel,box=document.createElement('div');box.innerHTML=pinHtml(r,sel);
+      const node=box.firstElementChild;node.style.cursor='pointer';node.title=L(r.ko,r.en);
+      node.addEventListener('click',e=>{e.stopPropagation();mapSelect(r.id,true)});
+      const ov=new kk.maps.CustomOverlay({position:new kk.maps.LatLng(r.lat,r.lng),content:node,xAnchor:.5,yAnchor:1,zIndex:sel?10:1,clickable:true});
+      kOv[r.id]=ov;return ov});
+    kClu.addMarkers(list);return;
+  }
   if(!LM||!restos)return;
   clusterG.clearLayers();markers={};
   restos.filter(r=>!P.veganOnly||r.kind==='vegan').forEach(r=>{
@@ -816,18 +853,20 @@ function drawMarkers(){
 }
 function mapShow(){
   sheetTo(MV.sel?'mid':sheetState,true);
+  if(KM){KM.relayout();if(!mapFitted){mapFitArea(P.area,false);mapFitted=true}return}
   if(!LM)return;
   LM.invalidateSize();
   if(!mapFitted){mapFitArea(P.area,false);mapFitted=true}
 }
 function flyToPlace(r){
+  if(KM){if(KM.getLevel()>3)KM.setLevel(3);KM.setCenter(new kk.maps.LatLng(r.lat,r.lng));KM.panBy(0,Math.round((sheetPx('mid')-150)/2));return}
   if(!LM)return;const z=Math.max(LM.getZoom(),16.5);
   const p=LM.project([r.lat,r.lng],z);p.y+=sheetPx('mid')/2-50;
   LM.flyTo(LM.unproject(p,z),z,{duration:.6});
 }
 function bindMapUI(){
-  $('#zIn').onclick=()=>LM&&LM.zoomIn();
-  $('#zOut').onclick=()=>LM&&LM.zoomOut();
+  $('#zIn').onclick=()=>KM?KM.setLevel(KM.getLevel()-1,{animate:true}):LM&&LM.zoomIn();
+  $('#zOut').onclick=()=>KM?KM.setLevel(KM.getLevel()+1,{animate:true}):LM&&LM.zoomOut();
   $('#zHome').onclick=locateMe;
   $('#mq').onclick=()=>{go('home');setTimeout(()=>$('#q').focus(),60)};
   $('#mAv').onclick=()=>go('more');
@@ -837,6 +876,7 @@ function locateMe(){
   toast(L('내 위치를 찾는 중…','Finding you…'));
   navigator.geolocation.getCurrentPosition(pos=>{
     myPos=[pos.coords.latitude,pos.coords.longitude];
+    if(KM){const ll=new kk.maps.LatLng(myPos[0],myPos[1]);if(kMe)kMe.setMap(null);const d=document.createElement('div');d.className='lme';kMe=new kk.maps.CustomOverlay({position:ll,content:d,xAnchor:.5,yAnchor:.5,zIndex:20});kMe.setMap(KM);KM.setLevel(4);KM.panTo(ll)}
     if(LM){if(meMarker)meMarker.remove();meMarker=LF.marker(myPos,{icon:LF.divIcon({html:'<div class="lme"></div>',className:'',iconSize:[20,20],iconAnchor:[10,10]}),interactive:false,zIndexOffset:2000}).addTo(LM);LM.flyTo(myPos,15,{duration:.7})}
     renderSheet();renderResults();toast(L('가까운 순서로 정렬했어요','Sorted by distance'));
   },()=>toast(L('위치 권한이 없어 내 위치를 찾지 못했어요','Couldn’t get your location (permission denied)')),{enableHighAccuracy:true,timeout:8000});
@@ -1105,7 +1145,7 @@ async function load(){
   restos=next;
   renderResults();renderMap();route();
 }
-window.addEventListener('resize',()=>{if(tab==='map'){sheetTo(sheetState,true);LM&&LM.invalidateSize()}});
+window.addEventListener('resize',()=>{if(tab==='map'){sheetTo(sheetState,true);KM&&KM.relayout();LM&&LM.invalidateSize()}});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!$('#dlg').classList.contains('on'))load()});
 mapInit();
 setTab(((location.hash||'').slice(1).split('/')[0]));update();load();bootSplash();
