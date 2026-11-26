@@ -460,7 +460,7 @@ input,select,textarea{font:inherit;color:inherit}
     <div class="grab"></div>
     <h3 id="fTitleH" data-t="fTitle">내 조건</h3>
     <div class="fl" data-t="dietL">내 식단</div>
-    <div class="dietseg" id="dietSeg2"></div>
+    <div class="chips" id="dietSeg2"></div>
     <div class="fl" data-t="exL">먹지 않는 재료</div>
     <div class="chips" id="exChips"></div>
     <div class="fl" data-t="areaL">지역</div>
@@ -487,7 +487,7 @@ input,select,textarea{font:inherit;color:inherit}
       <label class="f" for="lgName" data-t="lgName">닉네임</label>
       <input id="lgName" type="text" maxlength="20" autocomplete="nickname" enterkeyhint="go" placeholder="예: 다운">
       <div class="fl" data-t="lgDiet">내 식단</div>
-      <div class="dietseg" id="dietSeg3"></div>
+      <div class="chips" id="dietSeg3"></div>
       <button class="btn full" type="submit" data-t="lgGo">시작하기</button>
       <button class="btn ghost full" type="button" id="lgGuest" data-t="lgGuest">로그인 없이 둘러보기</button>
       <p class="small" data-t="lgNote">시연용 로그인이에요. 비밀번호 없이 닉네임만 이 브라우저에 저장돼요.</p>
@@ -504,14 +504,16 @@ const db=(SUPABASE_URL&&SUPABASE_KEY&&window.supabase)?window.supabase.createCli
 
 /* ---- 판정 규칙·사전·예시 데이터 (dashboard.html과 동일) ---- */
 const CATS={
-  meat:{ko:'육류',en:'Meat'}, fish:{ko:'생선',en:'Fish'}, shell:{ko:'해산물',en:'Shellfish & seafood'},
-  egg:{ko:'달걀',en:'Eggs'}, dairy:{ko:'유제품',en:'Dairy'}, honey:{ko:'꿀',en:'Honey'}, other:{ko:'기타 동물 유래',en:'Other animal-derived'}
+  meat:{ko:'육류',en:'Meat'}, pork:{ko:'돼지고기',en:'Pork'}, fish:{ko:'생선',en:'Fish'}, shell:{ko:'해산물',en:'Shellfish & seafood'},
+  egg:{ko:'달걀',en:'Eggs'}, dairy:{ko:'유제품',en:'Dairy'}, honey:{ko:'꿀',en:'Honey'}, other:{ko:'기타 동물 유래',en:'Other animal-derived'},
+  alcohol:{ko:'술·알코올',en:'Alcohol'}
 };
 const CK=Object.keys(CATS);
 const DIETS={
-  vegan:{ko:'비건',en:'Vegan',dko:'동물 유래 식품 전부 제외',den:'No animal products',ex:['meat','fish','shell','egg','dairy','honey','other']},
-  lacto:{ko:'락토오보 채식',en:'Lacto-ovo vegetarian',dko:'육류·생선·해산물 제외',den:'No meat or seafood',ex:['meat','fish','shell']},
-  pesco:{ko:'페스코',en:'Pescatarian',dko:'육류만 제외',den:'No meat, eats seafood',ex:['meat']},
+  vegan:{ko:'비건',en:'Vegan',dko:'동물 유래 식품 전부 제외',den:'No animal products',ex:['meat','pork','fish','shell','egg','dairy','honey','other']},
+  lacto:{ko:'락토오보 채식',en:'Lacto-ovo vegetarian',dko:'육류·생선·해산물 제외',den:'No meat or seafood',ex:['meat','pork','fish','shell']},
+  pesco:{ko:'페스코',en:'Pescatarian',dko:'육류만 제외',den:'No meat, eats seafood',ex:['meat','pork']},
+  halal:{ko:'할랄',en:'Halal',dko:'돼지고기·술(주정·맛술 포함)·할랄 인증 없는 육류 제외',den:'No pork, no alcohol, no non-halal meat',ex:['meat','pork','alcohol']},
   custom:{ko:'직접 설정',en:'Custom',dko:'재료를 직접 고름',den:'Pick ingredients yourself',ex:null}
 };
 const PEND={
@@ -563,17 +565,23 @@ const RESTOS0=[
   {id:'m30',ko:'해물파전',en:'Seafood pancake',ing:['쪽파','오징어','새우','달걀'],broth:'없음',sauce:[],contains:['shell','egg'],pending:null,at:'2026-11-04',by:'식당+운영자'}]}
 ];
 const DICT=[
- ['meat',['소고기','쇠고기','우육','돼지','돈육','닭','계육','치킨','베이컨','햄','라드','우지','젤라틴','콜라겐','사골','beef','pork','chicken','bacon','ham','lard','tallow','gelatin','gelatine','collagen','meat']],
+ ['pork',['돼지','돈육','돈지','베이컨','햄','라드','pork','bacon','ham','lard']],
+ ['meat',['소고기','쇠고기','우육','닭','계육','치킨','우지','젤라틴','콜라겐','사골','beef','chicken','tallow','gelatin','gelatine','collagen','meat']],
  ['fish',['멸치','액젓','어간장','가쓰오','가다랑어','참치','연어','어묵','젓갈','어유','피쉬','anchov','fish','bonito','tuna','salmon','katsuobushi']],
  ['shell',['새우','굴','조개','홍합','바지락','꽃게','게살','오징어','문어','관자','shrimp','prawn','oyster','clam','mussel','crab','squid','scallop','lobster']],
  ['egg',['계란','달걀','난황','난백','전란','알부민','마요네즈','egg','albumin','mayonnaise']],
  ['dairy',['우유','유청','카제인','버터','치즈','크림','요거트','요구르트','유당','연유','분유','유크림','milk','whey','casein','butter','cheese','cream','yogurt','yoghurt','lactose','ghee','parmesan']],
  ['honey',['꿀','벌꿀','로열젤리','프로폴리스','honey','royal jelly','propolis']],
- ['other',['카민','코치닐','셸락','라놀린','carmine','cochineal','shellac','lanolin','e120','e904']]
+ ['other',['카민','코치닐','셸락','라놀린','carmine','cochineal','shellac','lanolin','e120','e904']],
+ ['alcohol',['주정','알코올','알콜','에탄올','주류','맛술','미림','청주','소주','막걸리','와인','맥주','사케','ethanol','alcohol','mirin','cooking wine','wine','beer','sake','liqueur']]
 ];
-const PLANT_EX=['땅콩버터','코코아버터','카카오버터','시어버터','코코넛밀크','코코넛크림','오트밀크','귀리','두유','아몬드밀크','비건','식물성','peanut butter','cocoa butter','shea butter','coconut milk','coconut cream','oat milk','soy milk','almond milk','vegan','plant-based','dairy-free','egg-free','eggplant','butternut','buttercup'];
+const PLANT_EX=['땅콩버터','코코아버터','카카오버터','시어버터','코코넛밀크','코코넛크림','오트밀크','귀리','두유','아몬드밀크','비건','식물성','peanut butter','cocoa butter','shea butter','coconut milk','coconut cream','oat milk','soy milk','almond milk','vegan','plant-based','dairy-free','egg-free','eggplant','butternut','buttercup','식초','vinegar'];
 const UNSURE=[['천연향료','향의 원료(동물/식물)가 표시되지 않음'],['향료','원료 출처 미표시'],['효소','동물 유래 효소일 수 있음'],['유화제','동물성 지방 유래일 수 있음'],['글리세린','동물성 지방 유래일 수 있음'],['모노글리세리드','동물성 지방 유래일 수 있음'],['비타민d3','양모(라놀린) 유래가 많음'],['육수','어떤 육수인지 확인 필요'],['natural flavor','source not stated'],['flavour','source not stated'],['flavor','source not stated'],['enzyme','may be animal-derived'],['emulsifier','may be animal-derived'],['glycerin','may be animal-derived'],['glycerol','may be animal-derived'],['mono- and diglycerides','may be animal-derived'],['vitamin d3','often from lanolin'],['stock','type of stock unknown'],['broth','type of broth unknown']];
 const TR={'정제수':'water','탈지대두':'defatted soybean','대두':'soybean','소맥':'wheat','천일염':'sea salt','정제소금':'refined salt','주정':'ethanol (brewing)','설탕':'sugar','물엿':'corn syrup','고춧가루':'chili powder','찹쌀':'glutinous rice','쌀':'rice','마늘':'garlic','배추':'napa cabbage','식초':'vinegar','대두유':'soybean oil','변성전분':'modified starch','간장':'soy sauce','굴추출물':'oyster extract','멸치액젓':'anchovy fish sauce','새우젓':'salted shrimp','난황':'egg yolk','유청분말':'whey powder','젤라틴':'gelatin','천연향료':'natural flavor','대두레시틴':'soy lecithin','water':'정제수','sugar':'설탕','salt':'소금','oats':'귀리','whey powder':'유청분말','natural flavor':'천연향료','soy lecithin':'대두레시틴','gelatin':'젤라틴','wheat flour':'밀가루','palm oil':'팜유','skim milk powder':'탈지분유','vitamin d3':'비타민D3','honey':'꿀','egg yolk':'난황','anchovies':'멸치','parmesan cheese':'파르메산 치즈'};
+/* 메뉴의 포함 재료 = DB의 contains + 성분표 원문에서 찾은 술·주정(할랄 판정용). DB 값은 바꾸지 않음 */
+function cont(m){const C=cont.c||(cont.c=new WeakMap());let c=C.get(m);if(c)return c;const s=new Set(m.contains||[]);
+  try{(m.sauce||[]).forEach(x=>{if(x&&x.raw&&!String(x.raw).startsWith('('))analyze(String(x.raw)).rows.forEach(r=>{if(r.cat==='alcohol')s.add('alcohol')})})}catch(e){return [...s]}
+  c=[...s];C.set(m,c);return c}
 function analyze(text){
   const toks=text.replace(/[()\[\]{}]/g,',').split(/[,，、·;\n]+/).map(t=>t.trim()).filter(Boolean);
   const rows=toks.map(tok=>{const low=tok.toLowerCase().replace(/\s+/g,' ');const lowNS=low.replace(/\s/g,'');
@@ -583,15 +591,18 @@ function analyze(text){
     return{tok,v:'plant',cat:null,why:'동물 유래 사전에 없음'}});
   return{toks,rows};
 }
-const KRW={meat:'고기(소·돼지·닭)',fish:'생선·멸치·액젓',shell:'새우·조개·굴 같은 해산물',egg:'달걀',dairy:'우유·버터·치즈',honey:'꿀',other:'젤라틴 같은 동물성 재료'};
-const ENW={meat:'meat',fish:'fish (incl. anchovy & fish sauce)',shell:'shellfish & seafood',egg:'eggs',dairy:'dairy',honey:'honey',other:'other animal-derived ingredients'};
+const KRW={meat:'고기(소·닭 등)',pork:'돼지고기(라드·햄 포함)',fish:'생선·멸치·액젓',shell:'새우·조개·굴 같은 해산물',egg:'달걀',dairy:'우유·버터·치즈',honey:'꿀',other:'젤라틴 같은 동물성 재료',alcohol:'술(맛술·미림·주정 포함)'};
+const ENW={meat:'meat',pork:'pork (incl. lard & ham)',fish:'fish (incl. anchovy & fish sauce)',shell:'shellfish & seafood',egg:'eggs',dairy:'dairy',honey:'honey',other:'other animal-derived ingredients',alcohol:'alcohol (incl. cooking wine, mirin & added ethanol)'};
+const isHalalSet=ex=>ex.includes('alcohol')&&ex.includes('pork')&&ex.includes('meat')&&!ex.includes('fish')&&!ex.includes('egg')&&!ex.includes('dairy');
+const krw=(c,ex)=>c==='meat'&&isHalalSet(ex)?'할랄 인증이 없는 고기':KRW[c];
+const enw=(c,ex)=>c==='meat'&&isHalalSet(ex)?'meat that is not halal-certified':ENW[c];
 function krSentence(ex,to,menu){
   if(!ex.length)return '이 메뉴에 들어가는 재료를 알려 주실 수 있나요?';
-  const list=ex.map(c=>KRW[c]).join(', ');
+  const list=ex.map(c=>krw(c,ex)).join(', ');
   if(to==='owner')return `안녕하세요, 리프맵입니다. ${menu?`‘${menu}’ 메뉴에 `:'메뉴에 '}사용하시는 육수·소스·양념 제품의 정확한 제품명과 성분표 사진을 보내 주실 수 있을까요? 특히 ${list}이(가) 들어가는지 확인하려고 합니다. 확인해 주시면 외국인 손님께 확인 완료로 안내하겠습니다.`;
   return `저는 ${list}을(를) 먹지 않아요. ${menu?`‘${menu}’의 `:''}육수·소스·양념에도 들어가나요? 빼고 만들어 주실 수 있나요?`;
 }
-function enSentence(ex,menu){if(!ex.length)return 'Could you tell me what ingredients are in this dish?';return `I don't eat ${ex.map(c=>ENW[c]).join(', ')}. Are any of these in the broth, sauce or seasoning${menu?` of “${menu}”`:''}? Could you make it without them?`}
+function enSentence(ex,menu){if(!ex.length)return 'Could you tell me what ingredients are in this dish?';return `I don't eat ${ex.map(c=>enw(c,ex)).join(', ')}. Are any of these in the broth, sauce or seasoning${menu?` of “${menu}”`:''}? Could you make it without them?`}
 
 
 /* ---------- 상태(개인 설정은 이 브라우저에만) ---------- */
@@ -600,16 +611,17 @@ const AREAS={all:['전체','All'],haeundae:['해운대','Haeundae'],seomyeon:['�
 let P={lang:(navigator.language||'ko').toLowerCase().startsWith('ko')?'ko':'en',diet:'vegan',ex:[...DIETS.vegan.ex],area:'all',showChk:true,view:'menu',q:''};
 try{const s=JSON.parse(localStorage.getItem(PKEY)||'null');if(s)P={...P,...s,q:''}}catch(e){}
 if(!['menu','resto'].includes(P.view))P.view='menu';
+if(DIETS[P.diet]&&DIETS[P.diet].ex)P.ex=[...DIETS[P.diet].ex];else if(!DIETS[P.diet])P.diet='custom';
 const saveP=()=>{try{localStorage.setItem(PKEY,JSON.stringify({...P,q:''}))}catch(e){}};
 let restos=null, live=false;
 
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const L=(ko,en)=>P.lang==='en'?en:ko;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const catName=c=>L(CATS[c].ko,CATS[c].en);
+const catName=c=>c==='meat'&&P.diet==='halal'?L('할랄 인증 없는 육류','Non-halal meat'):L(CATS[c].ko,CATS[c].en);
 const pill=(s,t)=>`<span class="pill ${s}"><span class="dot"></span>${t||L(ST[s].ko,ST[s].en)}</span>`;
 function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2600)}
-function judge(m,ex){const hit=(m.contains||[]).filter(c=>ex.includes(c));if(hit.length)return{s:'excl',hit};if(m.pending)return{s:'check'};return{s:'ok'}}
+function judge(m,ex){const hit=cont(m).filter(c=>ex.includes(c));if(hit.length)return{s:'excl',hit};if(m.pending)return{s:'check'};return{s:'ok'}}
 const allMenus=()=>(restos||[]).flatMap(r=>(r.menus||[]).map(m=>({m,r})));
 const findMenu=id=>{for(const r of restos||[])for(const m of r.menus||[])if(m.id===id)return{m,r};return null};
 const today=()=>new Date().toISOString().slice(0,10);
@@ -673,10 +685,10 @@ function applyLang(){
 
 /* ---------- 조건(필터) ---------- */
 function renderFilters(){
-  const dk=['vegan','lacto','pesco','custom'];
+  const dk=['vegan','lacto','pesco','halal','custom'];
   $('#dietSeg').innerHTML=dk.map(k=>`<button type="button" data-d="${k}" class="chip ${P.diet===k?'on':''}" aria-pressed="${P.diet===k}">${L(DIETS[k].ko,DIETS[k].en)}</button>`).join('');
-  $('#dietSeg3').innerHTML=dk.filter(k=>k!=='custom').map(k=>`<button type="button" data-d="${k}" class="${P.diet===k?'on':''}">${L(DIETS[k].ko,DIETS[k].en)}</button>`).join('');
-  $('#dietSeg2').innerHTML=dk.map(k=>`<button type="button" data-d="${k}" class="${P.diet===k?'on':''}">${L(DIETS[k].ko,DIETS[k].en)}</button>`).join('');
+  $('#dietSeg3').innerHTML=dk.filter(k=>k!=='custom').map(k=>`<button type="button" data-d="${k}" class="chip ${P.diet===k?'on':''}">${L(DIETS[k].ko,DIETS[k].en)}</button>`).join('');
+  $('#dietSeg2').innerHTML=dk.map(k=>`<button type="button" data-d="${k}" class="chip ${P.diet===k?'on':''}">${L(DIETS[k].ko,DIETS[k].en)}</button>`).join('');
   $$('#dietSeg button,#dietSeg2 button,#dietSeg3 button').forEach(b=>b.onclick=()=>{P.diet=b.dataset.d;if(DIETS[P.diet].ex)P.ex=[...DIETS[P.diet].ex];else if(b.closest('#dietSeg'))openFilters();update()});
   const exHtml=CK.map(c=>`<button type="button" class="chip ${P.ex.includes(c)?'on':''}" data-c="${c}" aria-pressed="${P.ex.includes(c)}">${P.ex.includes(c)?'✓ ':''}${catName(c)}</button>`).join('');
   $('#exChips').innerHTML=exHtml;$('#phChips').innerHTML=exHtml;
@@ -945,8 +957,10 @@ function showPlace(r){
 }
 function aiNote(raw){
   if(!raw||String(raw).startsWith('('))return `<div class="ai" style="color:var(--chk)">AI · ${L('성분표가 없어 판단할 수 없어요','No label to read')}</div>`;
-  const a=analyze(raw);const an=a.rows.filter(x=>x.v==='animal');const un=a.rows.filter(x=>x.v==='unsure');
-  if(an.length)return `<div class="ai" style="color:var(--exc)">AI · ${an.map(x=>`${esc(x.tok)} → ${catName(x.cat)}`).join(', ')}</div>`;
+  const a=analyze(raw);const all=a.rows.filter(x=>x.v==='animal');const an=all.filter(x=>P.ex.includes(x.cat));const oth=all.filter(x=>!P.ex.includes(x.cat));const un=a.rows.filter(x=>x.v==='unsure');
+  const note=oth.length?`<div class="ai" style="color:var(--muted);font-weight:500">${L('참고','Note')} · ${oth.map(x=>`${esc(x.tok)} → ${catName(x.cat)}`).join(', ')}</div>`:'';
+  if(an.length)return `<div class="ai" style="color:var(--exc)">AI · ${an.map(x=>`${esc(x.tok)} → ${catName(x.cat)}`).join(', ')}</div>`+note;
+  if(!un.length&&oth.length)return `<div class="ai" style="color:var(--ok)">AI · ${L('내가 제외한 재료는 없음','None of your excluded ingredients')}</div>`+note;
   if(un.length)return `<div class="ai" style="color:var(--chk)">AI · ${L('출처 확인 필요','Source unclear')}: ${un.map(x=>esc(x.tok)).join(', ')}</div>`;
   return `<div class="ai" style="color:var(--ok)">AI · ${L('동물 유래 의심 재료 없음','No animal-derived ingredients found')}</div>`;
 }
@@ -965,7 +979,7 @@ function showMenu(m,r){const fromPlace=prevRoute.startsWith('place/');
    <dt>${L('육수','Broth')}</dt><dd>${esc(m.broth||'-')}</dd>
    <dt>${L('확인 상태','Status')}</dt><dd>${conf}</dd>
    <dt>${L('마지막 확인','Last checked')}</dt><dd>${esc(m.at||'-')} · ${esc(m.by||'')}</dd>
-   ${(m.contains||[]).length?`<dt>${L('동물 유래','Animal-derived')}</dt><dd>${m.contains.map(c=>`<span class="tag2 ${bad.has(c)?'bad':''}">${catName(c)}</span>`).join('')}</dd>`:''}</dl>
+   ${cont(m).length?`<dt>${L('포함 재료','Contains')}</dt><dd>${cont(m).map(c=>`<span class="tag2 ${bad.has(c)?'bad':''}">${catName(c)}</span>`).join('')}</dd>`:''}</dl>
    <div class="h4">${L('성분 근거 — 원문과 AI 해석','Evidence — label text & AI reading')}</div>${ev}
    <div class="kr-card" style="margin-top:16px"><div class="lbl">${L('주문 전에 직원에게 보여주세요','Show this to the staff before ordering')}</div><div class="kr">${esc(krSentence(P.ex,'staff',m.ko))}</div><div class="en">${esc(enSentence(P.ex,m.en))}</div>
     <div class="acts"><button class="btn sm" id="mBig">⛶ ${L('크게 보여주기','Show full screen')}</button><button class="btn sm ghost" id="mCopy">${L('문장 복사','Copy')}</button></div></div>
