@@ -13,7 +13,7 @@
 <style>
 :root{
   --g9:#173F2D; --g8:#1F4D38; --g7:#2A6A4C; --g5:#4E9A73; --g2:#CFE3D6; --g1:#E8F1EB;
-  --bg:#F6F5F0; --card:#FFFFFF; --line:#E4E3DB; --text:#1B2420; --muted:#69736E; --soft:#F1F0EA;
+  --bg:#F6F5F0; --card:#FFFFFF; --line:#E4E3DB; --text:#1B2420; --muted:#5B6560; --soft:#F1F0EA;
   --ok:#2A6A4C; --okbg:#E6F2EA; --chk:#9A5F10; --chkbg:#FFF2D9; --exc:#B3402F; --excbg:#FBE8E4;
   --r:16px; --sh:0 1px 2px rgba(20,40,30,.05),0 8px 28px rgba(20,40,30,.08);
   --st:env(safe-area-inset-top,0px); --sb:env(safe-area-inset-bottom,0px);
@@ -61,13 +61,14 @@ input,select,textarea{font:inherit;color:inherit}
 .btn:active{transform:scale(.98)}
 .btn:disabled{opacity:.55;cursor:default}
 .btn.ghost{background:#fff;color:var(--g8);box-shadow:inset 0 0 0 1.5px var(--line)}
-.btn.sm{padding:8px 13px;font-size:13.5px;border-radius:11px}
+.btn.sm{padding:8px 13px;font-size:13.5px;border-radius:11px;min-height:38px}
+.btn .ic,.chip .ic{flex:none}
 .btn.full{width:100%}
 .pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;padding:3px 9px;border-radius:999px;white-space:nowrap}
 .pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
 .pill.ok{background:var(--okbg);color:var(--ok)} .pill.check{background:var(--chkbg);color:var(--chk)} .pill.excl{background:var(--excbg);color:var(--exc)}
 .chips{display:flex;flex-wrap:wrap;gap:7px}
-.chip{padding:8px 13px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);font-size:13.5px;font-weight:600;color:#46514C;white-space:nowrap}
+.chip{display:inline-flex;align-items:center;gap:5px;min-height:36px;padding:8px 13px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);font-size:13.5px;font-weight:600;color:#46514C;white-space:nowrap}
 .chip.on{background:var(--g8);color:#fff;box-shadow:none}
 .hscroll{display:flex;gap:7px;overflow-x:auto;margin:0 -16px;padding:2px 16px;scrollbar-width:none}
 .hscroll::-webkit-scrollbar{display:none}
@@ -77,7 +78,9 @@ input,select,textarea{font:inherit;color:inherit}
 .hello{font-size:23px;line-height:1.3;letter-spacing:-.025em;color:var(--g9);font-weight:800}
 .hello em{font-style:normal;color:var(--g7)}
 .hello-p{color:#4A5550;font-size:13.5px;margin-top:6px}
-.search{display:flex;align-items:center;gap:8px;border-radius:14px;padding:0 14px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);margin:16px 0 12px}
+.search{display:flex;align-items:center;gap:8px;border-radius:14px;padding:0 6px 0 14px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);margin:8px 0 10px}
+.search .sfilt{flex:none;height:38px;padding:0 11px;border-radius:10px;background:var(--g1);color:var(--g8);display:flex;align-items:center;gap:5px;font-size:13px;font-weight:800}
+.search .sfilt .dotb{width:7px;height:7px;border-radius:50%;background:#E0A526}
 .search:focus-within{box-shadow:inset 0 0 0 1.5px var(--g5)}
 .search input{border:none;background:none;outline:none;height:48px;width:100%;font-size:15px}
 .search input::-webkit-search-cancel-button{display:none}
@@ -87,7 +90,7 @@ input,select,textarea{font:inherit;color:inherit}
 .mybar .t{flex:1;min-width:0}
 .mybar b{font-size:14px}
 .mybar .go{font-weight:800;color:var(--g7);white-space:nowrap}
-.rhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:22px 0 10px}
+.rhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:18px 0 10px}
 .rhead h2{font-size:18px;color:var(--g9);letter-spacing:-.01em;line-height:1.3}
 .rhead .cnt{font-size:12.5px;color:var(--muted);margin-top:2px}
 .views{display:flex;background:#fff;border-radius:11px;padding:3px;box-shadow:inset 0 0 0 1px var(--line);flex:none}
@@ -104,18 +107,25 @@ input,select,textarea{font:inherit;color:inherit}
 .mc .why.excl{background:var(--excbg);color:var(--exc)} .mc .why.check{background:var(--chkbg);color:var(--chk)}
 .mc .rest{font-size:13px;font-weight:700;color:var(--g7)}
 .mc.dim{opacity:.6}
-.rc{text-align:left;background:#fff;border-radius:var(--r);padding:14px 15px;display:flex;flex-direction:column;gap:4px;box-shadow:0 1px 2px rgba(20,40,30,.05);width:100%;transition:transform .1s}
+.rc{text-align:left;background:#fff;border-radius:var(--r);padding:14px 15px;display:flex;flex-direction:row;align-items:flex-start;gap:12px;box-shadow:0 1px 2px rgba(20,40,30,.05);width:100%;transition:transform .1s}
 .rc h3{font-size:16.5px}
 .rc .sub{font-size:12.5px;color:var(--muted)}
 .rc .pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.rc .rcb{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.rc .rcb .small{font-size:12.5px}
 .sec{font-size:13px;font-weight:700;color:var(--muted);margin:24px 0 10px;display:flex;align-items:center;gap:10px}
 .sec::after{content:"";flex:1;height:1px;background:var(--line)}
 .empty{background:#fff;border:1px dashed var(--line);border-radius:var(--r);padding:28px 20px;text-align:center;color:var(--muted);font-size:13.5px}
+.empty .eic{width:52px;height:52px;border-radius:16px;background:var(--g1);color:var(--g7);display:grid;place-items:center;margin:0 auto 12px}
+.empty .btn{margin-top:14px}
 .empty b{display:block;color:var(--text);font-size:15.5px;margin-bottom:6px}
 .skel{height:132px;border-radius:var(--r);background:linear-gradient(90deg,#EEEDE6 25%,#F6F5F0 50%,#EEEDE6 75%);background-size:200% 100%;animation:sk 1.2s infinite}
 @keyframes sk{to{background-position:-200% 0}}
 .offline{background:var(--chkbg);color:#6C440B;font-size:12.5px;border-radius:12px;padding:10px 12px;margin-top:12px;display:none}
-.small{font-size:12.5px;color:var(--muted)}
+.small{font-size:13px;color:var(--muted);line-height:1.5}
+.ic{display:inline-block;vertical-align:-3px;flex:none}
+.thumb{display:grid;place-items:center;flex:none;border-radius:14px;color:var(--tc);background:color-mix(in srgb,var(--tc) 13%,#fff)}
+.row i .ic{vertical-align:0}
 
 /* 지도 탭 */
 .mapbox{background:#fff;border-radius:var(--r);padding:8px;box-shadow:0 1px 2px rgba(20,40,30,.05);margin-top:4px}
@@ -141,7 +151,7 @@ input,select,textarea{font:inherit;color:inherit}
 .gh:first-child{margin-top:6px}
 .row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);width:100%;text-align:left;font-size:14.5px}
 .row:last-child{border-bottom:none}
-.row i{font-style:normal;width:32px;height:32px;border-radius:10px;background:var(--g1);display:grid;place-items:center;flex:none;font-size:15px}
+.row i{font-style:normal;width:34px;height:34px;border-radius:10px;background:var(--g1);color:var(--g8);display:grid;place-items:center;flex:none;font-size:15px;font-weight:800}
 .row .t{flex:1;min-width:0}
 .row .t small{display:block;font-size:12.5px;color:var(--muted)}
 .row .ar{color:#B5BBB8;font-size:18px}
@@ -224,7 +234,7 @@ input,select,textarea{font:inherit;color:inherit}
 .big-kr .en{font-size:15px;color:#76683F;margin-top:22px}
 .big-kr .x{position:absolute;top:calc(14px + var(--st));right:14px;padding:10px 16px;border-radius:12px;background:#fff;font-weight:700;box-shadow:var(--sh)}
 .big-kr .hint{font-size:13px;color:#8A7A4A;margin-bottom:18px;font-weight:700}
-#toast{position:absolute;left:50%;bottom:calc(74px + var(--sb));transform:translateX(-50%) translateY(10px);background:var(--g9);color:#fff;padding:11px 16px;border-radius:12px;font-size:13.5px;opacity:0;pointer-events:none;transition:.25s;z-index:320;width:max-content;max-width:88%;text-align:center}
+#toast{position:absolute;left:50%;bottom:calc(74px + var(--sb));transform:translateX(-50%) translateY(10px);background:rgba(23,63,45,.96);color:#fff;padding:10px 15px;border-radius:12px;font-size:13px;line-height:1.45;max-width:calc(100% - 40px);width:max-content;text-align:center;opacity:0;pointer-events:none;transition:.22s;z-index:320;box-shadow:0 6px 20px rgba(0,0,0,.18)}
 #toast.on{opacity:1;transform:translateX(-50%)}
 
 
@@ -345,6 +355,13 @@ input,select,textarea{font:inherit;color:inherit}
 .photo{display:grid;place-items:center;min-height:120px;border:1.5px dashed var(--line);border-radius:14px;background:#FBFBF8;color:var(--muted);font-weight:700;font-size:14px;overflow:hidden;cursor:pointer}
 .photo img{width:100%;max-height:220px;object-fit:cover}.photo input{display:none}
 .tchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tagbox{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:7px;background:#FBFBF8;min-height:52px}
+.tagbox:focus-within{border-color:var(--g5);box-shadow:0 0 0 3px var(--g2)}
+.tagbox input[type=text]{flex:1;min-width:110px;width:auto;border:none;background:none;padding:6px 4px;outline:none}
+.tagbox .tchip{font-size:13px;padding:5px 6px 5px 10px}
+.tagbox .tchip button{font-size:16px;line-height:1;opacity:.65;padding:0 4px;color:inherit}
+.sugs{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.sug{font-size:12.5px;font-weight:700;color:var(--g7);background:var(--g1);border-radius:999px;padding:6px 11px;min-height:32px}
 .tchip{position:relative;display:inline-flex;align-items:center;gap:5px;font-size:12.5px;padding:4px 9px;border-radius:999px;font-weight:600}
 .tchip em{font-style:normal;font-size:11px;font-weight:800;opacity:.85}
 .tchip.an{background:var(--excbg);color:var(--exc)}.tchip.un{background:var(--chkbg);color:var(--chk)}.tchip.pl{background:var(--okbg);color:var(--ok)}
@@ -386,6 +403,7 @@ input,select,textarea{font:inherit;color:inherit}
 #app.mapmode #abar{display:none}
 #app.mapmode #toast{bottom:auto;top:calc(122px + var(--st))}
 #app.ownmode #toast{top:auto;bottom:calc(74px + var(--sb))}
+#app.ownmode.wizmode #toast{bottom:calc(150px + var(--sb))}
 .mfab,.mlegend{transition:bottom .28s cubic-bezier(.2,.8,.2,1),opacity .2s}
 .screen.map{padding:0;overflow:hidden;animation:none}
 #lmap{position:absolute;inset:0;background:#EEF0E8;z-index:0;font-family:inherit}
@@ -426,6 +444,11 @@ input,select,textarea{font:inherit;color:inherit}
 .scanCta i{font-style:normal;font-size:22px;width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.15);display:grid;place-items:center;flex:none}
 .scanCta b{display:block;font-size:15px}.scanCta small{display:block;font-size:12.5px;opacity:.86;margin-top:3px;line-height:1.4}
 .scanCta .ar{margin-left:auto;font-size:22px;opacity:.75}
+.scanCta.slim{padding:9px 12px;margin:10px 0 0;border-radius:14px;box-shadow:none;gap:10px}
+.scanCta.slim i{width:34px;height:34px;border-radius:10px}
+.scanCta.slim small{display:none}
+.scanCta.slim b{font-size:14px}
+.strip.end{margin:22px 0 4px}
 .scanCta .ai{font-style:normal;font-size:10px;background:#B9E3C6;color:#173F2D;border-radius:5px;padding:1px 5px;margin-left:6px;font-weight:800;vertical-align:2px}
 .scDrop{display:flex;flex-direction:column;align-items:center;gap:4px;border:2px dashed var(--g2);border-radius:16px;padding:20px;text-align:center;background:#fff;cursor:pointer;font-weight:800;color:var(--g8)}
 .scDrop small{font-weight:500;color:var(--muted)}
@@ -436,6 +459,34 @@ input,select,textarea{font:inherit;color:inherit}
 .scRow{background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start}
 .scRow .k{font-size:16.5px;font-weight:800}.scRow .e{font-size:13px;color:var(--muted)}.scRow .w{font-size:12.5px;margin-top:6px;line-height:1.5}
 .scRow .btn{flex:none}
+.phd{display:flex;gap:12px;align-items:center}
+.tour{position:absolute;inset:0;z-index:270;background:rgba(15,30,22,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px;animation:fadein .2s}
+.tour[hidden]{display:none}
+.tour .tc{background:#fff;border-radius:26px;padding:26px 22px calc(18px + var(--sb));width:100%;max-width:420px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.tour .art{width:64px;height:64px;border-radius:20px;background:var(--g1);color:var(--g7);display:grid;place-items:center}
+.tour h3{font-size:21px;line-height:1.35;color:var(--g9);margin:16px 0 8px;letter-spacing:-.02em}
+.tour p{font-size:14.5px;color:#46514C}
+.tour .lg{display:grid;gap:9px;margin-top:14px}
+.tour .lg div{display:flex;gap:10px;align-items:center;font-size:13.5px;color:#46514C}
+.tour .lg .pill{flex:none}
+.tour .dots{display:flex;gap:6px;justify-content:center;margin:20px 0 14px}
+.tour .dots i{width:7px;height:7px;border-radius:7px;background:var(--line);transition:width .2s}
+.tour .dots i.on{width:20px;background:var(--g7)}
+.tour .tb{display:grid;grid-template-columns:1fr 2fr;gap:8px}
+.qacts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.qa1{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:70px;background:#fff;border-radius:16px;font-size:12.5px;font-weight:800;color:var(--g8);box-shadow:inset 0 0 0 1px var(--line);text-align:center;padding:8px 4px}
+.qa1:first-child{background:var(--g8);color:#fff;box-shadow:none}
+.qa1.done{color:var(--muted)}.qa1:disabled{cursor:default}
+.qa1 em{position:absolute;top:6px;right:8px;font-style:normal;font-size:11px;background:var(--g1);color:var(--g7);border-radius:8px;padding:0 6px}
+.banner .ic{margin-top:1px}
+details.sec2{background:#fff;border-radius:16px;margin-top:12px;padding:0 14px}
+details.sec2>summary{list-style:none;display:flex;align-items:center;gap:7px;padding:14px 0;font-weight:800;font-size:14.5px;color:var(--g9);cursor:pointer}
+details.sec2>summary::-webkit-details-marker{display:none}
+details.sec2>summary::after{content:"";margin-left:auto;width:8px;height:8px;border-right:2px solid #9AA29E;border-bottom:2px solid #9AA29E;transform:rotate(45deg);transition:transform .2s}
+details.sec2[open]>summary::after{transform:rotate(-135deg)}
+details.sec2>summary .sm2{font-size:12px;font-weight:700;color:var(--muted)}
+details.sec2[open]{padding-bottom:14px}
+details.sec2 .kr-card{margin-top:0}
 .reqbox{display:flex;gap:10px;align-items:center;background:#EEF6F0;border-radius:14px;padding:12px 14px;margin:12px 0}
 .reqbox b{display:block;font-size:13.5px}.reqbox small{display:block;font-size:12px;color:var(--muted);margin-top:3px;line-height:1.4}
 .reqbox .btn{flex:none;margin-left:auto}
@@ -482,6 +533,7 @@ input,select,textarea{font:inherit;color:inherit}
   #toast{bottom:92px}
   #app.mapmode #toast{top:168px}
   #app.ownmode #toast{top:auto;bottom:92px}
+  #app.ownmode.wizmode #toast{bottom:168px}
   .sheet{padding-bottom:30px}
   .login{padding-top:20px}
   .owner{top:44px}
@@ -514,7 +566,7 @@ input,select,textarea{font:inherit;color:inherit}
     <svg role="img" aria-label="QR: leafmap-eight.vercel.app" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges"><path stroke="#173F2D" d="M0 0.5h7m2 0h1m2 0h4m3 0h2m1 0h7M0 1.5h1m5 0h1m3 0h1m2 0h5m4 0h1m5 0h1M0 2.5h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m2 0h3m1 0h1m1 0h3m1 0h1M0 3.5h1m1 0h3m1 0h1m1 0h1m2 0h1m2 0h2m1 0h1m1 0h1m2 0h1m1 0h3m1 0h1M0 4.5h1m1 0h3m1 0h1m1 0h1m2 0h1m3 0h2m1 0h2m2 0h1m1 0h3m1 0h1M0 5.5h1m5 0h1m1 0h4m10 0h1m5 0h1M0 6.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M8 7.5h5m1 0h1m1 0h1m3 0h1M0 8.5h1m1 0h5m2 0h1m1 0h2m3 0h2m2 0h1m1 0h5M0 9.5h1m1 0h2m1 0h1m2 0h2m1 0h5m3 0h6m3 0h1M0 10.5h1m1 0h1m2 0h2m3 0h2m1 0h6m3 0h1M1 11.5h1m2 0h2m3 0h3m1 0h1m1 0h1m2 0h1m4 0h3m1 0h1M0 12.5h1m2 0h1m2 0h1m3 0h1m3 0h2m1 0h1m1 0h1m5 0h2M2 13.5h2m1 0h1m2 0h1m1 0h3m2 0h2m1 0h7m3 0h1M0 14.5h2m2 0h1m1 0h5m1 0h1m4 0h2m1 0h2m1 0h4M2 15.5h1m1 0h1m2 0h2m1 0h1m3 0h1m1 0h1m2 0h2m3 0h1m2 0h1M0 16.5h1m4 0h2m1 0h1m3 0h1m4 0h1m7 0h2M0 17.5h2m1 0h1m3 0h4m2 0h3m2 0h3m1 0h3m1 0h1m1 0h1M0 18.5h1m1 0h1m3 0h1m1 0h3m1 0h4m4 0h2m1 0h2m1 0h1M0 19.5h1m2 0h2m3 0h2m1 0h1m1 0h1m1 0h1m5 0h1m1 0h2m2 0h1M0 20.5h1m1 0h1m3 0h1m3 0h1m3 0h4m1 0h6m1 0h3M8 21.5h1m2 0h1m4 0h3m1 0h1m3 0h5M0 22.5h7m2 0h2m4 0h1m3 0h2m1 0h1m1 0h3M0 23.5h1m5 0h1m1 0h2m1 0h2m1 0h2m2 0h3m3 0h1m2 0h1M0 24.5h1m1 0h3m1 0h1m1 0h1m2 0h2m2 0h4m1 0h5m1 0h2M0 25.5h1m1 0h3m1 0h1m1 0h4m1 0h2m1 0h4m1 0h1m3 0h4M0 26.5h1m1 0h3m1 0h1m1 0h5m1 0h4m1 0h1m1 0h7M0 27.5h1m5 0h1m3 0h1m1 0h1m1 0h2m2 0h1m1 0h1m1 0h1m1 0h2m1 0h1M0 28.5h7m1 0h1m3 0h4m1 0h1m1 0h1m3 0h1m2 0h1"/></svg>
     <div><b id="qrT">휴대폰으로 열어 보세요</b><span id="qrP">카메라로 QR을 찍으면 앱 화면으로 바로 열려요</span></div>
   </div>
-  <a class="dashbtn" href="dashboard.html" title="운영자용 화면"><span aria-hidden="true">▦</span><span data-t="dash">운영자 대시보드</span></a>
+  <a class="dashbtn" href="dashboard.html" title="운영자용 화면"><span data-ic="grid" data-s="16"></span><span data-t="dash">운영자 대시보드</span></a>
 </aside>
 
 <div id="app">
@@ -531,22 +583,20 @@ input,select,textarea{font:inherit;color:inherit}
     <!-- ① 지도 (홈) -->
     <section class="screen map" id="s-map" aria-labelledby="tb-map">
       <div id="lmap" aria-label="부산 채식 식당 지도"></div>
-      <div class="msearch"><span class="lg"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></span><button class="mq" id="mq" type="button"><span aria-hidden="true">⌕ </span><span data-t="mq">메뉴·식당 검색</span></button><button class="lk" id="mLang" type="button" aria-label="Language"></button><button class="av" id="mAv" type="button" aria-label="내 정보"></button></div>
+      <div class="msearch"><span class="lg"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></span><button class="mq" id="mq" type="button"><span data-ic="search" data-s="17" class="mqi"></span><span data-t="mq">메뉴·식당 검색</span></button><button class="lk" id="mLang" type="button" aria-label="Language"></button><button class="av" id="mAv" type="button" aria-label="내 정보"></button></div>
       <div class="hscroll mchips" id="mapArea"></div>
             <div class="mlegend" id="mlegend"></div>
-      <div class="mfab" id="mfab"><div class="grp"><button type="button" id="zIn" aria-label="확대">+</button><button type="button" id="zOut" aria-label="축소">−</button></div><button type="button" class="solo" id="zHome" aria-label="내 위치">◎</button></div>
+      <div class="mfab" id="mfab"><div class="grp"><button type="button" id="zIn" aria-label="확대">+</button><button type="button" id="zOut" aria-label="축소">−</button></div><button type="button" class="solo" id="zHome" aria-label="내 위치"><span data-ic="locate" data-s="20"></span></button></div>
       <div class="msheet" id="msheet"><div class="msh" id="msh"><div class="grab"></div><h3 id="msT"></h3><div class="sub" id="msS"></div></div><div class="msb" id="msB"></div></div>
     </section>
 
     <!-- ② 찾기 -->
     <section class="screen" id="s-home" aria-labelledby="tb-home">
-      <div class="strip" data-t="strip">MVP 시제품 · 식당은 실제 공개 정보(2026년 11월), 메뉴 성분은 아직 리프맵 확인 전이에요</div>
-      <div class="hello" id="heroT">부산에서 채식 메뉴를,<br><em>육수와 양념까지</em> 확인하고 고르세요</div>
+      <div class="hello" id="heroT" hidden></div>
       <form id="finder" role="search" onsubmit="return false">
-        <div class="search" id="searchBox"><span aria-hidden="true" style="color:var(--muted)">⌕</span><label for="q" class="sr" data-t="qL">메뉴·식당 검색</label><input id="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="예: 칼국수, 비빔밥, 카페"><button type="button" class="clr" id="qClr" aria-label="지우기">✕</button></div>
+        <div class="search" id="searchBox"><span data-ic="search" data-s="18" style="color:var(--muted);display:flex"></span><label for="q" class="sr" data-t="qL">메뉴·식당 검색</label><input id="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="예: 칼국수, 비빔밥, 카페"><button type="button" class="clr" id="qClr" aria-label="지우기">✕</button><button type="button" class="sfilt" id="fOpen"><span data-ic="sliders" data-s="16"></span><span data-t="edit">조건</span><span id="myBar" hidden></span></button></div>
       </form>
       <div class="hscroll" id="dietSeg" role="group" aria-label="내 식단"></div>
-      <button class="mybar" id="fOpen"><span class="t" id="myBar"></span><span class="go">⚙ <span data-t="edit">조건</span></span></button>
       <div id="scanCta2"></div>
       <div class="offline" id="offline"></div>
       <div class="rhead">
@@ -557,6 +607,7 @@ input,select,textarea{font:inherit;color:inherit}
         </div>
       </div>
       <div id="results"><div class="list"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div></div>
+      <div class="strip end" data-t="strip">MVP 시제품 · 식당은 실제 공개 정보(2026년 11월), 메뉴 성분은 아직 리프맵 확인 전이에요</div>
     </section>
 
 
@@ -580,9 +631,10 @@ input,select,textarea{font:inherit;color:inherit}
     <section class="screen" id="s-more" aria-labelledby="tb-more">
       <div class="gh" data-t="gMy">내 설정</div>
       <div class="group">
-        <div class="row"><i id="meAv">👤</i><span class="t"><span id="meName"></span><small data-t="meS">시연용 계정 · 이 브라우저에만 저장</small></span><button class="btn sm ghost" id="logout" type="button"></button></div>
-        <button class="row" id="mFilt"><i>⚙</i><span class="t"><span data-t="fTitle">내 조건</span><small id="moreSum"></small></span><span class="ar">›</span></button>
-        <div class="row"><i>🌐</i><span class="t" data-t="langL">언어 · Language</span><div class="lang" role="group" aria-label="Language"><button data-l="ko">KO</button><button data-l="en">EN</button></div></div>
+        <div class="row"><i id="meAv"></i><span class="t"><span id="meName"></span><small data-t="meS">시연용 계정 · 이 브라우저에만 저장</small></span><button class="btn sm ghost" id="logout" type="button"></button></div>
+        <button class="row" id="mFilt"><i data-ic="sliders"></i><span class="t"><span data-t="fTitle">내 조건</span><small id="moreSum"></small></span><span class="ar">›</span></button>
+        <button class="row" id="tourAgain"><i data-ic="info"></i><span class="t"><span data-t="tourAgain">사용 안내 다시 보기</span></span><span class="ar">›</span></button>
+        <div class="row"><i data-ic="globe"></i><span class="t" data-t="langL">언어 · Language</span><div class="lang" role="group" aria-label="Language"><button data-l="ko">KO</button><button data-l="en">EN</button></div></div>
       </div>
 
       <div class="gh" data-t="howT">확실하지 않으면 ‘맞음’이라고 하지 않아요</div>
@@ -601,16 +653,16 @@ input,select,textarea{font:inherit;color:inherit}
       <div class="gh" data-t="owT">사장님, 채식 메뉴를 등록하세요</div>
       <div class="group" id="ownBox">
         <div class="benefits">
-          <div><i>🌿</i><span data-t="b1">확인된 메뉴는 ‘조건에 맞음’으로 표시돼 여행자가 안심하고 주문해요</span></div>
-          <div><i>🗣</i><span data-t="b2">재료 설명이 어려운 외국인 손님 응대 부담이 줄어요</span></div>
-          <div><i>↻</i><span data-t="b3">제품을 바꾸면 변경 신고로 바로 반영돼요</span></div>
+          <div><i data-ic="verified"></i><span data-t="b1">확인된 메뉴는 ‘조건에 맞음’으로 표시돼 여행자가 안심하고 주문해요</span></div>
+          <div><i data-ic="chat"></i><span data-t="b2">재료 설명이 어려운 외국인 손님 응대 부담이 줄어요</span></div>
+          <div><i data-ic="refresh"></i><span data-t="b3">제품을 바꾸면 변경 신고로 바로 반영돼요</span></div>
         </div>
-        <div class="form"><button class="btn" type="button" id="goOwnApp" data-t="goOwnApp">🧑‍🍳 사장님 화면으로 시작하기</button><p class="note" data-t="goOwnP">가게를 고르면 손님 요청·리뷰를 보고 메뉴와 양념 제품을 등록할 수 있어요.</p></div>
+        <div class="form"><button class="btn" type="button" id="goOwnApp"><span data-ic="chef"></span><span data-t="goOwnApp">사장님 화면으로 시작하기</span></button><p class="note" data-t="goOwnP">가게를 고르면 손님 요청·리뷰를 보고 메뉴와 양념 제품을 등록할 수 있어요.</p></div>
       </div>
 
       <div class="gh" data-t="foot3">운영자 화면</div>
       <div class="group">
-        <a class="row" href="dashboard.html"><i>▦</i><span class="t"><span data-t="dash">운영자 대시보드</span><small data-t="dashS">등록 검토·제보 처리 (PC 화면)</small></span><span class="ar">›</span></a>
+        <a class="row" href="dashboard.html"><i data-ic="grid"></i><span class="t"><span data-t="dash">운영자 대시보드</span><small data-t="dashS">등록 검토·제보 처리 (PC 화면)</small></span><span class="ar">›</span></a>
       </div>
       <div class="foot"><b>LeafMap<span data-t="brandKo"> 리프맵</span></b> · <span data-t="foot1">부산 채식 여행자를 위한 메뉴 성분 확인 서비스 (MVP)</span></div>
     </section>
@@ -644,7 +696,7 @@ input,select,textarea{font:inherit;color:inherit}
     <div class="pb" id="dBody"></div>
   </div>
 
-  <div class="big-kr" id="bigKr" role="dialog" aria-modal="true"><button class="x" id="bigX" data-t="bigX">✕ 닫기 Close</button><div class="hint" id="bigHint">직원분께 · For the staff</div><div class="kr" id="bigKrT"></div><div class="en" id="bigEnT"></div><button class="spk" id="bigSpk" type="button" data-t="bigSpk">🔊 소리로 들려주기 · Play</button></div>
+  <div class="big-kr" id="bigKr" role="dialog" aria-modal="true"><button class="x" id="bigX" data-t="bigX">✕ 닫기 Close</button><div class="hint" id="bigHint">직원분께 · For the staff</div><div class="kr" id="bigKrT"></div><div class="en" id="bigEnT"></div><button class="spk" id="bigSpk" type="button"><span data-ic="speaker" data-s="20"></span><span id="bigSpkT">소리로 들려주기 · Play</span></button></div>
   <div id="toast" role="status"></div>
 
   <button type="button" class="ownback" id="ownBack" hidden></button>
@@ -669,14 +721,15 @@ input,select,textarea{font:inherit;color:inherit}
     </nav>
   </div>
 
+  <div class="tour" id="tour" hidden role="dialog" aria-modal="true" aria-labelledby="tourT"></div>
   <div class="splash" id="splash" aria-hidden="true"><div class="mark"><svg width="54" height="54" viewBox="0 0 24 24"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></div><div class="nm">LeafMap</div><div class="tg" id="splashT">부산 채식 메뉴, 성분까지 확인하고 고르기</div><div class="by">리프맵 · BUSAN</div></div>
   <div class="login" id="login" hidden role="dialog" aria-modal="true" aria-labelledby="lgT">
     <div class="lt"><button type="button" class="lgx" id="lgX" hidden></button><div class="lang" role="group" aria-label="Language"><button data-l="ko">KO</button><button data-l="en">EN</button></div></div>
     <div class="lhero"><div class="mark"><svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></div><h2 id="lgT">부산 채식 여행,<br><em>리프맵</em>으로 시작해요</h2><p data-t="lgP" id="lgPp">메뉴마다 육수·양념 제품 성분까지 확인해 드려요</p></div>
     <form id="lgForm" class="lform" novalidate>
       <div class="role" role="radiogroup" id="lgRole">
-        <button type="button" data-role="traveler" role="radio"><i aria-hidden="true">🧳</i><span><b data-t="rlT">이용 고객</b><small data-t="rlTs">채식 메뉴 찾기</small></span></button>
-        <button type="button" data-role="owner" role="radio"><i aria-hidden="true">🧑‍🍳</i><span><b data-t="rlO">식당 사장님</b><small data-t="rlOs">내 가게 관리</small></span></button>
+        <button type="button" data-role="traveler" role="radio"><i data-ic="suitcase" data-s="24"></i><span><b data-t="rlT">이용 고객</b><small data-t="rlTs">채식 메뉴 찾기</small></span></button>
+        <button type="button" data-role="owner" role="radio"><i data-ic="chef" data-s="24"></i><span><b data-t="rlO">식당 사장님</b><small data-t="rlOs">내 가게 관리</small></span></button>
       </div>
       <div id="lgTrav">
         <label class="f" for="lgName" data-t="lgName">닉네임</label>
@@ -911,9 +964,100 @@ let restos=null, live=false;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const L=(ko,en)=>P.lang==='en'?en:ko;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* ---------- 라인 아이콘 세트 (24px 격자, 선 굵기 1.9, currentColor) — 화면 안 이모지 대신 씀 ---------- */
+const IC={
+ search:'<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
+ locate:'<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.6"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5"/>',
+ sliders:'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',
+ user:'<circle cx="12" cy="8" r="3.6"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/>',
+ globe:'<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.4 2.5 3.5 5.3 3.5 8.5s-1.1 6-3.5 8.5c-2.4-2.5-3.5-5.3-3.5-8.5s1.1-6 3.5-8.5Z"/>',
+ verified:'<path d="m12 3 2.3 1.7 2.8-.1.9 2.7 2.3 1.6-.9 2.7.9 2.7-2.3 1.6-.9 2.7-2.8-.1L12 21l-2.3-1.7-2.8.1-.9-2.7-2.3-1.6.9-2.7-.9-2.7 2.3-1.6.9-2.7 2.8.1Z"/><path d="m9 12 2 2 4-4"/>',
+ chat:'<path d="M5 5h14v10H10l-4 4v-4H5z"/>',
+ ask:'<path d="M5 5h14v10H10l-4 4v-4H5z"/><path d="M12 7.5v5M9.5 10h5"/>',
+ refresh:'<path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/>',
+ chef:'<path d="M7 14a4 4 0 1 1 1.6-7.7 4 4 0 0 1 6.8 0A4 4 0 1 1 17 14"/><path d="M7 13v6.5h10V13M7 16.5h10"/>',
+ store:'<path d="M4 10 5.5 5h13L20 10M4 10v9.5h16V10M4 10c0 1.7 1.3 3 3 3s2.5-1.3 2.5-3c0 1.7 1.2 3 2.5 3s2.5-1.3 2.5-3c0 1.7 1 3 2.5 3s3-1.3 3-3"/>',
+ speaker:'<path d="M4 9.5h3.5L12 6v12l-4.5-3.5H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
+ sprout:'<path d="M12 20.5V12"/><path d="M12 12c0-4 3-6.5 7-6.5 0 4-3 6.5-7 6.5Z"/><path d="M12 14.5c0-3-2.3-5-5.5-5 0 3 2.3 5 5.5 5Z"/>',
+ clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+ expand:'<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>',
+ flag:'<path d="M5.5 21V4M5.5 4H17l-2.2 4 2.2 4H5.5"/>',
+ heart:'<path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20Z"/>',
+ camera:'<path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.2l1.4-2h5.8l1.4 2h2.2A1.5 1.5 0 0 1 20 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 17.5v-9Z"/><circle cx="12" cy="13" r="3.3"/>',
+ flask:'<path d="M9 3.5h6M10 3.5v5.5L4.8 18a2 2 0 0 0 1.8 3h10.8a2 2 0 0 0 1.8-3L14 9V3.5"/><path d="M7.3 14.5h9.4"/>',
+ pencil:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
+ bulb:'<path d="M9.5 18h5M10.5 21h3"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.1v.1h5v-.1c0-.8.4-1.6 1.1-2.1A6 6 0 0 0 12 3Z"/>',
+ eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="3"/>',
+ lock:'<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>',
+ box:'<path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"/><path d="M4 7.5 12 12l8-4.5M12 12v9"/>',
+ alert:'<path d="M12 4 2.5 20h19z"/><path d="M12 10v4M12 17h.01"/>',
+ pin:'<path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/>',
+ gift:'<rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M3 9h18M12 9v11M12 9C10.5 5.5 6.5 5 6.5 7.5S10 9 12 9Zm0 0c1.5-3.5 5.5-4 5.5-1.5S14 9 12 9Z"/>',
+ megaphone:'<path d="M4 10v4h3l9 5V5l-9 5z"/><path d="M19 9.5a3.5 3.5 0 0 1 0 5M7 14l1.5 5h2.5l-1-4.5"/>',
+ grid:'<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+ suitcase:'<rect x="3.5" y="7" width="17" height="12.5" rx="2"/><path d="M9 7V5a1.5 1.5 0 0 1 1.5-1.5h3A1.5 1.5 0 0 1 15 5v2M3.5 12.5h17"/>',
+ external:'<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+ check:'<path d="m5 12.5 4.5 4.5L19 7"/>',
+ route:'<circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="6" r="2.2"/><path d="M8.2 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.8"/>',
+ card:'<rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M7 10h10M7 14h6"/>',
+ star:'<path d="m12 4 2.4 5 5.4.6-4 3.7 1.1 5.3L12 16l-4.9 2.6 1.1-5.3-4-3.7 5.4-.6z"/>',
+ info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/>',
+ /* 음식 종류 썸네일 */
+ bowl:'<path d="M3.5 11h17a8.5 8.5 0 0 1-17 0Z"/><path d="M8.5 7.5c0-1.4 1-1.8 1-3.2M12.5 7.5c0-1.4 1-1.8 1-3.2"/>',
+ noodles:'<path d="M3.5 11h17a8.5 8.5 0 0 1-17 0Z"/><path d="m13 3.5-3.5 7.5M19 4.5l-6 6.5"/>',
+ curry:'<path d="M4.5 10.5h15v4a5 5 0 0 1-5 5h-5a5 5 0 0 1-5-5z"/><path d="M2.5 10.5h19M9 7c0-1 .7-1.5.7-2.5M14 7c0-1 .7-1.5.7-2.5"/>',
+ pizza:'<path d="M12 21 3.5 6.5a15 15 0 0 1 17 0z"/><circle cx="10.5" cy="10" r="1"/><circle cx="13.5" cy="13.5" r="1"/>',
+ bread:'<path d="M5.5 11.5a3.5 3.5 0 0 1 0-7h13a3.5 3.5 0 0 1 0 7v7.5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1z"/>',
+ cup:'<path d="M5 8.5h12v5.5a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5z"/><path d="M17 10.5h1.5a2.5 2.5 0 0 1 0 5H17M9 3.5v2.5M13 3.5v2.5"/>',
+ salad:'<path d="M3.5 11.5h17a8.5 8.5 0 0 1-17 0Z"/><path d="M9 11.5c0-3 1.5-5.2 4-6.3M14 11.5c0-2 1-3.6 3.2-4.2"/>',
+ burger:'<path d="M4 10.5a8 8 0 0 1 16 0z"/><path d="M3 14h18M5 17.5h14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/>',
+ cake:'<path d="M4 20.5h16M5.5 20.5v-7h13v7M5.5 16c2 1.4 4.2 1.4 6.5 0s4.5-1.4 6.5 0M12 13.5V10M12 7v.3"/>'
+};
+const ic=(n,s=18,cls='')=>`<svg class="ic ${cls}" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]||''}</svg>`;
+const fillIcons=(root=document)=>root.querySelectorAll('[data-ic]').forEach(e=>{if(!e.firstElementChild)e.innerHTML=ic(e.dataset.ic,+e.dataset.s||18)});
+
+/* 음식 종류 → 썸네일 아이콘·색 (공개 정보의 유형 이름으로 추정) */
+const CUIS=[[/bak|bread|boulang|patisser|cake|croissant/,'bread','#A0703A'],[/dessert|mochi|churro|yogurt|gelato|ice|sweet|bingsu/,'cake','#B5577E'],[/cafe|coffee|tea|juice|brunch/,'cup','#7A5A3A'],
+ [/salad|poke/,'salad','#3E8E5E'],[/burger|fast food/,'burger','#B0412F'],[/indian|nepal|bangladesh|curry|pakistan/,'curry','#C9821F'],
+ [/taiwan|chinese|asian|vietnam|thai|japan|noodle|pho|ramen/,'noodles','#C2553F'],[/italian|pizza|pasta|mexican|western|bistro|wine|pub|brewery|australian/,'pizza','#8E5BA8'],
+ [/korean|temple|home food|tea house|street food|snack|gimbap|kimbap/,'bowl','#2A6A4C']];
+const cuisine=r=>{const t=String(r.type&&r.type[0]||'').toLowerCase();const m=CUIS.find(c=>c[0].test(t));return m?{i:m[1],c:m[2]}:{i:'sprout',c:'#4E9A73'}};
+const thumb=(r,s=46)=>{const c=cuisine(r);return `<span class="thumb" style="--tc:${c.c};width:${s}px;height:${s}px">${ic(c.i,Math.round(s*.5))}</span>`};
+
+/* 영업 중 판단: 공개 정보의 영문 영업시간(예: “Tue–Sun 11:00–18:00”, “Weekdays 10:00–21:00, weekends 08:00–22:00”)을 읽음.
+   읽을 수 없으면 표시하지 않음. 부산 시간 기준. */
+const DAYN=['sun','mon','tue','wed','thu','fri','sat'];
+function parseHours(h){
+  const s=String(h||'').toLowerCase().replace(/\(.*?\)/g,m=>/closed/.test(m)?' '+m.replace(/[()]/g,'')+' ':' ');
+  if(!/\d{1,2}:\d{2}/.test(s))return null;
+  const sched=Array.from({length:7},()=>[]);let cur=null,closed=new Set();
+  const dayIdx=w=>DAYN.indexOf(w.slice(0,3));
+  const re=/(closed\s+(?:on\s+)?[a-z]+)|(daily|every ?day|weekdays?|weekends?|(?:mon|tue|wed|thu|fri|sat|sun)[a-z]*(?:\s*[–-]\s*(?:mon|tue|wed|thu|fri|sat|sun)[a-z]*)?(?:\s*(?:,|&|and)\s*(?:mon|tue|wed|thu|fri|sat|sun)[a-z]*(?:\s*[–-]\s*(?:mon|tue|wed|thu|fri|sat|sun)[a-z]*)?)*)|(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/g;
+  let m,last='time';
+  while((m=re.exec(s))){
+    if(m[1]){const d=dayIdx(m[1].replace(/closed\s+(on\s+)?/,''));if(d>=0)closed.add(d);continue}
+    if(m[2]){const t=m[2];let ds=[];
+      if(/daily|every/.test(t))ds=[0,1,2,3,4,5,6];else if(/weekday/.test(t))ds=[1,2,3,4,5];else if(/weekend/.test(t))ds=[0,6];
+      else t.split(/\s*(?:,|&|and)\s*/).forEach(part=>{const [a,b]=part.split(/\s*[–-]\s*/).map(dayIdx);if(a<0)return;if(b>=0&&b!==undefined){for(let i=a;;i=(i+1)%7){ds.push(i);if(i===b)break}}else ds.push(a)});
+      cur=last==='day'&&cur?[...cur,...ds]:ds;last='day';continue}
+    const a=+m[3]*60+ +m[4];let b=+m[5]*60+ +m[6];if(b<=a)b+=1440;
+    (cur||[0,1,2,3,4,5,6]).forEach(d=>sched[d].push([a,b]));last='time';
+  }
+  closed.forEach(d=>sched[d]=[]);
+  return sched.some(x=>x.length)?sched:null;
+}
+function openNow(r){
+  const sc=r._hs===undefined?(r._hs=parseHours(r.hours)):r._hs;if(!sc)return null;
+  const k=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Seoul'})),d=k.getDay(),m=k.getHours()*60+k.getMinutes();
+  if(sc[d].some(([a,b])=>m>=a&&m<b))return true;
+  const y=(d+6)%7;if(sc[y].some(([a,b])=>b>1440&&m+1440<b))return true;
+  return false;
+}
+const openPill=r=>{const o=openNow(r);return o==null?'':`<span class="pill ${o?'ok':'pend'}"><span class="dot"></span>${o?L('영업 중','Open now'):L('지금은 닫힘','Closed now')}</span>`};
+
 const catName=c=>L(CATS[c].ko,CATS[c].en);
 const pill=(s,t)=>`<span class="pill ${s}"><span class="dot"></span>${t||L(ST[s].ko,ST[s].en)}</span>`;
-function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2600)}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),Math.min(4200,1700+String(t).length*30))}
 function judge(m,ex){const hit=cont(m).filter(c=>ex.includes(c));if(hit.length)return{s:'excl',hit};if(m.pending)return{s:'check'};return{s:'ok'}}
 const allMenus=()=>(restos||[]).flatMap(r=>(r.menus||[]).map(m=>({m,r})));
 const findMenu=id=>{for(const r of restos||[])for(const m of r.menus||[])if(m.id===id)return{m,r};return null};
@@ -923,7 +1067,7 @@ const today=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOStr
 const T={
  strip:['MVP 시제품 · 식당은 실제 공개 정보(2026년 11월), 메뉴 성분은 아직 리프맵 확인 전이에요','MVP · Real places from public listings (Nov 2026); dishes not yet verified by LeafMap'],
  nExplore:['메뉴 찾기','Find food'],nPhrase:['한국어 카드','Phrase card'],nHow:['확인 방법','How we check'],nOwners:['사장님 등록','For restaurants'],
- dash:['운영자 대시보드','Operator dashboard'],dash2:['▦ 운영자 대시보드','▦ Operator dashboard'],
+ dash:['운영자 대시보드','Operator dashboard'],dash2:['운영자 대시보드','Operator dashboard'],
  qL:['메뉴·식당 검색','Search dishes or places'],dietL:['내 식단','My diet'],findBtn:['메뉴 찾기','Find dishes'],
  t1:['메뉴 단위 판정','Judged dish by dish'],t2:['양념 제품 성분표 대조','Sauce labels checked'],t3:['식당 사용 확인','Confirmed by restaurant'],t4:['여행자 정정 제보 반영','Updated by traveler reports'],
  fTitle:['내 조건','My filters'],apply:['적용','Done'],exL:['먹지 않는 재료','I don’t eat'],areaL:['지역','Area'],showChk:['‘추가 확인 필요’ 메뉴도 보기','Show “needs confirmation”'],reset:['조건 초기화','Reset filters'],
@@ -939,12 +1083,12 @@ const T={
  b1:['확인된 메뉴는 ‘조건에 맞음’으로 표시돼 여행자가 안심하고 주문해요','Verified dishes show as “matches”, so travelers order with confidence'],b2:['재료 설명이 어려운 외국인 손님 응대 부담이 줄어요','Fewer hard-to-explain ingredient questions'],b3:['제품을 바꾸면 변경 신고로 바로 반영돼요','Changed a product? Update it any time'],
  foot1:['부산 채식 여행자를 위한 메뉴 성분 확인 서비스 (MVP)','Menu ingredient checks for vegetarian travelers in Busan (MVP)'],foot3:['운영자 화면','For operators'],
  tHome:['찾기','Explore'],tMap:['지도','Map'],tCard:['AI 메뉴판','AI Menu'],tMore:['더보기','More'],
- edit:['조건','Filters'],mq:['메뉴·식당 검색','Search dishes or places'],lgP:['메뉴마다 육수·양념 제품 성분까지 확인해 드려요','We check every dish down to the broth and sauce labels'],lgName:['닉네임','Nickname'],lgDiet:['내 식단','My diet'],lgGo:['시작하기','Get started'],lgGuest:['로그인 없이 둘러보기','Continue as guest'],lgNote:['시연용 로그인이에요. 비밀번호 없이 닉네임만 이 브라우저에 저장돼요.','Demo sign-in — no password, your nickname stays in this browser only.'],meS:['시연용 계정 · 이 브라우저에만 저장','Demo account · saved in this browser only'],gMy:['내 설정','My settings'],langL:['언어 · Language','Language'],brandKo:[' 리프맵',''],bigX:['✕ 닫기 Close','✕ Close'],bigSpk:['🔊 소리로 들려주기 · Play','🔊 Play aloud for the staff'],
- rlT:['이용 고객','Traveler'],rlTs:['채식 메뉴 찾기','Find veggie food'],rlO:['식당 사장님','Restaurant owner'],rlOs:['내 가게 관리','Manage my place'],
+ edit:['조건','Filters'],mq:['메뉴·식당 검색','Search dishes or places'],lgP:['메뉴마다 육수·양념 제품 성분까지 확인해 드려요','We check every dish down to the broth and sauce labels'],lgName:['닉네임','Nickname'],lgDiet:['내 식단','My diet'],lgGo:['시작하기','Get started'],lgGuest:['로그인 없이 둘러보기','Continue as guest'],lgNote:['시연용 로그인이에요. 비밀번호 없이 닉네임만 이 브라우저에 저장돼요.','Demo sign-in — no password, your nickname stays in this browser only.'],meS:['시연용 계정 · 이 브라우저에만 저장','Demo account · saved in this browser only'],gMy:['내 설정','My settings'],langL:['언어 · Language','Language'],brandKo:[' 리프맵',''],bigX:['✕ 닫기 Close','✕ Close'],
+ tourAgain:['사용 안내 다시 보기','How LeafMap works'],rlT:['이용 고객','Traveler'],rlTs:['채식 메뉴 찾기','Find veggie food'],rlO:['식당 사장님','Restaurant owner'],rlOs:['내 가게 관리','Manage my place'],
  lgOName:['사장님 이름 (선택)','Your name (optional)'],lgStore:['내 가게','My restaurant'],lgNewName:['가게 이름','Restaurant name'],lgNewDist:['구','District'],
  lgPo:['외국인 채식 손님의 요청을 보고, 메뉴와 양념 제품을 등록해요','See requests from vegetarian visitors and register your dishes'],lgGoO:['사장님으로 시작하기','Start as owner'],lgNoteO:['시연용이라 본인 확인 없이 가게를 골라요. 이름과 가게는 이 브라우저에만 저장돼요.','Demo only — no verification. Your name and place stay in this browser.'],
  oBadge:['사장님','Owner'],otStore:['내 가게','My place'],otMenu:['메뉴 등록','Dishes'],otReq:['손님 요청','Requests'],otBiz:['요금·광고','Plans & ads'],
- goOwnApp:['🧑‍🍳 사장님 화면으로 시작하기','🧑‍🍳 Open the owner app'],goOwnP:['가게를 고르면 손님 요청·리뷰를 보고 메뉴와 양념 제품을 등록할 수 있어요.','Pick your place to see guest requests and reviews, and register dishes and sauces.'],
+ goOwnApp:['사장님 화면으로 시작하기','Open the owner app'],goOwnP:['가게를 고르면 손님 요청·리뷰를 보고 메뉴와 양념 제품을 등록할 수 있어요.','Pick your place to see guest requests and reviews, and register dishes and sauces.'],
  oRL:['식당 이름','Restaurant name'],oAL:['지역','Area'],oA1:['서면·전포','Seomyeon · Jeonpo'],oA2:['대연동(경성대·부경대)','Daeyeon-dong (KSU · PKNU)'],oA3:['장전동(부산대)','Jangjeon-dong (PNU)'],oA4:['그 외 부산','Elsewhere in Busan'],oML:['등록할 메뉴','Dish to list'],oPL:['사용하는 양념·소스 제품명','Sauce & seasoning products used'],oPE:['(정확할수록 빨라요)','(the more exact, the faster)'],oFL:['함께 보낼 자료','Attachments'],oFE:['(시연용: 첨부했다고 가정)','(demo: assumed attached)'],oPhL:['제품 성분표 사진이 있어요','I have photos of the ingredient labels'],oUL:['이 제품을 지금 이 메뉴에 쓰고 있어요','I currently use these products in this dish'],oSend:['등록 신청하기','Send listing request'],oNote:['신청은 운영팀 검토 후 공개돼요. 시연용이라 연락처는 받지 않아요.','Requests go live after our team reviews them. This is a demo, so we don’t collect contact details.'],
  dashS:['등록 검토·제보 처리 (PC 화면)','Review sign-ups & reports (desktop)']
 };
@@ -1009,7 +1153,7 @@ function renderFilters(){
   $('#swChk').classList.toggle('on',P.showChk);$('#swChk').setAttribute('aria-checked',P.showChk);
   const exTxt=P.ex.length?L('제외: ','Avoid: ')+P.ex.map(catName).join(', '):L('제외 재료 없음','Nothing excluded');
   $('#mySum').innerHTML=`<b>${L(DIETS[P.diet].ko,DIETS[P.diet].en)}</b> · ${L(AREAS[P.area][0],AREAS[P.area][1])}<br>${exTxt}`;
-  $('#myBar').innerHTML=`<b>${L(DIETS[P.diet].ko,DIETS[P.diet].en)} · ${L(AREAS[P.area][0],AREAS[P.area][1])}</b><br>${esc(exTxt)}`;
+  $('#fOpen').classList.toggle('mod',P.diet==='custom'||P.veganOnly);$('#myBar').innerHTML=`<b>${L(DIETS[P.diet].ko,DIETS[P.diet].en)} · ${L(AREAS[P.area][0],AREAS[P.area][1])}</b><br>${esc(exTxt)}`;
   $('#moreSum').textContent=`${L(DIETS[P.diet].ko,DIETS[P.diet].en)} · ${exTxt}`;
   $$('#views button').forEach(b=>b.classList.toggle('on',b.dataset.v===P.view));
 }
@@ -1054,12 +1198,13 @@ function menuCard(m,r,dim){
    <div class="why ${w.c}">${esc(w.t)}</div></button>`;
 }
 const kindPill=r=>`<span class="pill ${r.kind==='vegan'?'vg':r.kind==='vegetarian'?'vt':'op'}"><span class="dot"></span>${L(KIND[r.kind].ko,KIND[r.kind].en)}</span>`;
-const ratePill=r=>{const a=revAvg(r.id),n=revOf(r.id).length;return (REQ[r.id]?`<span class="rate" style="color:var(--g7)">🙋 ${REQ[r.id]}</span>`:'')+(r.rt?`<span class="rate">★ ${r.rt} HappyCow</span>`:'')+(n?`<span class="rate" style="color:var(--g7)">★ ${a?a.toFixed(1):'-'} LeafMap (${n})</span>`:'')};
+const ratePill=r=>{const a=revAvg(r.id),n=revOf(r.id).length;return (REQ[r.id]?`<span class="rate" style="color:var(--g7)">${ic('ask',13)} ${REQ[r.id]}</span>`:'')+(r.rt?`<span class="rate">★ ${r.rt} HappyCow</span>`:'')+(n?`<span class="rate" style="color:var(--g7)">★ ${a?a.toFixed(1):'-'} LeafMap (${n})</span>`:'')};
 const verPill=r=>(r.menus||[]).length?`<span class="pill ok"><span class="dot"></span>${L('확인된 메뉴 ','Verified dishes ')}${r.menus.length}</span>`:`<span class="pill pend">${L('리프맵 확인 전','Not yet verified')}</span>`;
+const emptyBox=(icn,t,p,btn)=>`<div class="empty"><div class="eic">${ic(icn,26)}</div><b>${t}</b>${p||''}${btn||''}</div>`;
 function placeCard(r,sel){const d=distKm(r),ms=menuL(r);
-  return `<button class="rc ${sel?'sel':''}" data-r="${esc(r.id)}"><span class="small">${esc(L(r.type[1],r.type[0]))} · ${esc(dist(r))}${d!=null?` · ${fmtKm(d)}`:''}</span><h3>${esc(L(r.ko,r.en))}</h3>
-   <div class="mi-list">${ms.slice(0,4).map(m=>`<span>🌱 ${esc(m)}</span>`).join('')}</div>
-   <div class="pills">${adBoost(r)?`<span class="pill ad">${L('광고','Ad')}</span>`:''}${kindPill(r)}${fitPill(r)}${ratePill(r)}</div></button>`}
+  return `<button class="rc ${sel?'sel':''}" data-r="${esc(r.id)}">${thumb(r)}<span class="rcb"><span class="small">${esc(L(r.type[1],r.type[0]))} · ${esc(dist(r))}${d!=null?` · ${fmtKm(d)}`:''}</span><h3>${esc(L(r.ko,r.en))}</h3>
+   <div class="mi-list">${ms.slice(0,4).map(m=>`<span>${esc(m)}</span>`).join('')}</div>
+   <div class="pills">${adBoost(r)?`<span class="pill ad">${L('광고','Ad')}</span>`:''}${kindPill(r)}${openPill(r)}${fitPill(r)}${ratePill(r)}</div></span></button>`}
 /* 식단에 맞는 식당 거르기 (공개 정보 기준, 메뉴 성분 판정은 아님)
    - 달걀·유제품·꿀을 안 먹음 → 전부 비건이거나 공개 정보에 비건 메뉴가 나온 곳만
    - 술을 안 먹음 → 술이 중심인 곳(펍·양조장·와인 바, 메모에 술 판매)을 뺌
@@ -1107,6 +1252,7 @@ function stats(){
 function renderResults(){
   const box=$('#results');
   if(!restos)return;
+  const hasV=allMenus().length>0;$('#views').style.display=hasV?'':'none';if(!hasV&&P.view==='menu')P.view='resto';
   if(P.view==='menu'){
     const by=stats(),shown=[...by.ok,...(P.showChk?by.check:[])];
     $('#rTitle').textContent=L('리프맵이 확인한 메뉴','Dishes verified by LeafMap');
@@ -1123,7 +1269,7 @@ function renderResults(){
     const rs=placesShown(),v=rs.filter(r=>r.kind==='vegan').length;
     $('#rTitle').textContent=P.q?L(`‘${P.q}’ 검색 결과 ${rs.length}곳`,`${rs.length} result${rs.length===1?'':'s'} for “${P.q}”`):L(`‘${dietName()}’에 맞는 곳 ${rs.length}곳`,`${rs.length} places for ${dietName()}`);
     $('#rCount').textContent=P.q?searchSub(rs):`${dietWhy(rs)} · `+L(`전부 비건 ${v}곳 · 채식 메뉴 있음 ${rs.length-v}곳 · 공개 정보 기준`,`${v} all-vegan · ${rs.length-v} with veg options · public info`);
-    box.innerHTML=rs.length?`<div class="list">${rs.map(r=>placeCard(r)).join('')}</div>`:`<div class="empty"><b>${L('검색 결과가 없어요','No places found')}</b>${L('검색어를 바꿔 보세요.','Try another keyword.')}</div>`;
+    box.innerHTML=rs.length?`<div class="list">${rs.map(r=>placeCard(r)).join('')}</div>`:emptyBox('search',L('검색 결과가 없어요','No places found'),L('식당 이름, 메뉴, 동네(예: 서면, 경성대)로 찾아보세요.','Try a dish, a place name or an area (e.g. Seomyeon).'));
   }
   $$('#results .mc').forEach(e=>e.onclick=()=>go('menu/'+e.dataset.m));
   $$('#results .rc').forEach(e=>e.onclick=()=>go('place/'+e.dataset.r));
@@ -1257,7 +1403,7 @@ function renderSheet(){
     $('#msT').textContent=L(r.ko,r.en);
     $('#msS').textContent=`${L(r.type[1],r.type[0])} · ${dist(r)}${d!=null?' · '+fmtKm(d):''}`;
     b.innerHTML=`<div class="pc-pills">${kindPill(r)}${ratePill(r)}${verPill(r)}</div>
-      <div class="pc-note"><b style="font-size:12.5px;color:var(--g7)">${L('채식으로 먹을 수 있는 메뉴 (공개 정보)','Veggie dishes (public info)')}</b><div class="mi-list">${menuL(r).map(m=>`<span>🌱 ${esc(m)}</span>`).join('')}</div>${(L(r.note[1],r.note[0]))?`<div class="small" style="margin-top:8px">ⓘ ${esc(L(r.note[1],r.note[0]))}</div>`:''}<div class="small" style="margin-top:6px">🕑 ${esc(r.hours)}</div></div>
+      <div class="pc-note"><b style="font-size:12.5px;color:var(--g7)">${L('채식으로 먹을 수 있는 메뉴 (공개 정보)','Veggie dishes (public info)')}</b><div class="mi-list">${menuL(r).map(m=>`<span>${esc(m)}</span>`).join('')}</div>${(L(r.note[1],r.note[0]))?`<div class="small" style="margin-top:8px">ⓘ ${esc(L(r.note[1],r.note[0]))}</div>`:''}<div class="small" style="margin-top:6px;display:flex;gap:5px;align-items:center">${ic('clock',14)} ${esc(r.hours)} ${openPill(r)}</div></div>
       <div class="pc-acts"><button class="btn sm" id="pcGo">${L('메뉴·리뷰 보기','Dishes & reviews')}</button><a class="btn sm ghost" href="${kakaoUrl(r)}" target="_blank" rel="noopener">${L('카카오맵 길찾기','Directions (Kakao Map)')}</a></div>
       <button class="btn sm ghost full" id="pcX">${L('← 목록으로','← Back to list')}</button>`;
     $('#pcGo').onclick=()=>go('place/'+r.id);
@@ -1273,9 +1419,9 @@ function renderSheet(){
 }
 function renderMap(){
   if(!restos)return;
-  $('#mapArea').innerHTML=`<button type="button" class="chip ${P.veganOnly?'on':''}" id="mVeg">🌱 ${L('전부 비건만','All-vegan only')}</button>`
+  $('#mapArea').innerHTML=`<button type="button" class="chip ${P.veganOnly?'on':''}" id="mVeg">${ic('sprout',15)} ${L('전부 비건만','All-vegan only')}</button>`
     +['vegan','lacto','pesco','nopork','nobeef'].map(k=>`<button type="button" class="chip ${P.diet===k?'on':''}" data-d="${k}" aria-pressed="${P.diet===k}">${L(DIETS[k].ko,DIETS[k].en)}</button>`).join('')
-    +`<button type="button" class="chip ${P.diet==='custom'?'on':''}" id="mCond">⚙ ${L('직접 설정','Custom')}</button>`;
+    +`<button type="button" class="chip ${P.diet==='custom'?'on':''}" id="mCond">${ic('sliders',15)} ${L('직접 설정','Custom')}</button>`;
   $$('#mapArea [data-d]').forEach(e=>e.onclick=()=>{P.diet=e.dataset.d;P.ex=[...DIETS[P.diet].ex];MV.sel=null;update();toast(L(`‘${DIETS[P.diet].ko}’에 맞는 식당 ${placesShown().length}곳을 보여드려요`,`Showing ${placesShown().length} places for “${DIETS[P.diet].en}”`))});
   $('#mVeg').onclick=()=>{P.veganOnly=!P.veganOnly;MV.sel=null;update()};
   $('#mCond').onclick=openFilters;
@@ -1304,7 +1450,7 @@ window.addEventListener('hashchange',route);
 function closeAndClear(){closeDlg();if(/^#((menu|place)\/|scan$)/.test(location.hash)){history.pushState('',document.title,location.pathname+location.search+'#'+tab);curRoute=tab}}
 $('#ov').onclick=closeFilters;
 $('#dBack').onclick=()=>{if(dlgBack)history.back();else closeAndClear()};
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){if($('#bigKr').classList.contains('on'))closeBig();else if($('#filters').classList.contains('on'))closeFilters();else if($('#dlg').classList.contains('on'))$('#dBack').click()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('#tour').hidden)closeTour();else if($('#bigKr').classList.contains('on'))closeBig();else if($('#filters').classList.contains('on'))closeFilters();else if($('#dlg').classList.contains('on'))$('#dBack').click()}});
 
 const HC_BUSAN='https://www.happycow.net/asia/south_korea/busan/';
 function revHtml(r){const a=revOf(r.id);
@@ -1314,23 +1460,29 @@ function showPlace(r){
   const ms=(r.menus||[]);
   const items=ms.map(m=>{const j=judge(m,P.ex),w=whyLine(m,j);return `<button class="mi" data-m="${esc(m.id)}"><div><b>${esc(L(m.ko,m.en))}</b><small>${esc(L(m.en,m.ko))} · ${esc(w.t)}</small></div>${pill(j.s)}</button>`}).join('');
   const d=distKm(r),note=L(r.note[1],r.note[0]),avg=revAvg(r.id),n=revOf(r.id).length;
-  openDlg(L(r.ko,r.en),`<div class="small" style="margin-bottom:12px">${esc(L(r.en,r.type[0]))} · ${esc(dist(r))}${d!=null?' · '+fmtKm(d):''}</div>
-   <div class="pc-pills" style="margin-bottom:12px">${kindPill(r)}${verPill(r)}</div>
-   <div class="h4" style="margin-top:0">🌱 ${L('채식으로 먹을 수 있는 메뉴','Veggie-friendly dishes')}</div>
+  const mine=MYREQ.has(r.id),rq=REQ[r.id]||0;
+  openDlg(L(r.ko,r.en),`<div class="phd">${thumb(r,54)}<div><div class="small">${esc(L(r.en,r.type[0]))} · ${esc(dist(r))}${d!=null?' · '+fmtKm(d):''}</div>
+     <div class="pc-pills" style="margin-top:6px">${kindPill(r)}${openPill(r)}${verPill(r)}</div></div></div>
+   <div class="qacts">
+     <a class="qa1" href="${kakaoUrl(r)}" target="_blank" rel="noopener">${ic('route',22)}<span>${L('길찾기','Directions')}</span></a>
+     <button class="qa1" id="pBigQ">${ic('card',22)}<span>${L('한국어 카드','Korean card')}</span></button>
+     <button class="qa1 ${mine?'done':''}" id="pReq" ${mine?'disabled':''}>${ic(mine?'check':'ask',22)}<span>${mine?L('요청함','Requested'):L('성분 확인 요청','Ask to verify')}</span>${rq?`<em>${rq}</em>`:''}</button>
+   </div>
+   ${ms.length?'':`<div class="banner check" style="margin-top:12px">${ic('info',20)}<div><b>${L('리프맵 확인 전','Not yet verified by LeafMap')}</b>${L('육수·양념 성분은 아직 확인하지 않았어요. 주문 전에 한국어 카드로 직원에게 물어보세요.','Broths and sauces haven’t been checked yet. Ask the staff with the Korean card before ordering.')}</div></div>`}
+   <div class="h4">${ic('sprout',16)} ${L('채식으로 먹을 수 있는 메뉴','Veggie-friendly dishes')}</div>
    <div class="mi-list" style="margin-bottom:6px">${menuL(r).map(m=>`<span>${esc(m)}</span>`).join('')}</div>
-   <p class="small" style="margin-bottom:12px">${L('공개된 식당 정보를 요약한 거예요. 메뉴는 바뀔 수 있어요.','Summarised from public listings. Menus may change.')}</p>
-   ${ms.length?'':`<div class="banner check"><span style="font-weight:800">!</span><div><b>${L('리프맵 확인 전','Not yet verified by LeafMap')}</b>${L('재료·육수·양념 성분은 아직 확인하지 않았어요. 주문하기 전에 아래 한국어 카드로 직원에게 꼭 물어보세요.','Ingredients, broths and sauces have not been checked yet. Ask the staff with the Korean card below before ordering.')}</div></div>${reqBox(r)}`}
+   <p class="small" style="margin-bottom:4px">${L('공개된 식당 정보를 요약한 거예요. 메뉴는 바뀔 수 있어요.','Summarised from public listings. Menus may change.')}</p>
    <dl class="kv"><dt>${L('유형','Type')}</dt><dd>${esc(L(r.type[1],r.type[0]))} · ${esc(L(KIND[r.kind].ko,KIND[r.kind].en))}</dd>
    <dt>${L('주소','Address')}</dt><dd>${P.lang==='en'?esc(r.d[0])+', Busan':'부산 '+esc(r.addr)}</dd>
    <dt>${L('영업시간','Hours')}</dt><dd>${esc(r.hours||'-')}</dd>
    ${note?`<dt>${L('참고','Notes')}</dt><dd>${esc(note)}</dd>`:''}
    <dt>${L('정보 출처','Source')}</dt><dd><a href="${HC_BUSAN}" target="_blank" rel="noopener" style="text-decoration:underline">HappyCow</a> · ${L('2026년 11월 확인','checked Nov 2026')}</dd></dl>
-   <div class="pc-acts" style="margin-top:14px"><a class="btn sm" href="${kakaoUrl(r)}" target="_blank" rel="noopener">${L('카카오맵 길찾기','Directions (Kakao Map)')}</a><a class="btn sm ghost" href="${naverUrl(r)}" target="_blank" rel="noopener">${L('네이버 지도','Naver Map')}</a><button class="btn sm ghost" id="pMap">${L('지도에서 보기','Show on map')}</button></div>
-   <div class="kr-card" style="margin-top:16px"><div class="lbl">${L('주문 전에 직원에게 보여주세요','Show this to the staff before ordering')}</div><div class="kr">${esc(krSentence(P.ex,'staff',''))}</div><div class="en">${esc(enSentence(P.ex,''))}</div>
-    <div class="acts"><button class="btn sm" id="pBig">⛶ ${L('크게 보여주기','Full screen')}</button><button class="btn sm ghost" id="pSpk">🔊 ${L('소리로 듣기','Play')}</button><button class="btn sm ghost" id="pCopy">${L('복사','Copy')}</button></div></div>
-   <div style="margin-top:12px">${scanCta('pScan')}</div>
-   <div class="h4">${L('리뷰','Reviews')}</div>
-   <div class="pc-pills" style="margin-bottom:10px">${r.rt?`<span class="rate">★ ${r.rt} / 5 · HappyCow</span>`:''}${n?`<span class="rate" style="color:var(--g7)">★ ${avg?avg.toFixed(1):'-'} · LeafMap ${L(n+'개',n+(n>1?' reviews':' review'))}</span>`:''}</div>
+   <div class="pc-acts" style="margin-top:10px"><a class="btn sm ghost" href="${naverUrl(r)}" target="_blank" rel="noopener">${L('네이버 지도','Naver Map')} ${ic('external',14)}</a><button class="btn sm ghost" id="pMap">${ic('pin',15)} ${L('지도에서 보기','Show on map')}</button></div>
+   <details class="sec2" open><summary>${ic('card',17)} ${L('직원에게 보여줄 한국어 카드','Korean card for the staff')}</summary>
+   <div class="kr-card"><div class="kr">${esc(krSentence(P.ex,'staff',''))}</div><div class="en">${esc(enSentence(P.ex,''))}</div>
+    <div class="acts"><button class="btn sm" id="pBig">${ic('expand',16)} ${L('크게','Full screen')}</button><button class="btn sm ghost" id="pSpk">${ic('speaker',16)} ${L('듣기','Play')}</button><button class="btn sm ghost" id="pCopy">${L('복사','Copy')}</button></div></div>
+   <div style="margin-top:10px">${scanCta('pScan').replace('class="scanCta"','class="scanCta slim"')}</div></details>
+   <details class="sec2" ${n?'open':''}><summary>${ic('star',17)} ${L('리뷰','Reviews')} <span class="sm2">${r.rt?`HappyCow ★${r.rt}`:''}${n?` · LeafMap ★${avg?avg.toFixed(1):'-'} (${n})`:''}</span></summary>
    <div id="pRevs">${revHtml(r)}</div>
    <div class="rvw form" style="background:var(--soft)">
     <b style="font-size:13.5px">${L('리뷰 남기기','Write a review')}</b>
@@ -1339,17 +1491,16 @@ function showPlace(r){
     <input type="text" id="rvFrom" maxlength="30" style="margin-top:8px" placeholder="${L('어디에서 오셨어요? (선택)','Where are you from? (optional)')}">
     <button class="btn sm" id="rvSend" style="margin-top:10px">${L('리뷰 올리기','Post review')}</button>
     <p class="small" style="margin-top:8px">${L('다른 사이트 리뷰는','More reviews on')} <a href="${kakaoUrl(r)}" target="_blank" rel="noopener" style="text-decoration:underline">Kakao Map</a> · <a href="${HC_BUSAN}" target="_blank" rel="noopener" style="text-decoration:underline">HappyCow</a></p>
-   </div>
-   <div class="h4">${L('리프맵이 성분까지 확인한 메뉴','Dishes verified by LeafMap')}${ms.length?` (${ms.length})`:''}</div>
-   ${ms.length?`<div class="mlist">${items}</div>`:`<p class="small">${L('아직 없어요. 식당이 메뉴와 쓰는 양념 제품을 등록하면 성분표를 확인해 메뉴마다 판정을 보여드려요.','None yet. Once the restaurant registers its dishes and sauces, we check the labels and judge each dish.')}</p>`}
-   <div class="repbar"><span class="small" style="flex:1">${L('문을 닫았거나 정보가 달랐나요?','Closed or info wrong?')}</span><button class="btn sm ghost" id="pRep">⚑ ${L('정보 제보','Report')}</button></div>
+   </div></details>
+   ${ms.length?`<details class="sec2" open><summary>${ic('verified',17)} ${L('리프맵이 성분까지 확인한 메뉴','Dishes verified by LeafMap')} (${ms.length})</summary><div class="mlist">${items}</div></details>`:''}
+   <div class="repbar"><span class="small" style="flex:1">${L('문을 닫았거나 정보가 달랐나요?','Closed or info wrong?')}</span><button class="btn sm ghost" id="pRep">${ic('flag',15)} ${L('정보 제보','Report')}</button></div>
    <div class="repbar"><span class="small" style="flex:1">${L('이 식당 사장님이신가요? 메뉴를 등록하면 성분 확인 후 판정이 표시돼요.','Own this place? Register dishes to get them verified.')}</span><button class="btn sm ghost" id="pOwn">${L('등록 안내','Register')}</button></div>`,false);
   $$('#dBody .mi').forEach(e=>e.onclick=()=>go('menu/'+e.dataset.m));
-  $('#pBig').onclick=()=>openBig(krSentence(P.ex,'staff',''),enSentence(P.ex,''));
+  $('#pBig').onclick=$('#pBigQ').onclick=()=>openBig(krSentence(P.ex,'staff',''),enSentence(P.ex,''));
   $('#pCopy').onclick=()=>copy(krSentence(P.ex,'staff',''));
   $('#pSpk').onclick=()=>speak(krSentence(P.ex,'staff',''));
   $('#pScan').onclick=()=>go('scan');
-  if($('#pReq'))$('#pReq').onclick=e=>requestCheck(r,e.currentTarget);
+  if($('#pReq')&&!mine)$('#pReq').onclick=e=>requestCheck(r,e.currentTarget);
   $('#pMap').onclick=()=>{closeAndClear();go('map');setTimeout(()=>mapSelect(r.id,true),350)};
   $('#pRep').onclick=()=>showPlaceReport(r);
   $('#pOwn').onclick=()=>{closeAndClear();openOwnerLogin(r.id)};
@@ -1389,7 +1540,7 @@ function showPlaceReport(r){
     try{
       const e=(await db.from('reports').insert({id:'p'+now,menu_id:'place:'+r.id,who:L('이용자','User')+(from?` (${from})`:''),text:`[${r.ko}] ${tyT}${t?' — '+t:''}`,cat:null,at:today(),status:'접수',ord:now})).error;if(e)throw e;
       await db.from('activity').insert({id:'a'+now,icon:'⚑',title:`${r.ko} 식당 정보 제보 접수 (${tyT})`,sub:'이용자 제보(앱) · '+today(),ord:now});
-      $('#dBody').innerHTML=`<div class="done"><div class="big">🙏</div><h3>${L('제보해 주셔서 감사해요','Thanks for the report')}</h3><p>${L('운영팀이 확인한 뒤 반영할게요.','We’ll check and update it.')}</p><div style="margin-top:16px"><button class="btn ghost" id="prBack">${L('식당으로 돌아가기','Back to the place')}</button></div></div>`;
+      $('#dBody').innerHTML=`<div class="done"><div class="big">${ic('heart',40)}</div><h3>${L('제보해 주셔서 감사해요','Thanks for the report')}</h3><p>${L('운영팀이 확인한 뒤 반영할게요.','We’ll check and update it.')}</p><div style="margin-top:16px"><button class="btn ghost" id="prBack">${L('식당으로 돌아가기','Back to the place')}</button></div></div>`;
       $('#prBack').onclick=()=>route();
     }catch(err){console.error('[Supabase]',err);toast(L('제보를 보내지 못했어요. 잠시 후 다시 시도해 주세요','Couldn’t send. Please try again'));b.disabled=false;b.textContent=L('제보 보내기','Send')}
   };
@@ -1421,9 +1572,9 @@ function showMenu(m,r){const fromPlace=prevRoute.startsWith('place/');
    ${cont(m).length?`<dt>${L('포함 재료','Contains')}</dt><dd>${cont(m).map(c=>`<span class="tag2 ${bad.has(c)?'bad':''}">${catName(c)}</span>`).join('')}</dd>`:''}</dl>
    <div class="h4">${L('성분 근거 — 원문과 AI 해석','Evidence — label text & AI reading')}</div>${ev}
    <div class="kr-card" style="margin-top:16px"><div class="lbl">${L('주문 전에 직원에게 보여주세요','Show this to the staff before ordering')}</div><div class="kr">${esc(krSentence(P.ex,'staff',m.ko))}</div><div class="en">${esc(enSentence(P.ex,m.en))}</div>
-    <div class="acts"><button class="btn sm" id="mBig">⛶ ${L('크게 보여주기','Show full screen')}</button><button class="btn sm ghost" id="mCopy">${L('문장 복사','Copy')}</button></div></div>
+    <div class="acts"><button class="btn sm" id="mBig">${ic('expand',16)} ${L('크게 보여주기','Show full screen')}</button><button class="btn sm ghost" id="mCopy">${L('문장 복사','Copy')}</button></div></div>
    <div class="repbar">
-    <span class="small" style="flex:1">${L('직원 설명이 이 정보와 달랐나요?','Did the staff tell you something different?')}</span><button class="btn sm ghost" id="mRep">⚑ ${L('정정 제보하기','Report a change')}</button></div>`,fromPlace);
+    <span class="small" style="flex:1">${L('직원 설명이 이 정보와 달랐나요?','Did the staff tell you something different?')}</span><button class="btn sm ghost" id="mRep">${ic('flag',16)} ${L('정정 제보하기','Report a change')}</button></div>`,fromPlace);
   $('#mBig').onclick=()=>openBig(krSentence(P.ex,'staff',m.ko),enSentence(P.ex,m.en));
   $('#mCopy').onclick=()=>copy(krSentence(P.ex,'staff',m.ko));
   $('#mRep').onclick=()=>showReport(m,r);
@@ -1449,7 +1600,7 @@ function showReport(m,r){
       r.menus=menus;
       await db.from('activity').insert({id:'a'+now,icon:'⚑',title:`${r.ko} · ${m.ko} 정정 제보 접수 → 추가 확인 필요`,sub:'여행자 제보(서비스 웹사이트) · '+today(),ord:now});
       renderResults();renderMap();
-      $('#dBody').innerHTML=`<div class="done"><div class="big">🙏</div><h3>${L('제보해 주셔서 감사해요','Thanks for the report')}</h3><p>${L('운영팀이 식당에 확인한 뒤 반영할게요. 확인이 끝날 때까지 이 메뉴는 ‘추가 확인 필요’로 표시돼요.','We’ll check with the restaurant. Until then the dish shows as “needs confirmation”.')}</p><div style="margin-top:16px"><button class="btn ghost" id="rpBack">${L('메뉴로 돌아가기','Back to the dish')}</button></div></div>`;
+      $('#dBody').innerHTML=`<div class="done"><div class="big">${ic('heart',40)}</div><h3>${L('제보해 주셔서 감사해요','Thanks for the report')}</h3><p>${L('운영팀이 식당에 확인한 뒤 반영할게요. 확인이 끝날 때까지 이 메뉴는 ‘추가 확인 필요’로 표시돼요.','We’ll check with the restaurant. Until then the dish shows as “needs confirmation”.')}</p><div style="margin-top:16px"><button class="btn ghost" id="rpBack">${L('메뉴로 돌아가기','Back to the dish')}</button></div></div>`;
       $('#rpBack').onclick=()=>route();
     }catch(err){console.error('[Supabase]',err);toast(L('제보를 보내지 못했어요. 잠시 후 다시 시도해 주세요','Couldn’t send. Please try again'));b.disabled=false;b.textContent=L('제보 보내기','Send report')}
   };
@@ -1608,12 +1759,12 @@ let scLast={img:'',text:''};
 function renderScanTab(){
   const box=$('#scanBox');if(!box)return;
   box.innerHTML=`<p class="lead" style="margin-bottom:12px">${L(`한국어 메뉴판을 찍으면 AI가 글자를 읽고 메뉴 이름을 영어로 알려 주고, <b>${esc(DIETS[P.diet].ko)}</b> 기준으로 주의할 재료를 표시해요. 사진은 서버에 올리지 않고 이 기기 안에서만 읽어요.`,`Snap a Korean menu. AI reads it, translates dish names and flags ingredients to watch for your <b>${esc(DIETS[P.diet].en)}</b> diet. The photo stays on your device.`)}</p>
-   <label class="scDrop" id="scFileL"><input type="file" id="scFile" accept="image/*" capture="environment" hidden><span style="font-size:30px">📷</span>${L('메뉴판 사진 찍기 · 고르기','Take or choose a menu photo')}<small>${L('밝은 곳에서 글자가 크게 나오게 찍어 주세요','Bright light, text large and sharp')}</small></label>
-   <button class="btn ghost sm" id="scSample" style="width:100%;margin-top:8px">🧪 ${L('예시 메뉴판으로 해 보기','Try a sample menu')}</button>
+   <label class="scDrop" id="scFileL"><input type="file" id="scFile" accept="image/*" capture="environment" hidden>${ic('camera',30)}${L('메뉴판 사진 찍기 · 고르기','Take or choose a menu photo')}<small>${L('밝은 곳에서 글자가 크게 나오게 찍어 주세요','Bright light, text large and sharp')}</small></label>
+   <button class="btn ghost sm" id="scSample" style="width:100%;margin-top:8px">${ic('flask',16)} ${L('예시 메뉴판으로 해 보기','Try a sample menu')}</button>
    <div class="scProg" id="scProg" hidden style="margin-top:14px"><div class="bar"><i></i></div><small class="small" id="scProgT"></small></div>
    <div class="scImg" id="scImg">${scLast.img?`<img src="${scLast.img}" alt="${L('메뉴판 사진','Menu photo')}">`:''}</div>
    <div id="scOut"></div>
-   <details id="scTxtBox" class="form" style="margin-top:14px;padding:0"><summary class="small" style="cursor:pointer;font-weight:700">✎ ${L('메뉴 이름을 직접 적거나 고치기','Type or fix the dish names')}</summary>
+   <details id="scTxtBox" class="form" style="margin-top:14px;padding:0"><summary class="small" style="cursor:pointer;font-weight:700">${ic('pencil',15)} ${L('메뉴 이름을 직접 적거나 고치기','Type or fix the dish names')}</summary>
     <textarea id="scTxt" style="margin-top:8px" placeholder="${L('한 줄에 메뉴 하나씩. 예: 밀면','One dish per line, as written on the menu (in Korean)')}"></textarea>
     <button class="btn sm" id="scTxtGo" style="margin-top:8px">${L('다시 분석하기','Analyze')}</button></details>`;
   $('#scTxt').value=scLast.text;if(scLast.text)renderScan(scLast.text);
@@ -1637,7 +1788,7 @@ async function requestCheck(r,btn){
   }catch(err){console.error('[Supabase]',err);toast(L('요청하지 못했어요. 잠시 후 다시 시도해 주세요','Couldn’t send. Please try again'));btn.disabled=false}
 }
 function reqBox(r){const n=REQ[r.id]||0,mine=MYREQ.has(r.id);
-  return `<div class="reqbox"><span style="font-size:24px">🙋</span><div><b>${L('리프맵이 이 집 메뉴 성분을 확인했으면 좋겠나요?','Want LeafMap to verify this place?')}</b><small>${n?L(`여행자 ${n}명이 요청했어요 · `,`${n} traveler${n>1?'s':''} asked · `):''}${L('요청이 많은 식당부터 사장님께 육수·양념 제품을 확인해요','We check broths & sauces with owners, most-requested first')}</small></div>
+  return `<div class="reqbox"><span class="rqi">${ic('ask',22)}</span><div><b>${L('리프맵이 이 집 메뉴 성분을 확인했으면 좋겠나요?','Want LeafMap to verify this place?')}</b><small>${n?L(`여행자 ${n}명이 요청했어요 · `,`${n} traveler${n>1?'s':''} asked · `):''}${L('요청이 많은 식당부터 사장님께 육수·양념 제품을 확인해요','We check broths & sauces with owners, most-requested first')}</small></div>
    <button class="btn sm ${mine?'ghost':''}" id="pReq" ${mine?'disabled':''}>${mine?L('요청함 ✓','Requested ✓'):L('확인 요청','Request')}</button></div>`}
 /* ---------- 한국어 카드: 상황별 문장·음성 ---------- */
 const SITS=[['main','먹지 않는 재료','What I avoid'],['broth','육수 물어보기','Ask about broth'],['kimchi','김치·반찬','Kimchi & sides'],['without','빼 주세요','Make it without'],['recommend','추천 부탁','Recommend a dish'],['thanks','고마워요','Say thanks']];
@@ -1663,12 +1814,12 @@ function speakEn(t){
   const ss=window.speechSynthesis;ss.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.92;const v=ss.getVoices().find(x=>/^en/i.test(x.lang));if(v)u.voice=v;ss.speak(u);
 }
 try{window.speechSynthesis&&speechSynthesis.addEventListener&&speechSynthesis.addEventListener('voiceschanged',()=>{koVoice=null})}catch(e){}
-const scanCta=id=>`<button type="button" class="scanCta" id="${id}"><i>📷</i><span><b>${L('메뉴판 AI 읽기','Read a Korean menu with AI')}<em class="ai">AI</em></b><small>${L('사진을 찍으면 메뉴를 영어로 알려 주고 주의할 재료를 표시해요','Snap a photo — get dish names in English and ingredients to watch')}</small></span><span class="ar">›</span></button>`;
+const scanCta=id=>`<button type="button" class="scanCta" id="${id}"><i>${ic('camera',22)}</i><span><b>${L('메뉴판 AI 읽기','Read a Korean menu with AI')}<em class="ai">AI</em></b><small>${L('사진을 찍으면 메뉴를 영어로 알려 주고 주의할 재료를 표시해요','Snap a photo — get dish names in English and ingredients to watch')}</small></span><span class="ar">›</span></button>`;
 
 /* ---------- 한국어 카드 ---------- */
 function renderPhrase(){
   const mn=$('#phMenu').value.trim(),[kr,en]=sitText(phSit,P.ex,mn);
-  $('#scanCta2').innerHTML=scanCta('scanGo2');$('#scanGo2').onclick=()=>go('scan');
+  $('#scanCta2').innerHTML=scanCta('scanGo2').replace('class="scanCta"','class="scanCta slim"');$('#scanGo2').onclick=()=>go('scan');
   if(!scBusy)renderScanTab();
   $('#phH').textContent=L('직원에게 보여줄 한국어 카드','Phrase card for the staff');
   $('#phP').textContent=L('내 조건에 맞춰 한국어 확인 문장을 만들어요. 크게 띄우거나 소리로 들려주세요.','A Korean question built from your filters. Show it full-screen or play it aloud.');
@@ -1676,14 +1827,14 @@ function renderPhrase(){
   $('#phSits').innerHTML=SITS.map(x=>`<button type="button" class="chip ${phSit===x[0]?'on':''}" data-s="${x[0]}">${L(x[1],x[2])}</button>`).join('');
   $$('#phSits .chip').forEach(e=>e.onclick=()=>{phSit=e.dataset.s;renderPhrase()});
   $('#phOut').innerHTML=`<div class="lbl">${L('직원에게 보여주세요','Show this to the staff')}</div><div class="kr">${esc(kr)}</div><div class="en">${esc(en)}</div>
-   <div class="acts"><button class="btn sm" id="phBig">⛶ ${L('크게 보여주기','Full screen')}</button><button class="btn sm ghost" id="phSpk">🔊 ${L('소리로 듣기','Play')}</button><button class="btn sm ghost" id="phCopy">${L('복사','Copy')}</button></div>`;
+   <div class="acts"><button class="btn sm" id="phBig">${ic('expand',16)} ${L('크게 보여주기','Full screen')}</button><button class="btn sm ghost" id="phSpk">${ic('speaker',16)} ${L('소리로 듣기','Play')}</button><button class="btn sm ghost" id="phCopy">${L('복사','Copy')}</button></div>`;
   $('#phBig').onclick=()=>openBig(kr,en);
   $('#phSpk').onclick=()=>speak(kr);
   $('#phCopy').onclick=()=>copy(kr);
 }
 $('#phMenu').addEventListener('input',renderPhrase);
 let bigMode='ko';
-function openBig(kr,en,mode){bigMode=mode||'ko';$('#bigKrT').textContent=kr;$('#bigEnT').textContent=en;$('#bigEnT').hidden=!en;$('#bigHint').textContent=bigMode==='en'?L('손님께 보여 주세요 · For the guest','For the guest'):'직원분께 · For the staff';$('#bigSpk').textContent=bigMode==='en'?L('🔊 소리로 들려주기','🔊 Play aloud'):L('🔊 소리로 들려주기 · Play','🔊 Play aloud for the staff');$('#bigKr').classList.add('on');$('#bigX').focus()}
+function openBig(kr,en,mode){bigMode=mode||'ko';$('#bigKrT').textContent=kr;$('#bigEnT').textContent=en;$('#bigEnT').hidden=!en;$('#bigHint').textContent=bigMode==='en'?L('손님께 보여 주세요 · For the guest','For the guest'):'직원분께 · For the staff';$('#bigSpkT').textContent=bigMode==='en'?L('소리로 들려주기','Play aloud'):L('소리로 들려주기 · Play','Play aloud for the staff');$('#bigKr').classList.add('on');$('#bigX').focus()}
 function closeBig(){$('#bigKr').classList.remove('on');try{speechSynthesis.cancel()}catch(e){}}
 $('#bigX').onclick=closeBig;
 $('#bigSpk').onclick=()=>bigMode==='en'?speakEn($('#bigKrT').textContent):speak($('#bigKrT').textContent);
@@ -1702,8 +1853,8 @@ let lgRole=U&&U.role==='owner'?'owner':'traveler',lgPid=U&&U.pid||null,lgNewMode
 const isOwner=()=>!!(U&&U.role==='owner');
 function renderUser(){
   const nm=U&&U.name?U.name:'';
-  $('#mAv').textContent=nm?[...nm][0].toUpperCase():'👤';
-  $('#meAv').textContent=nm?[...nm][0].toUpperCase():'👤';
+  $('#mAv').innerHTML=nm?esc([...nm][0].toUpperCase()):ic('user',20);
+  $('#meAv').innerHTML=nm?esc([...nm][0].toUpperCase()):ic('user',18);
   $('#meName').textContent=nm?L(`${nm}님`,nm):L('게스트','Guest');
   $('#logout').textContent=U&&!U.guest?L('로그아웃','Sign out'):L('로그인','Sign in');
 }
@@ -1757,6 +1908,7 @@ function enterApp(user){
   if(isOwner()){showOwner(true);setOTab('store');setTimeout(()=>toast(L(`${U.name?U.name+' ':''}사장님, 반가워요!`,`Welcome${U.name?', '+U.name:''}!`)),380);return}
   showOwner(false);
   if(!/^#((menu|place)\/|scan$)/.test(location.hash))go('map');
+  if(!tourSeen())setTimeout(openTour,700);
   setTimeout(()=>toast(U.name?L(`${U.name}님, 반가워요! 내 식단 기준으로 지도를 보여드릴게요`,`Welcome, ${U.name}! The map follows your diet`):L('게스트로 둘러보는 중이에요','Browsing as a guest')),380);
 }
 $('#lgForm').onsubmit=e=>{e.preventDefault();
@@ -1782,7 +1934,7 @@ const storeLabel=()=>`${storeKo()} (${storeDist()[1]})`;
 const storeLabelL=()=>{const r=myStore();return L(storeLabel(),`${r?r.en:storeKo()} (${storeDist()[0]})`)};
 const SUB_EN={'누락 보완 요청':'Missing info','검토 대기':'Awaiting review','검토 중':'In review','접수':'Received','반영':'Applied','기각':'Declined'};
 const stL=st=>L(st,SUB_EN[st]||st);
-function showOwner(on){$('#owner').hidden=!on;$('#app').classList.toggle('ownmode',!!on);$('#ownBack').hidden=true;if(on){renderOwner();ownerLoad()}}
+function showOwner(on){$('#owner').hidden=!on;$('#app').classList.toggle('ownmode',!!on);if(!on)$('#app').classList.remove('wizmode');$('#ownBack').hidden=true;if(on){renderOwner();ownerLoad()}}
 function setOTab(t){
   if(!OTABS.includes(t))t='store';OT=t;
   $$('.oscr').forEach(s=>s.classList.toggle('on',s.id==='o-'+t));
@@ -1811,6 +1963,7 @@ function renderOwner(){
   renderOStore();renderOMenu();renderOReq();renderOBiz();
   if(!$$('.oscr.on').length)setOTab(OT);
 }
+const oSkel=t=>`<div class="hello" style="font-size:21px;margin-top:6px">${t}</div><div class="list" style="margin-top:14px"><div class="skel" style="height:96px"></div><div class="skel"></div><div class="skel" style="height:70px"></div></div>`;
 const offNote=()=>OD.err?`<div class="offline" style="display:block">${L('서버에 연결하지 못해 손님 요청과 등록 현황을 불러오지 못했어요. 연결되면 자동으로 보여드려요.','Couldn’t reach the server, so requests and sign-ups can’t load right now.')}</div>`:'';
 const dietLbl=k=>DIETS[k]?L(DIETS[k].ko,DIETS[k].en):L('기타','Other');
 const starsOf=x=>+String(x.note||'').replace('rating:','')||0;
@@ -1823,7 +1976,7 @@ function renderOStore(){
     <h2>${esc(r?L(r.ko,r.en):storeKo())}</h2>
     <div class="s">${r?`${esc(L(r.type[1],r.type[0]))} · ${esc(L(r.d[1],r.d[0]))}`:`${esc(L(storeDist()[1],storeDist()[0]))} · ${L('새 가게','New place')}`}</div>
     <div class="pills">${r?kindPill(r)+verPill(r):`<span class="pill pend">${L('리프맵 지도에 아직 없어요','Not on the LeafMap map yet')}</span>`}<button class="pill plpill" data-og="biz">${(()=>{const pl=planNow();return L(PLANS[pl.tier].ko,PLANS[pl.tier].en)+(pl.trial?` · ${L('무료 체험','trial')} D-${pl.left}`:'')})()} ›</button></div></div>`;
-  {const pl=planNow();if(OD.loaded&&!pl.trialUsed)h+=`<button class="promo" data-og="biz" style="width:100%;text-align:left"><b>🎉 ${L('오픈 프로모션 · 첫 한 달 무료','Launch offer · first month free')}</b><span>${L('메뉴 인증과 광고를 30일 동안 무료로 써 보세요 ›','Try dish verification and ads free for 30 days ›')}</span></button>`;}
+  {const pl=planNow();if(OD.loaded&&!pl.trialUsed)h+=`<button class="promo" data-og="biz" style="width:100%;text-align:left"><b>${ic('gift',17)} ${L('오픈 프로모션 · 첫 한 달 무료','Launch offer · first month free')}</b><span>${L('메뉴 인증과 광고를 30일 동안 무료로 써 보세요 ›','Try dish verification and ads free for 30 days ›')}</span></button>`;}
   h+=`<div class="kpis"><button class="kpi" data-og="req"><b>${OD.loaded?reqN:'·'}</b><span>${L('성분 확인 요청','Check requests')}</span></button><button class="kpi" data-og="req"><b>${OD.loaded?revN:'·'}</b><span>${L('리뷰','Reviews')}${revN&&avg?` ★${avg.toFixed(1)}`:''}</span></button><button class="kpi" data-og="req"><b>${OD.loaded?repN:'·'}</b><span>${L('정보 제보','Info reports')}</span></button></div>`;
   h+=offNote();
   /* 다음 할 일 */
@@ -1832,8 +1985,8 @@ function renderOStore(){
   else if(ver)co=null;
   else if(reqN)co=[L(`외국인 채식 손님 ${reqN}명이 이 가게 메뉴 성분 확인을 기다리고 있어요. 메뉴와 양념 제품을 등록하면 ‘조건에 맞음’으로 표시돼요.`,`${reqN} vegetarian visitor${reqN>1?'s are':' is'} waiting for your dishes to be checked. Register them to show as “matches”.`),L('지금 메뉴 등록하기','Register dishes now')];
   else co=[L('메뉴와 양념 제품을 등록하면, 리프맵이 성분표를 확인해 외국인 손님에게 ‘조건에 맞음’으로 보여드려요.','Register dishes and sauces — we check the labels and show them as “matches” to visitors.'),L('메뉴 등록하기','Register dishes')];
-  if(co)h+=`<div class="callout"><i>💡</i><div>${co[0]}<br><button class="btn sm" data-og="menu">${co[1]} ›</button></div></div>`;
-  else h+=`<div class="callout" style="background:var(--okbg);color:var(--ok)"><i>🌿</i><div>${L(`확인된 메뉴 ${ver}개가 손님에게 ‘조건에 맞음’ 근거와 함께 보이고 있어요.`,`${ver} verified dish${ver>1?'es are':' is'} shown to visitors with evidence.`)}</div></div>`;
+  if(co)h+=`<div class="callout"><i>${ic('bulb',22)}</i><div>${co[0]}<br><button class="btn sm" data-og="menu">${co[1]} ›</button></div></div>`;
+  else h+=`<div class="callout" style="background:var(--okbg);color:var(--ok)"><i>${ic('verified',22)}</i><div>${L(`확인된 메뉴 ${ver}개가 손님에게 ‘조건에 맞음’ 근거와 함께 보이고 있어요.`,`${ver} verified dish${ver>1?'es are':' is'} shown to visitors with evidence.`)}</div></div>`;
   /* 손님 식단 */
   const dc={};OD.reqs.forEach(x=>{const k=DIETS[x.note]?x.note:'custom';dc[k]=(dc[k]||0)+1});
   const mx=Math.max(1,...Object.values(dc));
@@ -1851,7 +2004,7 @@ function renderOStore(){
       <dt>${L('영업시간','Hours')}</dt><dd>${esc(r.hours||'-')}</dd>
       ${(r.note&&L(r.note[1],r.note[0]))?`<dt>${L('참고','Notes')}</dt><dd>${esc(L(r.note[1],r.note[0]))}</dd>`:''}
       <dt>${L('출처','Source')}</dt><dd>HappyCow · ${L('2026년 11월 확인','checked Nov 2026')}</dd></dl>
-      <div class="form" style="display:flex;gap:8px;padding-top:0"><button class="btn ghost" id="oPeek" style="flex:1">👀 ${L('손님 화면으로 보기','View as a visitor')}</button><button class="btn ghost" id="oEdit" style="flex:1">✎ ${L('정보 수정 요청','Request a change')}</button></div>
+      <div class="form" style="display:flex;gap:8px;padding-top:0"><button class="btn ghost" id="oPeek" style="flex:1">${ic('eye',17)} ${L('손님 화면으로 보기','View as a visitor')}</button><button class="btn ghost" id="oEdit" style="flex:1">${ic('pencil',17)} ${L('정보 수정 요청','Request a change')}</button></div>
       <form class="form" id="oEditF" hidden novalidate style="border-top:1px solid var(--line)">
         <label class="f" for="oEType">${L('무엇이 달라졌나요?','What changed?')}</label>
         <select id="oEType"><option value="hours">${L('영업시간','Opening hours')}</option><option value="menu">${L('채식 메뉴','Veggie dishes')}</option><option value="closed">${L('휴업·폐업','Closed / closing')}</option><option value="etc">${L('기타','Other')}</option></select>
@@ -1859,7 +2012,7 @@ function renderOStore(){
         <button class="btn" type="submit" id="oESend">${L('수정 요청 보내기','Send request')}</button>
         <p class="note">${L('운영팀이 확인한 뒤 반영해요.','Our team reviews it before updating.')}</p></form></div>`;
   }
-  h+=`<div class="gh">${L('계정','Account')}</div><div class="group"><div class="row"><i>🧑‍🍳</i><span class="t">${esc(nm?L(`${nm} 사장님`,nm):L('사장님','Owner'))}<small>${L('시연용 사장님 계정 · 이 브라우저에만 저장','Demo owner account · saved in this browser')}</small></span><button class="btn sm ghost" id="oLogout" type="button">${L('로그아웃','Sign out')}</button></div></div>`;
+  h+=`<div class="gh">${L('계정','Account')}</div><div class="group"><div class="row"><i>${ic('chef')}</i><span class="t">${esc(nm?L(`${nm} 사장님`,nm):L('사장님','Owner'))}<small>${L('시연용 사장님 계정 · 이 브라우저에만 저장','Demo owner account · saved in this browser')}</small></span><button class="btn sm ghost" id="oLogout" type="button">${L('로그아웃','Sign out')}</button></div></div>`;
   $('#o-store').innerHTML=h;
   $$('#o-store [data-og]').forEach(b=>b.onclick=()=>setOTab(b.dataset.og));
   $('#oLogout').onclick=()=>{try{localStorage.removeItem(UKEY)}catch(e){}U=null;showOwner(false);renderUser();lgRole='owner';showLogin()};
@@ -1884,7 +2037,7 @@ $('#ownBack').onclick=()=>{closeAndClear();showOwner(true)};
 /* 메뉴 등록: 메뉴 하나씩 5단계(기본 정보 → 구성 재료 → 양념 제품·성분표 AI 분석 → 조리 방식 → 식단별 판정 초안·제출)
    성분표 AI 분석 = 사진을 Tesseract.js로 읽고 → 원재료명만 잘라 → analyze()(DICT·UNSURE 사전)로 재료를 하나씩 분리·분류.
    사장님이 칩을 눌러 분류를 고칠 수 있음. 공개 전 운영팀이 확인함(판정을 사실로 단정하지 않음). */
-const kbHint=kb=>'💬 '+esc(L(`외국인 손님이 이 메뉴에서 자주 묻는 재료: ${kb[3]}`,`Visitors often ask about: ${kb[4]}`));
+const kbHint=kb=>ic('chat',15)+' '+esc(L(`외국인 손님이 이 메뉴에서 자주 묻는 재료: ${kb[3]}`,`Visitors often ask about: ${kb[4]}`));
 const kbOf=ko=>{const ns=String(ko||'').replace(/\s/g,'');const m=ns&&MKB_IDX.find(([k])=>ns.includes(k));return m?m[1]:null};
 const DKINDS=[['rice','밥·덮밥','Rice'],['noodle','면','Noodles'],['soup','국물·찌개','Soup & stew'],['side','반찬·전','Sides & pancakes'],['snack','분식','Street food'],['bakery','빵·디저트','Bakery & dessert'],['drink','음료','Drinks'],['etc','기타','Other']];
 const PARTS=[['main','주재료','Main ingredients','예: 두부, 애호박, 감자','e.g. tofu, zucchini, potato'],['broth','육수','Broth / stock','예: 다시마·표고 채수','e.g. kelp & shiitake stock'],['sauce','소스·양념','Sauce & seasoning','예: 된장, 고춧가루, 간장','e.g. soybean paste, chili, soy sauce'],['side','반찬·곁들임','Side dishes','예: 김치, 콩나물무침','e.g. kimchi, bean sprouts'],['top','토핑·고명','Toppings','예: 김가루, 달걀지단','e.g. seaweed flakes, egg strips'],['oil','조리 기름','Cooking oil','예: 콩기름, 참기름','e.g. soybean oil, sesame oil']];
@@ -1930,15 +2083,43 @@ const rowChip=(r,pi,ti)=>{const cls=r.v==='animal'?'an':r.v==='unsure'?'un':'pl'
   const val=r.v==='animal'?(r.cat||'other'):r.v;
   return `<label class="tchip ${cls}" title="${esc(r.why||'')}"><span>${esc(r.tok)}</span><em>${esc(lab)}</em>${pi!=null?`<select data-pi="${pi}" data-tok="${esc(r.tok)}" aria-label="${L('분류 바꾸기','Change')}">${[['plant',L('식물성','Plant')],['unsure',L('확인 필요','Needs a check')],...ACATS.map(c=>[c,catName(c)])].map(([v,t])=>`<option value="${v}" ${v===val?'selected':''}>${esc(t)}</option>`).join('')}</select>`:''}</label>`};
 
+/* 구성 재료: 칩으로 쌓는 입력 + 자주 쓰는 재료 추천 (한/영 모두 DICT로 동물성 판별) */
+const SUG={main:[['두부','tofu'],['순두부','soft tofu'],['애호박','zucchini'],['감자','potato'],['양파','onion'],['버섯','mushroom'],['콩나물','bean sprouts'],['면','noodles'],['밥','rice'],['달걀','egg'],['돼지고기','pork'],['소고기','beef'],['닭고기','chicken'],['새우','shrimp'],['어묵','fish cake']],
+ broth:[['채수','vegetable stock'],['다시마','kelp'],['표고버섯','shiitake'],['멸치 육수','anchovy broth'],['사골 육수','beef bone broth'],['닭 육수','chicken broth'],['해물 육수','seafood broth']],
+ sauce:[['간장','soy sauce'],['된장','soybean paste'],['고추장','chili paste'],['고춧가루','chili powder'],['마늘','garlic'],['참기름','sesame oil'],['설탕','sugar'],['굴소스','oyster sauce'],['액젓','fish sauce'],['맛술','cooking wine'],['마요네즈','mayonnaise'],['버터','butter']],
+ side:[['김치','kimchi'],['콩나물무침','seasoned bean sprouts'],['시금치나물','seasoned spinach'],['깍두기','radish kimchi'],['어묵볶음','stir-fried fish cake'],['멸치볶음','stir-fried anchovies'],['계란말이','rolled omelette']],
+ top:[['파','green onion'],['깨','sesame seeds'],['김가루','seaweed flakes'],['달걀지단','egg strips'],['치즈','cheese'],['고수','cilantro']],
+ oil:[['콩기름','soybean oil'],['카놀라유','canola oil'],['참기름','sesame oil'],['들기름','perilla oil'],['올리브유','olive oil'],['라드','lard'],['버터','butter']]};
+const partItems=k=>String(W.parts[k]||'').split(/\s*[,，]\s*/).map(x=>x.trim()).filter(Boolean);
+function partHtml(k){
+  const [,ko,en,pk,pe]=PARTS.find(p=>p[0]===k),items=partItems(k);
+  return `<label class="f" style="margin-top:0" for="wp_${k}">${L(ko,en)}</label>
+   <div class="tagbox">${items.map((it,i)=>{const r=tokRows(it)[0]||{v:'plant'};const cls=r.v==='animal'?'an':r.v==='unsure'?'un':'pl';
+     return `<span class="tchip ${cls}">${esc(it)}${r.v!=='plant'?`<em>${esc(r.v==='animal'?catName(r.cat||'other'):L('확인 필요','Check'))}</em>`:''}<button type="button" data-rmi="${i}" aria-label="${L('빼기','Remove')} ${esc(it)}">×</button></span>`}).join('')}
+    <input type="text" id="wp_${k}" maxlength="40" enterkeyhint="done" placeholder="${items.length?L('더 추가…','Add more…'):L(pk,pe)}"></div>
+   <div class="sugs">${SUG[k].map(x=>L(x[0],x[1])).filter(x=>!items.includes(x)).slice(0,9).map(x=>`<button type="button" class="sug" data-add="${esc(x)}">+ ${esc(x)}</button>`).join('')}</div>`;
+}
+function setPart(k,items,focus){W.parts[k]=[...new Set(items)].join(', ');$('#pt_'+k).innerHTML=partHtml(k);bindPart(k);if(focus)$('#wp_'+k).focus()}
+function bindPart(k){
+  const box=$('#pt_'+k),inp=$('#wp_'+k);if(!box)return;
+  const commit=focus=>{const v=inp.value.split(/[,，]/).map(x=>x.trim()).filter(Boolean);if(v.length)setPart(k,[...partItems(k),...v],focus)};
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===','){e.preventDefault();commit(true)}else if(e.key==='Backspace'&&!inp.value){const it=partItems(k);if(it.length){it.pop();setPart(k,it,true)}}});
+  inp.addEventListener('input',()=>{if(/[,，]/.test(inp.value))commit(true)});
+  inp.addEventListener('blur',()=>{if(inp.value.trim())commit(false)});
+  box.querySelectorAll('[data-rmi]').forEach(b=>b.onclick=()=>{const it=partItems(k);it.splice(+b.dataset.rmi,1);setPart(k,it,false)});
+  box.querySelectorAll('[data-add]').forEach(b=>b.onclick=()=>setPart(k,[...partItems(k),b.dataset.add],false));
+}
 function planGate(){
   const pl=planNow();
-  if(pl.tier==='free')return `<div class="lock"><div class="big">🔒</div><h3>${L('메뉴 인증은 스탠다드 요금제부터 쓸 수 있어요','Dish verification starts with the Standard plan')}</h3><p>${L('지금 시작하면 첫 한 달은 무료예요. 결제 수단 없이 바로 시작해요.','Start now and your first month is free — no payment method needed.')}</p>
-    ${pl.trialUsed?'':`<button class="btn" data-trial="standard">🎉 ${L('첫 달 무료로 시작하기','Start your free month')}</button>`}<button class="btn ghost" data-og="biz" style="margin-top:8px">${L('요금제 보기','See plans')}</button></div>`;
+  if(pl.tier==='free')return `<div class="lock"><div class="big">${ic('lock',34)}</div><h3>${L('메뉴 인증은 스탠다드 요금제부터 쓸 수 있어요','Dish verification starts with the Standard plan')}</h3><p>${L('지금 시작하면 첫 한 달은 무료예요. 결제 수단 없이 바로 시작해요.','Start now and your first month is free — no payment method needed.')}</p>
+    ${pl.trialUsed?'':`<button class="btn" data-trial="standard">${ic('gift',17)} ${L('첫 달 무료로 시작하기','Start your free month')}</button>`}<button class="btn ghost" data-og="biz" style="margin-top:8px">${L('요금제 보기','See plans')}</button></div>`;
   const lim=PLANS[pl.tier].lim,n=OD.subs.length;
-  if(n>=lim)return `<div class="lock"><div class="big">📦</div><h3>${L(`${PLANS[pl.tier].ko} 요금제는 메뉴 ${lim}개까지예요`,`${PLANS[pl.tier].en} covers ${lim} dishes`)}</h3><p>${L('프로로 바꾸면 메뉴를 제한 없이 등록할 수 있어요.','Switch to Pro for unlimited dishes.')}</p><button class="btn" data-og="biz">${L('요금제 바꾸기','Change plan')}</button></div>`;
+  if(n>=lim)return `<div class="lock"><div class="big">${ic('box',34)}</div><h3>${L(`${PLANS[pl.tier].ko} 요금제는 메뉴 ${lim}개까지예요`,`${PLANS[pl.tier].en} covers ${lim} dishes`)}</h3><p>${L('프로로 바꾸면 메뉴를 제한 없이 등록할 수 있어요.','Switch to Pro for unlimited dishes.')}</p><button class="btn" data-og="biz">${L('요금제 바꾸기','Change plan')}</button></div>`;
   return '';
 }
 function renderOMenu(){
+  $('#app').classList.toggle('wizmode',!!W);
+  if(!OD.loaded&&!W){$('#o-menu').innerHTML=oSkel(L('메뉴 등록','Register dishes'));return}
   const g=planGate();
   if(g&&!W){$('#o-menu').innerHTML=`<div class="hello" style="font-size:21px;margin-top:6px">${L('메뉴 등록','Register dishes')}</div>`+g;bindOGo('#o-menu');return}
   if(!W){
@@ -1964,12 +2145,12 @@ function renderOMenu(){
       <label class="f" for="wPr">${L('가격','Price')} <em>(${L('원','KRW')})</em></label><input type="text" inputmode="numeric" id="wPr" maxlength="9" value="${esc(W.price)}" placeholder="${L('예: 9000','e.g. 9000')}">
       <label class="f">${L('종류','Type')}</label><div class="chips" id="wKind">${DKINDS.map(k=>`<button type="button" class="chip ${W.kind===k[0]?'on':''}" data-k="${k[0]}">${L(k[1],k[2])}</button>`).join('')}</div>
       <label class="f">${L('메뉴 사진','Dish photo')} <em>(${L('선택 · 시연용: 이 기기에서만 보여요','optional — demo: stays on this device')})</em></label>
-      <label class="photo">${W.photo?`<img src="${W.photo}" alt="">`:`<span>📷 ${L('사진 고르기','Choose a photo')}</span>`}<input type="file" accept="image/*" id="wPh"></label>
+      <label class="photo">${W.photo?`<img src="${W.photo}" alt="">`:`<span>${ic('camera',22)} ${L('사진 고르기','Choose a photo')}</span>`}<input type="file" accept="image/*" id="wPh"></label>
     </div></div>`;
   }
   if(st===2){
-    h+=`<p class="small" style="margin:10px 2px 0">${L('메뉴에 들어가는 재료를 칸별로 쉼표로 나눠 적어 주세요. 적는 대로 동물성 재료를 표시해요.','List what goes in, separated by commas. Animal-derived items are flagged as you type.')}</p>`+
-     PARTS.map(([k,ko,en,pk,pe])=>`<div class="panel"><div class="form" style="padding:0"><label class="f" style="margin-top:0" for="wp_${k}">${L(ko,en)}</label><input type="text" id="wp_${k}" data-part="${k}" maxlength="200" value="${esc(W.parts[k])}" placeholder="${L(pk,pe)}"><div class="tchips" id="wpc_${k}">${tokRows(W.parts[k]).map(r=>rowChip(r)).join('')}</div></div></div>`).join('');
+    h+=`<p class="small" style="margin:10px 2px 0">${L('재료를 적고 Enter(또는 쉼표)를 누르거나, 아래 추천 재료를 눌러 넣어 주세요. 동물성 재료는 바로 빨간색으로 표시돼요.','Type an ingredient and press Enter (or comma), or tap a suggestion. Animal-derived ones turn red right away.')}</p>`+
+     PARTS.map(([k])=>`<div class="panel" id="pt_${k}">${partHtml(k)}</div>`).join('');
   }
   if(st===3){
     h+=`<p class="small" style="margin:10px 2px 0">${L('간장·된장·고추장·소스처럼 완제품으로 사서 쓰는 양념을 등록해 주세요. 뒷면 성분표를 찍으면 AI가 원재료를 하나씩 나눠요. 칩을 누르면 분류를 고칠 수 있어요.','Add each store-bought sauce or seasoning. Snap the back label and AI splits the ingredients. Tap a chip to correct it.')}</p>`;
@@ -1979,8 +2160,8 @@ function renderOMenu(){
         <div><label class="f">${L('용량','Size')}</label><input type="text" data-pk="size" data-pi="${i}" maxlength="20" value="${esc(p.size)}" placeholder="500ml"></div>
         <div><label class="f">${L('제조사','Maker')}</label><input type="text" data-pk="maker" data-pi="${i}" maxlength="40" value="${esc(p.maker)}" placeholder="${L('예: OO식품','e.g. OO Foods')}"></div>
         <div><label class="f">${L('판매 국가','Country')}</label><input type="text" data-pk="country" data-pi="${i}" maxlength="20" value="${esc(p.country)}" placeholder="${L('예: 대한민국','e.g. Korea')}"></div></div>
-       <label class="ocr" style="margin-top:14px" id="lbl_${i}"><i>📷</i><span style="flex:1"><b>${L('성분표 사진 찍기','Snap the label')} <em class="ai">AI</em></b><small>${L('원재료를 하나씩 나눠 동물성 여부를 표시해요','Splits ingredients and flags animal-derived ones')}</small></span><input type="file" accept="image/*" data-lbl="${i}"></label>
-       <button type="button" class="newst" data-sample="${i}">🧪 ${L('예시 성분표로 해 보기','Try a sample label')}</button>
+       <label class="ocr" style="margin-top:14px" id="lbl_${i}"><i>${ic('camera',22)}</i><span style="flex:1"><b>${L('성분표 사진 찍기','Snap the label')} <em class="ai">AI</em></b><small>${L('원재료를 하나씩 나눠 동물성 여부를 표시해요','Splits ingredients and flags animal-derived ones')}</small></span><input type="file" accept="image/*" data-lbl="${i}"></label>
+       <button type="button" class="newst" data-sample="${i}">${ic('flask',15)} ${L('예시 성분표로 해 보기','Try a sample label')}</button>
        <div class="oprog" id="lp_${i}" hidden><i></i></div><p class="small" id="lpt_${i}" hidden></p>
        ${p.img?`<img class="limg" src="${p.img}" alt="${L('성분표 사진','Label photo')}">`:''}
        <label class="f">${L('원재료명','Ingredients')} <em>(${L('AI가 읽은 글자 · 직접 고치거나 붙여 넣어도 돼요','read by AI — edit or paste')})</em></label>
@@ -2008,7 +2189,7 @@ function renderOMenu(){
       <p class="small" style="margin-top:10px">${L('초안이에요. 운영팀이 성분표와 실제 사용 여부를 확인한 뒤에만 손님에게 ‘조건에 맞음’으로 보여요.','A draft only — visitors see “matches” after our team checks the labels and your use.')}</p></div>
      <div class="panel"><div class="fl">${L('동물성 재료','Animal-derived')}</div>${Object.keys(src).length?Object.entries(src).map(([c,ws])=>`<div class="srow"><b>${esc(catName(c))}</b><span>${ws.map(esc).join(' · ')}</span></div>`).join(''):`<p class="small">${L('없음','None')}</p>`}
       ${uns.length?`<div class="fl">${L('확인이 필요한 재료','Needs a check')}</div><p class="small">${uns.map(esc).join(' · ')}</p>`:''}
-      ${W.cook.oil||W.cook.tool?`<p class="small" style="margin-top:8px">⚠ ${L('고기·해산물과 기름이나 도구를 같이 써요. 엄격한 채식 손님에게 함께 안내돼요.','Shares oil or tools with meat/seafood — strict vegetarians will be told.')}</p>`:''}</div>
+      ${W.cook.oil||W.cook.tool?`<p class="small" style="margin-top:8px">${ic('alert',14)} ${L('고기·해산물과 기름이나 도구를 같이 써요. 엄격한 채식 손님에게 함께 안내돼요.','Shares oil or tools with meat/seafood — strict vegetarians will be told.')}</p>`:''}</div>
      <div class="panel"><div class="kv0"><span>${L('메뉴','Dish')}</span><b>${esc(W.ko)}${W.en?' / '+esc(W.en):''}</b><span>${L('가격','Price')}</span><b>${W.price?Number(W.price).toLocaleString()+L('원',' KRW'):'-'}</b><span>${L('양념 제품','Products')}</span><b>${W.prods.length}</b></div>
       <label class="ck2" style="margin-top:12px"><input type="checkbox" id="wOk" ${W.ok?'checked':''}> ${L('적은 내용이 사실이고, 지금 이 제품들을 이 메뉴에 쓰고 있어요','This is accurate and I use these products in this dish now')}</label></div>`;
   }
@@ -2030,7 +2211,7 @@ function bindWizard(){
     $$('#wKind .chip').forEach(b=>b.onclick=()=>{W.kind=b.dataset.k;$$('#wKind .chip').forEach(x=>x.classList.toggle('on',x===b))});
     $('#wPh').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=async()=>{try{W.photo=await shrink(rd.result)}catch(x){W.photo=rd.result}renderOMenu()};rd.readAsDataURL(f)};
   }
-  if(st===2)$$('#o-menu [data-part]').forEach(inp=>inp.addEventListener('input',()=>{const k=inp.dataset.part;W.parts[k]=inp.value;$('#wpc_'+k).innerHTML=tokRows(inp.value).map(r=>rowChip(r)).join('')}));
+  if(st===2)PARTS.forEach(([k])=>bindPart(k));
   if(st===3){
     $$('#o-menu [data-pk]').forEach(inp=>inp.addEventListener('input',()=>{W.prods[+inp.dataset.pi][inp.dataset.pk]=inp.value}));
     $$('#o-menu [data-raw]').forEach(ta=>{ta.addEventListener('input',()=>{W.prods[+ta.dataset.raw].raw=ta.value});ta.addEventListener('change',()=>renderOMenu())});
@@ -2120,9 +2301,9 @@ const PLAN_F=[
   [['성분표 AI 분석','AI label analysis'],0,1,1],
   [['식단별 손님 통계','Guest diet stats'],0,['기본','Basic'],['상세','Detailed']],
   [['운영팀 확인 기간','Review time'],0,['7일','7 days'],['3일 우선','3 days, priority']]];
-const ADS={pin:{ko:'지도 추천 핀',en:'Featured map pin',price:15000,i:'📍',d:['지도에서 내 가게 핀이 크게, ‘광고’ 표시와 함께 보여요','Your pin shows larger on the map, marked “Ad”']},
-  search:{ko:'검색 상단 노출',en:'Top of search',price:20000,i:'🔎',d:['고른 동네·키워드로 검색하면 맨 위에 나와요','Shown first when guests search your area or keywords']},
-  diet:{ko:'식단 맞춤 노출',en:'Diet match',price:20000,i:'🥗',d:['고른 식단 손님의 목록 위쪽에 나와요','Shown near the top for guests with the chosen diet']}};
+const ADS={pin:{ko:'지도 추천 핀',en:'Featured map pin',price:15000,i:'pin',d:['지도에서 내 가게 핀이 크게, ‘광고’ 표시와 함께 보여요','Your pin shows larger on the map, marked “Ad”']},
+  search:{ko:'검색 상단 노출',en:'Top of search',price:20000,i:'search',d:['고른 동네·키워드로 검색하면 맨 위에 나와요','Shown first when guests search your area or keywords']},
+  diet:{ko:'식단 맞춤 노출',en:'Diet match',price:20000,i:'salad',d:['고른 식단 손님의 목록 위쪽에 나와요','Shown near the top for guests with the chosen diet']}};
 const won=n=>L(`${Number(n).toLocaleString()}원`,`₩${Number(n).toLocaleString()}`);
 const storeKey=()=>U.pid||('new:'+(U.newName||''));
 const pj=x=>{try{return JSON.parse(x.note||'{}')||{}}catch(e){return {}}};
@@ -2159,14 +2340,15 @@ async function sendAd(){
 }
 const AD_ST={'신청':['pend','승인 대기','Pending'],'노출 중':['ok','노출 중','Live'],'반려':['excl','반려','Declined'],'종료':['pend','종료','Ended']};
 function renderOBiz(){
+  if(!OD.loaded){$('#o-biz').innerHTML=oSkel(L('요금제·광고','Plans & ads'));return}
   const pl=planNow(),r=myStore();
   let h=`<div class="hello" style="font-size:21px;margin-top:6px">${L('요금제·광고','Plans & ads')}</div>`;
-  if(!pl.trialUsed)h+=`<div class="promo"><b>🎉 ${L('오픈 프로모션 · 첫 한 달 무료','Launch offer · first month free')}</b><span>${L('스탠다드나 프로를 결제 수단 없이 30일 동안 무료로 써 보세요.','Try Standard or Pro free for 30 days — no payment method needed.')}</span></div>`;
+  if(!pl.trialUsed)h+=`<div class="promo"><b>${ic('gift',17)} ${L('오픈 프로모션 · 첫 한 달 무료','Launch offer · first month free')}</b><span>${L('스탠다드나 프로를 결제 수단 없이 30일 동안 무료로 써 보세요.','Try Standard or Pro free for 30 days — no payment method needed.')}</span></div>`;
   /* 현재 요금제 */
   const cur=PLANS[pl.tier];
   h+=`<div class="curplan"><span class="k">${L('지금 요금제','Current plan')}</span><h3>${L(cur.ko,cur.en)}${pl.trial?` <span class="pill check">${L('무료 체험','Free trial')} D-${pl.left}</span>`:''}</h3>
     <p>${pl.trial?L(`${pl.end}까지 무료예요. 끝나면 무료 요금제로 돌아가고, 자동 결제는 없어요.`,`Free until ${pl.end}. After that you go back to Free — no automatic charge.`):pl.expired?L('무료 체험이 끝났어요. 계속 쓰려면 요금제를 신청해 주세요.','Your free trial has ended. Choose a plan to continue.'):pl.tier==='free'?L('메뉴 인증과 광고는 유료 요금제에서 쓸 수 있어요.','Dish verification and ads need a paid plan.'):L(`월 ${won(cur.price)} · ${pl.start||''}부터 (시연용, 실제 결제 없음)`,`${won(cur.price)}/month · since ${pl.start||''} (demo, no charge)`)}</p>
-    ${pl.trial&&pl.left<=7?`<div class="hint" style="margin-top:10px">⏰ ${L(`체험이 ${pl.left}일 남았어요. 계속 쓰려면 요금제를 신청해 주세요.`,`${pl.left} day${pl.left===1?'':'s'} left in your trial.`)}</div>`:''}</div>`;
+    ${pl.trial&&pl.left<=7?`<div class="hint" style="margin-top:10px">${ic('clock',14)} ${L(`체험이 ${pl.left}일 남았어요. 계속 쓰려면 요금제를 신청해 주세요.`,`${pl.left} day${pl.left===1?'':'s'} left in your trial.`)}</div>`:''}</div>`;
   /* 요금제 비교 */
   h+=`<div class="gh">${L('요금제','Plans')} <span class="small">· ${L('시연용 가격(가설)','demo prices (hypothesis)')}</span></div><div class="plans">${Object.entries(PLANS).map(([k,p],ci)=>{
     const on=pl.tier===k;
@@ -2176,11 +2358,11 @@ function renderOBiz(){
   /* 광고 */
   const canAd=r&&OD.subs.length>0&&pl.tier!=='free';
   h+=`<div class="gh">${L('광고 신청','Advertise')} <span class="small">· ${L('주 단위 · 가설 가격','weekly · hypothesis prices')}</span></div>`;
-  if(!canAd)h+=`<div class="lock" style="margin-top:10px"><div class="big">📣</div><h3>${L('광고는 이런 가게만 신청할 수 있어요','Who can advertise')}</h3><p>${L('① 리프맵 지도에 있는 가게 ② 유료 요금제나 무료 체험 중 ③ 메뉴를 1개 이상 등록한 가게. 손님이 믿고 고를 수 있게, 메뉴 정보가 있는 가게만 광고해요.','① On the LeafMap map ② On a paid plan or free trial ③ At least one dish registered — so ads always lead to real dish info.')}</p>
+  if(!canAd)h+=`<div class="lock" style="margin-top:10px"><div class="big">${ic('megaphone',34)}</div><h3>${L('광고는 이런 가게만 신청할 수 있어요','Who can advertise')}</h3><p>${L('① 리프맵 지도에 있는 가게 ② 유료 요금제나 무료 체험 중 ③ 메뉴를 1개 이상 등록한 가게. 손님이 믿고 고를 수 있게, 메뉴 정보가 있는 가게만 광고해요.','① On the LeafMap map ② On a paid plan or free trial ③ At least one dish registered — so ads always lead to real dish info.')}</p>
      <div class="chips" style="justify-content:center;margin-top:10px"><span class="chip ${r?'on':''}">${r?'✓':'✕'} ${L('지도에 있음','On the map')}</span><span class="chip ${pl.tier!=='free'?'on':''}">${pl.tier!=='free'?'✓':'✕'} ${L('요금제','Plan')}</span><span class="chip ${OD.subs.length?'on':''}">${OD.subs.length?'✓':'✕'} ${L('메뉴 등록','Dish sent')}</span></div></div>`;
   else{
     const a=ADS[adSel.type];
-    h+=`<div class="adtypes">${Object.entries(ADS).map(([k,x])=>`<button type="button" class="adt ${adSel.type===k?'on':''}" data-adt="${k}"><i>${x.i}</i><b>${L(x.ko,x.en)}</b><small>${L(x.d[0],x.d[1])}</small><span>${won(x.price)}${L(' / 주',' / wk')}</span></button>`).join('')}</div>
+    h+=`<div class="adtypes">${Object.entries(ADS).map(([k,x])=>`<button type="button" class="adt ${adSel.type===k?'on':''}" data-adt="${k}"><i>${ic(x.i,22)}</i><b>${L(x.ko,x.en)}</b><small>${L(x.d[0],x.d[1])}</small><span>${won(x.price)}${L(' / 주',' / wk')}</span></button>`).join('')}</div>
      <div class="panel">
       ${adSel.type==='search'?`<div class="form" style="padding:0"><label class="f" for="adT" style="margin-top:0">${L('노출할 동네·키워드','Areas or keywords')} <em>(${L('쉼표로 나눠 적기','comma-separated')})</em></label><input type="text" id="adT" maxlength="60" value="${esc(adSel.target)}" placeholder="${L('예: 서면, 비건, 순두부','e.g. Seomyeon, vegan, tofu')}"></div>`:''}
       ${adSel.type==='diet'?`<div class="fl" style="margin-top:0">${L('어떤 식단 손님에게','Which diet')}</div><div class="chips" id="adD">${['vegan','lacto','pesco','nopork','nobeef'].map(k=>`<button type="button" class="chip ${adSel.diet===k?'on':''}" data-d="${k}">${esc(dietLbl(k))}</button>`).join('')}</div>`:''}
@@ -2190,7 +2372,7 @@ function renderOBiz(){
       <p class="note">${L('운영팀이 승인한 날부터 노출돼요. 손님 화면에는 꼭 ‘광고’라고 표시해요. 시연용이라 실제 결제는 없어요.','Runs from the day we approve it, always labeled “Ad”. Demo — no real charge.')}</p></div>`;
   }
   if(OD.ads.length)h+=`<div class="gh">${L('내 광고','My ads')}</div><div class="group">${OD.ads.map(x=>{const n=pj(x),s=AD_ST[x.status]||AD_ST['신청'],a=ADS[x.cat]||ADS.pin;
-    return `<div class="sub-it"><div class="top"><b>${a.i} ${L(a.ko,a.en)} · ${L(`${n.weeks||1}주`,`${n.weeks||1} wk`)}</b><span class="pill ${s[0]}">${L(s[1],s[2])}</span></div><div class="small" style="margin-top:4px">${n.target?esc(x.cat==='diet'?dietLbl(n.target):n.target)+' · ':''}${won(n.price||0)}${n.start?` · ${n.start} ~ ${n.end}`:` · ${L('신청일','Requested')} ${esc(x.at||'')}`}</div></div>`}).join('')}</div>`;
+    return `<div class="sub-it"><div class="top"><b>${ic(a.i,15)} ${L(a.ko,a.en)} · ${L(`${n.weeks||1}주`,`${n.weeks||1} wk`)}</b><span class="pill ${s[0]}">${L(s[1],s[2])}</span></div><div class="small" style="margin-top:4px">${n.target?esc(x.cat==='diet'?dietLbl(n.target):n.target)+' · ':''}${won(n.price||0)}${n.start?` · ${n.start} ~ ${n.end}`:` · ${L('신청일','Requested')} ${esc(x.at||'')}`}</div></div>`}).join('')}</div>`;
   h+=`<p class="note" style="text-align:center;margin-top:16px">${L('가격과 혜택은 수익 모델 검증을 위한 가설이에요.','Prices and features are hypotheses for testing the business model.')}</p>`;
   $('#o-biz').innerHTML=h;
   bindOGo('#o-biz');
@@ -2204,26 +2386,49 @@ function renderOBiz(){
 
 /* 손님 요청·리뷰·제보 */
 function renderOReq(){
+  if(!OD.loaded){$('#o-req').innerHTML=oSkel(L('손님 요청과 리뷰','Guest requests & reviews'));return}
   const r=myStore();
   let h=`<div class="hello" style="font-size:21px;margin-top:6px">${L('손님 요청과 리뷰','Guest requests & reviews')}</div>${offNote()}`;
   if(!r){$('#o-req').innerHTML=h+`<div class="empty" style="margin-top:14px"><b>${L('아직 지도에 없는 가게예요','Not on the map yet')}</b>${L('메뉴를 등록해 지도에 올라가면, 손님의 확인 요청·리뷰·제보가 여기에 모여요.','Once your dishes are listed, guest requests, reviews and reports will appear here.')}</div>`;return}
   const dc={};OD.reqs.forEach(x=>{const k=DIETS[x.note]?x.note:'custom';dc[k]=(dc[k]||0)+1});
-  h+=`<div class="gh">🙋 ${L(`성분 확인 요청 ${OD.reqs.length}건`,`${OD.reqs.length} check request${OD.reqs.length===1?'':'s'}`)}</div><div class="group">${OD.reqs.length?`<div class="rv"><div class="chips">${Object.entries(dc).sort((a,b)=>b[1]-a[1]).map(([k,n])=>`<span class="chip">${esc(dietLbl(k))} · ${n}</span>`).join('')}</div><p class="small" style="margin-top:10px">${L('이 손님들은 메뉴의 육수·양념에 동물성 재료가 있는지 알고 싶어 해요. 메뉴를 등록하면 확인 결과가 손님에게 바로 보여요.','These guests want to know if broths and sauces contain animal products. Register your dishes and they’ll see the result.')}</p><button class="btn sm" data-og="menu" style="margin-top:10px">${L('메뉴 등록하기','Register dishes')} ›</button></div>`
+  h+=`<div class="gh">${ic('ask',15)} ${L(`성분 확인 요청 ${OD.reqs.length}건`,`${OD.reqs.length} check request${OD.reqs.length===1?'':'s'}`)}</div><div class="group">${OD.reqs.length?`<div class="rv"><div class="chips">${Object.entries(dc).sort((a,b)=>b[1]-a[1]).map(([k,n])=>`<span class="chip">${esc(dietLbl(k))} · ${n}</span>`).join('')}</div><p class="small" style="margin-top:10px">${L('이 손님들은 메뉴의 육수·양념에 동물성 재료가 있는지 알고 싶어 해요. 메뉴를 등록하면 확인 결과가 손님에게 바로 보여요.','These guests want to know if broths and sauces contain animal products. Register your dishes and they’ll see the result.')}</p><button class="btn sm" data-og="menu" style="margin-top:10px">${L('메뉴 등록하기','Register dishes')} ›</button></div>`
      +OD.reqs.slice(0,15).map(x=>`<div class="rv"><div class="m">${esc(x.at||'')}</div>${esc(dietLbl(x.note))} ${L('식단 손님이 확인을 요청했어요','guest asked for a check')}</div>`).join(''):`<div class="rv small">${L('아직 요청이 없어요.','No requests yet.')}</div>`}</div>`;
   h+=`<div class="gh">★ ${L(`리프맵 리뷰 ${OD.revs.length}개`,`${OD.revs.length} LeafMap review${OD.revs.length===1?'':'s'}`)}</div><div class="group">${OD.revs.length?OD.revs.map(x=>{const n=starsOf(x);return `<div class="rv"><div class="m">${n?'★'.repeat(n)+'☆'.repeat(5-n)+' · ':''}${esc(x.who||L('손님','Guest'))} · ${esc(x.at||'')}</div>${esc(x.text||'')}</div>`}).join(''):`<div class="rv small">${L('아직 리뷰가 없어요.','No reviews yet.')}</div>`}
     <div class="rv"><a class="small" href="${kakaoUrl(r)}" target="_blank" rel="noopener" style="color:var(--g7);font-weight:700">${L('카카오맵 리뷰 보기 ↗','Kakao Map reviews ↗')}</a></div></div>`;
-  h+=`<div class="gh">⚑ ${L(`가게 정보 제보 ${OD.reps.length}건`,`${OD.reps.length} info report${OD.reps.length===1?'':'s'}`)}</div><div class="group">${OD.reps.length?OD.reps.map(x=>`<div class="rv"><div class="m">${esc(x.at||'')} · <span class="pill ${x.status==='반영'?'ok':x.status==='기각'?'pend':'check'}">${esc(stL(x.status||'접수'))}</span></div>${esc(String(x.text||'').replace(/^\[[^\]]*\]\s*/,''))}</div>`).join(''):`<div class="rv small">${L('들어온 제보가 없어요.','No reports.')}</div>`}</div>`;
+  h+=`<div class="gh">${ic('flag',15)} ${L(`가게 정보 제보 ${OD.reps.length}건`,`${OD.reps.length} info report${OD.reps.length===1?'':'s'}`)}</div><div class="group">${OD.reps.length?OD.reps.map(x=>`<div class="rv"><div class="m">${esc(x.at||'')} · <span class="pill ${x.status==='반영'?'ok':x.status==='기각'?'pend':'check'}">${esc(stL(x.status||'접수'))}</span></div>${esc(String(x.text||'').replace(/^\[[^\]]*\]\s*/,''))}</div>`).join(''):`<div class="rv small">${L('들어온 제보가 없어요.','No reports.')}</div>`}</div>`;
   $('#o-req').innerHTML=h;
   $$('#o-req [data-og]').forEach(b=>b.onclick=()=>setOTab(b.dataset.og));
 }
 
+/* ---------- 첫 실행 안내 3장 (이용 고객, 한 번만 · 더보기에서 다시 보기) ---------- */
+const TOURKEY='leafmap-tour-v1';let tourI=0;
+function tourCards(){return [
+  ['verified',L('식당 이름이 아니라<br>메뉴 성분을 확인해요','We check the dish,<br>not the restaurant sign'),`<p>${L('리프맵은 메뉴에 들어가는 육수·소스·양념 제품의 성분표까지 보고, 내 식단에 맞는지 알려 드려요.','LeafMap looks at the broth, sauces and seasoning labels of each dish to tell you whether it fits your diet.')}</p>`],
+  ['info',L('표시는 이렇게 읽어요','How to read the labels'),`<div class="lg">
+    <div><span class="pill pend">${L('리프맵 확인 전','Not yet verified')}</span>${L('공개 정보만 있어요. 주문 전에 물어보세요.','Public info only — ask before ordering.')}</div>
+    <div><span class="pill vg"><span class="dot"></span>${L('메뉴 전부 OK','Whole menu fits')}</span>${L('메뉴 전체가 내 식단에 맞는 곳','Every dish fits your diet')}</div>
+    <div><span class="pill pend">${L('내 식단엔 확인 필요','May not fit your diet')}</span>${L('검색에 나왔지만 맞지 않을 수 있어요','Shown in search but may not fit')}</div>
+    <div><span class="pill ok"><span class="dot"></span>${L('영업 중','Open now')}</span>${L('공개된 영업시간 기준이에요','Based on listed hours')}</div>
+    <div><span class="pill ad">${L('광고','Ad')}</span>${L('가게가 비용을 내고 올린 자리예요','A paid placement by the restaurant')}</div></div>`],
+  ['card',L('모르면 한국어 카드로<br>물어보세요','Not sure?<br>Ask with the Korean card'),`<p>${L('내 식단에 맞춘 한국어 문장을 직원에게 보여 주거나 들려줄 수 있어요. 메뉴판 사진을 찍으면 AI가 메뉴를 영어로 알려 주고, ‘성분 확인 요청’을 누르면 리프맵이 사장님께 확인해요.','Show or play a Korean sentence built from your diet. Snap a menu for an AI translation, or tap “Ask to verify” and we’ll check with the owner.')}</p>`]]}
+function renderTour(){const c=tourCards(),[icn,t,body]=c[tourI],last=tourI===c.length-1;
+  $('#tour').innerHTML=`<div class="tc"><div class="art">${ic(icn,32)}</div><h3 id="tourT">${t}</h3>${body}
+   <div class="dots">${c.map((_,i)=>`<i class="${i===tourI?'on':''}"></i>`).join('')}</div>
+   <div class="tb"><button class="btn ghost" id="tourSkip">${tourI?L('이전','Back'):L('건너뛰기','Skip')}</button><button class="btn" id="tourNext">${last?L('시작하기','Get started'):L('다음','Next')}</button></div></div>`;
+  $('#tourSkip').onclick=()=>{if(tourI){tourI--;renderTour()}else closeTour()};
+  $('#tourNext').onclick=()=>{if(last)closeTour();else{tourI++;renderTour()}};
+}
+function openTour(){tourI=0;$('#tour').hidden=false;renderTour();setTimeout(()=>$('#tourNext').focus(),50)}
+function closeTour(){$('#tour').hidden=true;try{localStorage.setItem(TOURKEY,'1')}catch(e){}}
+const tourSeen=()=>{try{return !!localStorage.getItem(TOURKEY)}catch(e){return true}};
+$('#tourAgain').onclick=openTour;
 function bootSplash(){
-  if(!U)showLogin();else if(isOwner())showOwner(true);
+  if(!U)showLogin();else if(isOwner())showOwner(true);else if(!tourSeen())setTimeout(openTour,1900);
   const sp=$('#splash');
   setTimeout(()=>{sp.classList.add('out');setTimeout(()=>sp.remove(),600)},1600);
 }
 
-function update(){saveP();applyLang();renderFilters();renderResults();renderMap();renderPhrase();if(isOwner()&&!$('#owner').hidden)renderOwner();if(!$('#login').hidden)renderLgStores()}
+function update(){saveP();applyLang();renderFilters();renderResults();renderMap();renderPhrase();if(isOwner()&&!$('#owner').hidden)renderOwner();if(!$('#login').hidden)renderLgStores();if(!$('#tour').hidden)renderTour()}
 
 async function load(){
   /* 식당 목록은 PLACES(실제 공개 정보). Supabase에는 리프맵이 확인한 메뉴만 같은 id로 붙음 */
@@ -2247,6 +2452,7 @@ async function load(){
 }
 window.addEventListener('resize',()=>{if(tab==='map'){sheetTo(sheetState,true);KM&&KM.relayout();LM&&LM.invalidateSize()}});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!$('#dlg').classList.contains('on'))load()});
+fillIcons();
 mapInit();
 setTab(((location.hash||'').slice(1).split('/')[0]));update();load();bootSplash();
 /* 테스트·디버깅용 */
