@@ -888,8 +888,26 @@ function placeCard(r,sel){const d=distKm(r),ms=menuL(r);
   return `<button class="rc ${sel?'sel':''}" data-r="${esc(r.id)}"><span class="small">${esc(L(r.type[1],r.type[0]))} · ${esc(dist(r))}${d!=null?` · ${fmtKm(d)}`:''}</span><h3>${esc(L(r.ko,r.en))}</h3>
    <div class="mi-list">${ms.slice(0,4).map(m=>`<span>🌱 ${esc(m)}</span>`).join('')}</div>
    <div class="pills">${kindPill(r)}${ratePill(r)}</div></button>`}
+/* 식단에 맞는 식당 거르기 (공개 정보 기준, 메뉴 성분 판정은 아님)
+   - 달걀·유제품·꿀을 안 먹음 → 전부 비건이거나 공개 정보에 비건 메뉴가 나온 곳만
+   - 술을 안 먹음 → 술이 중심인 곳(펍·양조장·와인 바, 메모에 술 판매)을 뺌
+   - 육류·생선만 가림 → 목록 전체가 채식 메뉴가 있는 곳이라 모두 해당 */
+const veganOK=r=>r.kind==='vegan'||/vegan/i.test([r.en,r.type[0],r.note[0],...r.menu[0]].join(' '));
+const alcoholPlace=r=>/alcohol|wine|cocktail|brewery|\bpub\b/i.test([r.en,r.type[0],r.note[0]].join(' '));
+function dietOK(r){
+  if(['egg','dairy','honey'].some(c=>P.ex.includes(c))&&!veganOK(r))return false;
+  if(P.ex.includes('alcohol')&&alcoholPlace(r))return false;
+  return true;
+}
+const placeOK=r=>(!P.veganOnly||r.kind==='vegan')&&dietOK(r);
+function dietWhy(){
+  if(['egg','dairy','honey'].some(c=>P.ex.includes(c)))return L('비건 메뉴가 있는 곳만','places with vegan dishes only');
+  if(P.ex.includes('alcohol'))return L('술 중심 가게 제외','bars & breweries left out');
+  return L('채식 메뉴가 있는 모든 곳','every place with veggie dishes fits');
+}
+const dietName=()=>L(DIETS[P.diet].ko,DIETS[P.diet].en);
 function placesShown(){
-  const rs=(restos||[]).filter(r=>(!P.veganOnly||r.kind==='vegan')&&matchP(r));
+  const rs=(restos||[]).filter(r=>placeOK(r)&&matchP(r));
   const kr={vegan:0,vegetarian:1,options:2};
   return rs.sort((a,b)=>(myPos?distKm(a)-distKm(b):0)||kr[a.kind]-kr[b.kind]||(b.rt||0)-(a.rt||0));
 }
@@ -914,8 +932,8 @@ function renderResults(){
     if($('#goOwner'))$('#goOwner').onclick=goOwner;
   }else{
     const rs=placesShown(),v=rs.filter(r=>r.kind==='vegan').length;
-    $('#rTitle').textContent=P.q?L(`‘${P.q}’ 검색 결과`,`Results for “${P.q}”`):L(`부산 채식 메뉴가 있는 곳 ${rs.length}곳`,`${rs.length} places with veggie dishes in Busan`);
-    $('#rCount').textContent=L(`전부 비건 ${v}곳 · 채식 메뉴 있음 ${rs.length-v}곳 · 공개 정보 기준`,`${v} all-vegan · ${rs.length-v} with veg options · public info`);
+    $('#rTitle').textContent=P.q?L(`‘${P.q}’ 검색 결과`,`Results for “${P.q}”`):L(`‘${dietName()}’에 맞는 곳 ${rs.length}곳`,`${rs.length} places for ${dietName()}`);
+    $('#rCount').textContent=L(`${dietWhy()} · 전부 비건 ${v}곳 · 채식 메뉴 있음 ${rs.length-v}곳 · 공개 정보 기준`,`${dietWhy()} · ${v} all-vegan · ${rs.length-v} with veg options · public info`);
     box.innerHTML=rs.length?`<div class="list">${rs.map(r=>placeCard(r)).join('')}</div>`:`<div class="empty"><b>${L('검색 결과가 없어요','No places found')}</b>${L('검색어를 바꿔 보세요.','Try another keyword.')}</div>`;
   }
   $$('#results .mc').forEach(e=>e.onclick=()=>go('menu/'+e.dataset.m));
@@ -973,7 +991,7 @@ function pinHtml(r,sel){return `<div class="lpw ${sel?'sel':''}"><div class="lpi
 function drawMarkers(){
   if(KM&&restos){
     kClu.clear();Object.values(kOv).forEach(o=>o.setMap(null));kOv={};
-    const list=restos.filter(r=>!P.veganOnly||r.kind==='vegan').map(r=>{
+    const list=restos.filter(placeOK).map(r=>{
       const sel=r.id===MV.sel,box=document.createElement('div');box.innerHTML=pinHtml(r,sel);
       const node=box.firstElementChild;node.style.cursor='pointer';node.title=L(r.ko,r.en);
       node.addEventListener('click',e=>{e.stopPropagation();mapSelect(r.id,true)});
@@ -983,7 +1001,7 @@ function drawMarkers(){
   }
   if(!LM||!restos)return;
   clusterG.clearLayers();markers={};
-  restos.filter(r=>!P.veganOnly||r.kind==='vegan').forEach(r=>{
+  restos.filter(placeOK).forEach(r=>{
     const sel=r.id===MV.sel;
     const m=LF.marker([r.lat,r.lng],{icon:LF.divIcon({html:pinHtml(r,sel),className:'',iconSize:[34,40],iconAnchor:[17,40]}),title:L(r.ko,r.en),keyboard:true,zIndexOffset:sel?1000:0,riseOnHover:true});
     m.on('click',e=>{if(e.originalEvent)LF.DomEvent.stopPropagation(e.originalEvent);mapSelect(r.id,true)});
@@ -1057,8 +1075,8 @@ function renderSheet(){
     $('#pcX').onclick=()=>mapSelect(null);
   }else{
     const rs=placesShown(),v=rs.filter(r=>r.kind==='vegan').length;
-    $('#msT').textContent=L(`부산 채식 메뉴가 있는 곳 ${rs.length}곳`,`${rs.length} places with veggie dishes in Busan`);
-    $('#msS').textContent=L(`전부 비건 ${v} · 채식 메뉴 있음 ${rs.length-v} · 공개 정보, 리프맵 확인 전`,`${v} all-vegan · ${rs.length-v} with veg options · public info, not yet verified`);
+    $('#msT').textContent=L(`‘${dietName()}’에 맞는 곳 ${rs.length}곳`,`${rs.length} places for ${dietName()}`);
+    $('#msS').textContent=L(`${dietWhy()} · 전부 비건 ${v} · 채식 메뉴 있음 ${rs.length-v} · 공개 정보, 리프맵 확인 전`,`${dietWhy()} · ${v} all-vegan · ${rs.length-v} with veg options · public info, not yet verified`);
     b.innerHTML=(rs.map(r=>placeCard(r)).join('')||`<div class="empty"><b>${L('식당이 없어요','No places')}</b></div>`)+`<p class="small" style="text-align:center;padding:4px 0 8px">${L('식당 정보 출처: HappyCow 공개 목록 (2026년 11월 확인) · 방문 전에 영업 여부를 확인하세요','Source: HappyCow public listings (checked Nov 2026) · confirm opening before you go')}</p>`;
     $$('#msB .rc').forEach(e=>e.onclick=()=>mapSelect(e.dataset.r,true));
   }
@@ -1069,7 +1087,7 @@ function renderMap(){
   $('#mapArea').innerHTML=`<button type="button" class="chip ${P.veganOnly?'on':''}" id="mVeg">🌱 ${L('전부 비건만','All-vegan only')}</button><span class="dl">${L('내 식단','My diet')}</span>`
     +['vegan','lacto','pesco','nopork','nobeef'].map(k=>`<button type="button" class="chip ${P.diet===k?'on':''}" data-d="${k}" aria-pressed="${P.diet===k}">${L(DIETS[k].ko,DIETS[k].en)}</button>`).join('')
     +`<button type="button" class="chip ${P.diet==='custom'?'on':''}" id="mCond">⚙ ${L('직접 설정','Custom')}</button>`;
-  $$('#mapArea [data-d]').forEach(e=>e.onclick=()=>{P.diet=e.dataset.d;P.ex=[...DIETS[P.diet].ex];update();toast(L(`‘${DIETS[P.diet].ko}’ 기준으로 한국어 카드를 바꿨어요`,`Phrase card set to “${DIETS[P.diet].en}”`))});
+  $$('#mapArea [data-d]').forEach(e=>e.onclick=()=>{P.diet=e.dataset.d;P.ex=[...DIETS[P.diet].ex];MV.sel=null;update();toast(L(`‘${DIETS[P.diet].ko}’에 맞는 식당 ${placesShown().length}곳을 보여드려요`,`Showing ${placesShown().length} places for “${DIETS[P.diet].en}”`))});
   $('#mVeg').onclick=()=>{P.veganOnly=!P.veganOnly;MV.sel=null;update()};
   $('#mCond').onclick=openFilters;
   $('#mLang').textContent=P.lang==='en'?'KO':'EN';
