@@ -218,13 +218,13 @@ input,select,textarea{font:inherit;color:inherit}
 .pb .form{padding:0}
 
 /* 직원에게 크게 보여주기 */
-.big-kr{position:absolute;inset:0;z-index:100;background:#FFF8E6;display:none;flex-direction:column;justify-content:center;padding:40px 26px;text-align:center}
+.big-kr{position:absolute;inset:0;z-index:290;background:#FFF8E6;display:none;flex-direction:column;justify-content:center;padding:40px 26px;text-align:center}
 .big-kr.on{display:flex}
 .big-kr .kr{font-size:27px;font-weight:800;line-height:1.5;color:#2E2408}
 .big-kr .en{font-size:15px;color:#76683F;margin-top:22px}
 .big-kr .x{position:absolute;top:calc(14px + var(--st));right:14px;padding:10px 16px;border-radius:12px;background:#fff;font-weight:700;box-shadow:var(--sh)}
 .big-kr .hint{font-size:13px;color:#8A7A4A;margin-bottom:18px;font-weight:700}
-#toast{position:absolute;left:50%;bottom:calc(74px + var(--sb));transform:translateX(-50%) translateY(10px);background:var(--g9);color:#fff;padding:11px 16px;border-radius:12px;font-size:13.5px;opacity:0;pointer-events:none;transition:.25s;z-index:120;width:max-content;max-width:88%;text-align:center}
+#toast{position:absolute;left:50%;bottom:calc(74px + var(--sb));transform:translateX(-50%) translateY(10px);background:var(--g9);color:#fff;padding:11px 16px;border-radius:12px;font-size:13.5px;opacity:0;pointer-events:none;transition:.25s;z-index:320;width:max-content;max-width:88%;text-align:center}
 #toast.on{opacity:1;transform:translateX(-50%)}
 
 
@@ -257,10 +257,80 @@ input,select,textarea{font:inherit;color:inherit}
 .lform .btn{margin-top:12px;padding:15px}
 .lform .btn[type=submit]{margin-top:24px}
 .lform .small{text-align:center;margin-top:14px}
+/* 로그인: 이용 고객 / 식당 사장님 */
+.role{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+.role button{background:#fff;border-radius:16px;padding:13px 12px;text-align:left;box-shadow:inset 0 0 0 1.5px var(--line);display:flex;gap:10px;align-items:center;transition:box-shadow .15s,background .15s}
+.role button i{font-style:normal;font-size:22px;flex:none}
+.role button b{display:block;font-size:15px;color:var(--g9)}
+.role button small{display:block;font-size:12px;color:var(--muted);line-height:1.35}
+.role button.on{background:var(--g1);box-shadow:inset 0 0 0 2px var(--g7)}
+.lform input[type=search]{-webkit-appearance:none;appearance:none}
+.lform select{width:100%;border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff;font-size:16px}
+.slist{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.sitem{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:11px 13px;text-align:left;box-shadow:inset 0 0 0 1px var(--line)}
+.sitem .t{flex:1;min-width:0}.sitem .t b{display:block;font-size:14.5px}.sitem .t small{font-size:12px;color:var(--muted)}
+.sitem.on{box-shadow:inset 0 0 0 2px var(--g7);background:var(--g1)}
+.sitem .ck{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:13px;flex:none;box-shadow:inset 0 0 0 1.5px var(--line);color:#fff}
+.sitem.on .ck{background:var(--g7);box-shadow:none}
+.newst{margin-top:10px;font-size:13.5px;font-weight:700;color:var(--g7);padding:6px 2px}
+.lgx{font-size:13px;font-weight:700;color:var(--g8);background:#fff;border-radius:999px;padding:6px 12px;box-shadow:inset 0 0 0 1px var(--line);margin-right:auto}
+
+/* ===== 사장님 앱 ===== */
+.owner{position:absolute;inset:0;z-index:200;display:flex;flex-direction:column;background:var(--bg)}
+.owner[hidden]{display:none}
+.owner .abar h1 small{font-size:12px;font-weight:800;color:#fff;background:var(--g7);border-radius:7px;padding:2px 7px;margin-left:2px}
+.oscr{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:4px 16px 28px;display:none}
+.oscr.on{display:block;animation:fadein .18s ease}
+.oscr::-webkit-scrollbar{width:0}
+.ohead{background:linear-gradient(140deg,#2A6A4C,#173F2D);color:#fff;border-radius:20px;padding:18px;margin-top:6px}
+.ohead .k{font-size:12px;font-weight:700;color:#CFE3D6}
+.ohead h2{font-size:22px;letter-spacing:-.02em;margin:2px 0 4px}
+.ohead .s{font-size:13px;color:#DCEBE2}
+.ohead .pills{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.kpi{background:#fff;border-radius:16px;padding:12px;box-shadow:0 1px 2px rgba(20,40,30,.05);text-align:left}
+.kpi b{display:block;font-size:24px;color:var(--g9);line-height:1.2}
+.kpi span{font-size:12px;color:var(--muted);font-weight:700}
+.callout{display:flex;gap:12px;align-items:flex-start;background:var(--chkbg);border-radius:16px;padding:14px;margin-top:12px;color:#5E3F0B;font-size:13.5px}
+.callout i{font-style:normal;font-size:20px}
+.callout .btn{margin-top:10px}
+.bars{padding:14px 16px;display:grid;gap:9px}
+.bar{display:grid;grid-template-columns:118px 1fr 28px;gap:8px;align-items:center;font-size:13px}
+.bar .tr{height:9px;border-radius:9px;background:var(--soft);overflow:hidden}.bar .tr i{display:block;height:100%;background:var(--g5);border-radius:9px}
+.bar b{text-align:right;color:var(--g9)}
+.sub-it{padding:13px 16px;border-bottom:1px solid var(--line)}
+.sub-it:last-child{border-bottom:none}
+.sub-it .top{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.sub-it .top b{font-size:14.5px}
+.sub-it .miss{font-size:12.5px;color:var(--chk);margin-top:4px}
+.steps3{display:flex;gap:4px;margin-top:8px}
+.steps3 span{flex:1;font-size:11px;font-weight:700;text-align:center;padding:4px 0;border-radius:7px;background:var(--soft);color:#9AA29E}
+.steps3 span.on{background:var(--g1);color:var(--g7)}
+.dish{background:#fff;border-radius:var(--r);margin-top:12px;box-shadow:0 1px 2px rgba(20,40,30,.05)}
+.dish .dh{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 0;font-weight:800;color:var(--g9)}
+.dish .dh button{font-size:13px;color:var(--muted);font-weight:700;padding:4px 6px}
+.dish .hint{font-size:12.5px;background:var(--chkbg);color:#6C440B;border-radius:10px;padding:8px 10px;margin-top:10px}
+.ocr{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#1F4D38,#2A6A4C);color:#fff;border-radius:16px;padding:14px 16px;margin-top:12px;cursor:pointer}
+.ocr i{font-style:normal;font-size:22px}.ocr b{display:block}.ocr small{color:#CFE3D6;font-size:12.5px}
+.ocr input{display:none}
+.ocr.busy{opacity:.7;pointer-events:none}
+.oprog{height:6px;border-radius:6px;background:var(--soft);overflow:hidden;margin-top:10px}.oprog i{display:block;height:100%;width:0;background:var(--g5);transition:width .2s}
+.rv{padding:13px 16px;border-bottom:1px solid var(--line);font-size:14px}
+.rv:last-child{border-bottom:none}
+.rv .m{font-size:12px;color:var(--muted);margin-bottom:3px}
+.qa{background:#fff;border-radius:var(--r);padding:15px 16px;margin-top:10px;box-shadow:0 1px 2px rgba(20,40,30,.05)}
+.qa .q{font-size:16px;font-weight:800;color:var(--g9)}
+.qa .qk{font-size:13px;color:var(--muted);margin:2px 0 10px}
+.qa .chips .chip{white-space:normal;text-align:left}
+.dtab{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;padding:14px 16px;font-size:13.5px}
+.dtab b{color:var(--g9);white-space:nowrap}
+.ownback{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(74px + var(--sb));z-index:150;background:var(--g9);color:#fff;font-weight:700;font-size:13.5px;border-radius:999px;padding:10px 16px;box-shadow:var(--sh)}
+.ownback[hidden]{display:none}
 
 /* ===== 카카오맵 스타일 지도 홈 ===== */
-#app.mapmode .abar{display:none}
+#app.mapmode #abar{display:none}
 #app.mapmode #toast{bottom:auto;top:calc(122px + var(--st))}
+#app.ownmode #toast{top:auto;bottom:calc(74px + var(--sb))}
 .mfab,.mlegend{transition:bottom .28s cubic-bezier(.2,.8,.2,1),opacity .2s}
 .screen.map{padding:0;overflow:hidden;animation:none}
 #lmap{position:absolute;inset:0;background:#EEF0E8;z-index:0;font-family:inherit}
@@ -356,8 +426,11 @@ input,select,textarea{font:inherit;color:inherit}
   .tabbar{padding-bottom:16px}
   #toast{bottom:92px}
   #app.mapmode #toast{top:168px}
+  #app.ownmode #toast{top:auto;bottom:92px}
   .sheet{padding-bottom:30px}
   .login{padding-top:20px}
+  .owner{top:44px}
+  .ownback{bottom:92px}
   .msb{padding-bottom:20px}
 }
 @media (min-width:1040px) and (min-height:560px){
@@ -477,19 +550,7 @@ input,select,textarea{font:inherit;color:inherit}
           <div><i>🗣</i><span data-t="b2">재료 설명이 어려운 외국인 손님 응대 부담이 줄어요</span></div>
           <div><i>↻</i><span data-t="b3">제품을 바꾸면 변경 신고로 바로 반영돼요</span></div>
         </div>
-        <form id="ownForm" class="form" novalidate>
-          <label class="f" for="oR" data-t="oRL">식당 이름</label>
-          <input type="text" id="oR" maxlength="40" placeholder="예: 광안 비건하우스">
-          <label class="f" for="oA" data-t="oAL">지역</label><select id="oA"><option value="서면·전포" data-t="oA1">서면·전포</option><option value="대연동(경성대·부경대)" data-t="oA2">대연동(경성대·부경대)</option><option value="장전동(부산대)" data-t="oA3">장전동(부산대)</option><option value="그 외 부산" data-t="oA4">그 외 부산</option></select>
-          <label class="f" for="oM" data-t="oML">등록할 메뉴</label><input type="text" id="oM" maxlength="40" placeholder="예: 비건 짜장면">
-          <label class="f" for="oP"><span data-t="oPL">사용하는 양념·소스 제품명</span> <em data-t="oPE">(정확할수록 빨라요)</em></label>
-          <input type="text" id="oP" maxlength="60" placeholder="예: OO식품 춘장 500g">
-          <label class="f"><span data-t="oFL">함께 보낼 자료</span> <em data-t="oFE">(시연용: 첨부했다고 가정)</em></label>
-          <label class="ck"><input type="checkbox" id="oPh"> <span data-t="oPhL">제품 성분표 사진이 있어요</span></label>
-          <label class="ck"><input type="checkbox" id="oU"> <span data-t="oUL">이 제품을 지금 이 메뉴에 쓰고 있어요</span></label>
-          <button class="btn" type="submit" id="oSend" data-t="oSend">등록 신청하기</button>
-          <p class="note" data-t="oNote">신청은 운영팀 검토 후 공개돼요. 시연용이라 연락처는 받지 않아요.</p>
-        </form>
+        <div class="form"><button class="btn" type="button" id="goOwnApp" data-t="goOwnApp">🧑‍🍳 사장님 화면으로 시작하기</button><p class="note" data-t="goOwnP">가게를 고르면 손님 요청·리뷰를 보고 메뉴와 양념 제품을 등록할 수 있어요.</p></div>
       </div>
 
       <div class="gh" data-t="foot3">운영자 화면</div>
@@ -528,21 +589,66 @@ input,select,textarea{font:inherit;color:inherit}
     <div class="pb" id="dBody"></div>
   </div>
 
-  <div class="big-kr" id="bigKr" role="dialog" aria-modal="true"><button class="x" id="bigX" data-t="bigX">✕ 닫기 Close</button><div class="hint">직원분께 · For the staff</div><div class="kr" id="bigKrT"></div><div class="en" id="bigEnT"></div><button class="spk" id="bigSpk" type="button" data-t="bigSpk">🔊 소리로 들려주기 · Play</button></div>
+  <div class="big-kr" id="bigKr" role="dialog" aria-modal="true"><button class="x" id="bigX" data-t="bigX">✕ 닫기 Close</button><div class="hint" id="bigHint">직원분께 · For the staff</div><div class="kr" id="bigKrT"></div><div class="en" id="bigEnT"></div><button class="spk" id="bigSpk" type="button" data-t="bigSpk">🔊 소리로 들려주기 · Play</button></div>
   <div id="toast" role="status"></div>
+
+  <button type="button" class="ownback" id="ownBack" hidden></button>
+
+  <!-- 사장님 앱 (로그인에서 ‘식당 사장님’을 고르면 열림) -->
+  <div class="owner" id="owner" hidden>
+    <header class="abar"><div class="in">
+      <h1><span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></span><span>LeafMap</span><small data-t="oBadge">사장님</small></h1>
+      <div class="lang" role="group" aria-label="Language"><button data-l="ko">KO</button><button data-l="en">EN</button></div>
+    </div></header>
+    <main class="screens">
+      <section class="oscr" id="o-store"></section>
+      <section class="oscr" id="o-menu"></section>
+      <section class="oscr" id="o-req"></section>
+      <section class="oscr" id="o-help"></section>
+    </main>
+    <nav class="tabbar" id="otabbar" role="tablist">
+      <button data-otab="store" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 10 5.5 5h13L20 10M4 10v9h16v-9M4 10c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 2 3s2-1.3 2-3c0 1.7 1.3 3 3 3s3-1.3 3-3"/></svg><span data-t="otStore">내 가게</span></button>
+      <button data-otab="menu" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 8.5h6M9 12.5h6M9 16.5h3"/></svg><span data-t="otMenu">메뉴 등록</span></button>
+      <button data-otab="req" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 5h14v10H10l-4 4v-4H5z"/></svg><span data-t="otReq">손님 요청</span></button>
+      <button data-otab="help" role="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.4M12 17h.01"/></svg><span data-t="otHelp">응대 도우미</span></button>
+    </nav>
+  </div>
 
   <div class="splash" id="splash" aria-hidden="true"><div class="mark"><svg width="54" height="54" viewBox="0 0 24 24"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></div><div class="nm">LeafMap</div><div class="tg" id="splashT">부산 채식 메뉴, 성분까지 확인하고 고르기</div><div class="by">리프맵 · BUSAN</div></div>
   <div class="login" id="login" hidden role="dialog" aria-modal="true" aria-labelledby="lgT">
-    <div class="lt"><div class="lang" role="group" aria-label="Language"><button data-l="ko">KO</button><button data-l="en">EN</button></div></div>
-    <div class="lhero"><div class="mark"><svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></div><h2 id="lgT">부산 채식 여행,<br><em>리프맵</em>으로 시작해요</h2><p data-t="lgP">메뉴마다 육수·양념 제품 성분까지 확인해 드려요</p></div>
+    <div class="lt"><button type="button" class="lgx" id="lgX" hidden></button><div class="lang" role="group" aria-label="Language"><button data-l="ko">KO</button><button data-l="en">EN</button></div></div>
+    <div class="lhero"><div class="mark"><svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></div><h2 id="lgT">부산 채식 여행,<br><em>리프맵</em>으로 시작해요</h2><p data-t="lgP" id="lgPp">메뉴마다 육수·양념 제품 성분까지 확인해 드려요</p></div>
     <form id="lgForm" class="lform" novalidate>
-      <label class="f" for="lgName" data-t="lgName">닉네임</label>
-      <input id="lgName" type="text" maxlength="20" autocomplete="nickname" enterkeyhint="go" placeholder="예: 홍길동">
-      <div class="fl" data-t="lgDiet">내 식단</div>
-      <div class="chips" id="dietSeg3"></div>
-      <button class="btn full" type="submit" data-t="lgGo">시작하기</button>
+      <div class="role" role="radiogroup" id="lgRole">
+        <button type="button" data-role="traveler" role="radio"><i aria-hidden="true">🧳</i><span><b data-t="rlT">이용 고객</b><small data-t="rlTs">채식 메뉴 찾기</small></span></button>
+        <button type="button" data-role="owner" role="radio"><i aria-hidden="true">🧑‍🍳</i><span><b data-t="rlO">식당 사장님</b><small data-t="rlOs">내 가게 관리</small></span></button>
+      </div>
+      <div id="lgTrav">
+        <label class="f" for="lgName" data-t="lgName">닉네임</label>
+        <input id="lgName" type="text" maxlength="20" autocomplete="nickname" enterkeyhint="go" placeholder="예: 홍길동">
+        <div class="fl" data-t="lgDiet">내 식단</div>
+        <div class="chips" id="dietSeg3"></div>
+      </div>
+      <div id="lgOwn" hidden>
+        <label class="f" for="lgOName" data-t="lgOName">사장님 이름 (선택)</label>
+        <input id="lgOName" type="text" maxlength="20" autocomplete="name" placeholder="예: 홍길동">
+        <div class="fl" data-t="lgStore">내 가게</div>
+        <div id="lgSel"></div>
+        <div id="lgFind">
+          <input id="lgStoreQ" type="search" autocomplete="off" enterkeyhint="search">
+          <div class="slist" id="lgStores"></div>
+          <button type="button" class="newst" id="lgNew"></button>
+          <div id="lgNewBox" hidden>
+            <label class="f" for="lgNewName" style="margin-top:12px" data-t="lgNewName">가게 이름</label>
+            <input id="lgNewName" type="text" maxlength="40">
+            <label class="f" for="lgNewDist" style="margin-top:12px" data-t="lgNewDist">구</label>
+            <select id="lgNewDist"></select>
+          </div>
+        </div>
+      </div>
+      <button class="btn full" type="submit" data-t="lgGo" id="lgGo">시작하기</button>
       <button class="btn ghost full" type="button" id="lgGuest" data-t="lgGuest">로그인 없이 둘러보기</button>
-      <p class="small" data-t="lgNote">시연용 로그인이에요. 비밀번호 없이 닉네임만 이 브라우저에 저장돼요.</p>
+      <p class="small" data-t="lgNote" id="lgNoteP">시연용 로그인이에요. 비밀번호 없이 닉네임만 이 브라우저에 저장돼요.</p>
     </form>
   </div>
 </div>
@@ -779,6 +885,11 @@ const T={
  foot1:['부산 채식 여행자를 위한 메뉴 성분 확인 서비스 (MVP)','Menu ingredient checks for vegetarian travelers in Busan (MVP)'],foot3:['운영자 화면','For operators'],
  tHome:['찾기','Explore'],tMap:['지도','Map'],tCard:['AI 메뉴판','AI Menu'],tMore:['더보기','More'],
  edit:['조건','Filters'],mq:['메뉴·식당 검색','Search dishes or places'],lgP:['메뉴마다 육수·양념 제품 성분까지 확인해 드려요','We check every dish down to the broth and sauce labels'],lgName:['닉네임','Nickname'],lgDiet:['내 식단','My diet'],lgGo:['시작하기','Get started'],lgGuest:['로그인 없이 둘러보기','Continue as guest'],lgNote:['시연용 로그인이에요. 비밀번호 없이 닉네임만 이 브라우저에 저장돼요.','Demo sign-in — no password, your nickname stays in this browser only.'],meS:['시연용 계정 · 이 브라우저에만 저장','Demo account · saved in this browser only'],gMy:['내 설정','My settings'],langL:['언어 · Language','Language'],brandKo:[' 리프맵',''],bigX:['✕ 닫기 Close','✕ Close'],bigSpk:['🔊 소리로 들려주기 · Play','🔊 Play aloud for the staff'],
+ rlT:['이용 고객','Traveler'],rlTs:['채식 메뉴 찾기','Find veggie food'],rlO:['식당 사장님','Restaurant owner'],rlOs:['내 가게 관리','Manage my place'],
+ lgOName:['사장님 이름 (선택)','Your name (optional)'],lgStore:['내 가게','My restaurant'],lgNewName:['가게 이름','Restaurant name'],lgNewDist:['구','District'],
+ lgPo:['외국인 채식 손님의 요청을 보고, 메뉴와 양념 제품을 등록해요','See requests from vegetarian visitors and register your dishes'],lgGoO:['사장님으로 시작하기','Start as owner'],lgNoteO:['시연용이라 본인 확인 없이 가게를 골라요. 이름과 가게는 이 브라우저에만 저장돼요.','Demo only — no verification. Your name and place stay in this browser.'],
+ oBadge:['사장님','Owner'],otStore:['내 가게','My place'],otMenu:['메뉴 등록','Dishes'],otReq:['손님 요청','Requests'],otHelp:['응대 도우미','Guest help'],
+ goOwnApp:['🧑‍🍳 사장님 화면으로 시작하기','🧑‍🍳 Open the owner app'],goOwnP:['가게를 고르면 손님 요청·리뷰를 보고 메뉴와 양념 제품을 등록할 수 있어요.','Pick your place to see guest requests and reviews, and register dishes and sauces.'],
  oRL:['식당 이름','Restaurant name'],oAL:['지역','Area'],oA1:['서면·전포','Seomyeon · Jeonpo'],oA2:['대연동(경성대·부경대)','Daeyeon-dong (KSU · PKNU)'],oA3:['장전동(부산대)','Jangjeon-dong (PNU)'],oA4:['그 외 부산','Elsewhere in Busan'],oML:['등록할 메뉴','Dish to list'],oPL:['사용하는 양념·소스 제품명','Sauce & seasoning products used'],oPE:['(정확할수록 빨라요)','(the more exact, the faster)'],oFL:['함께 보낼 자료','Attachments'],oFE:['(시연용: 첨부했다고 가정)','(demo: assumed attached)'],oPhL:['제품 성분표 사진이 있어요','I have photos of the ingredient labels'],oUL:['이 제품을 지금 이 메뉴에 쓰고 있어요','I currently use these products in this dish'],oSend:['등록 신청하기','Send listing request'],oNote:['신청은 운영팀 검토 후 공개돼요. 시연용이라 연락처는 받지 않아요.','Requests go live after our team reviews them. This is a demo, so we don’t collect contact details.'],
  dashS:['등록 검토·제보 처리 (PC 화면)','Review sign-ups & reports (desktop)']
 };
@@ -810,12 +921,16 @@ function applyLang(){
   $('#q').placeholder=L('메뉴·식당 검색 (예: 칼국수, 카페)','Search dishes or places');
   $('#phMenu').placeholder=L('예: 비빔밥','e.g. Bibimbap');
   $('#lmap').setAttribute('aria-label',L('부산 채식 식당 지도','Map of veggie-friendly places in Busan'));
-  $('#lgT').innerHTML=L('부산 채식 여행,<br><em>리프맵</em>으로 시작해요','Vegetarian Busan,<br>starts with <em>LeafMap</em>');
+  $('#lgT').innerHTML=lgRole==='owner'?L('사장님, 외국인 채식 손님을<br><em>리프맵</em>으로 맞이하세요','Welcome vegetarian visitors<br>with <em>LeafMap</em>'):L('부산 채식 여행,<br><em>리프맵</em>으로 시작해요','Vegetarian Busan,<br>starts with <em>LeafMap</em>');
   if($('#splashT'))$('#splashT').textContent=L('부산 채식 메뉴, 성분까지 확인하고 고르기','Vegetarian Busan, checked to the broth');
   $('#lgName').placeholder=L('예: 홍길동','e.g. Alex');
-  $('#oR').placeholder=L('예: 광안 비건하우스','e.g. Gwangan Vegan House');
-  $('#oM').placeholder=L('예: 비건 짜장면','e.g. Vegan jjajangmyeon');
-  $('#oP').placeholder=L('예: OO식품 춘장 500g','e.g. OO Foods black bean paste 500g');
+  $('#lgOName').placeholder=L('예: 홍길동','e.g. Alex');
+  $('#lgStoreQ').placeholder=L('가게 이름이나 동네로 찾기 (예: 소반, 서면)','Search by name or area (e.g. Soban, Seomyeon)');
+  $('#lgNewName').placeholder=L('예: 광안 비건하우스','e.g. Gwangan Vegan House');
+  $('#lgNew').textContent=lgNewMode?L('← 목록에서 고르기','← Pick from the list'):L('＋ 목록에 없어요 · 새 가게로 시작','＋ Not listed? Start as a new place');
+  $('#lgX').textContent=L('✕ 닫기','✕ Close');
+  $('#ownBack').textContent=L('← 사장님 화면으로 돌아가기','← Back to owner app');
+  $('#otabbar').setAttribute('aria-label',L('사장님 메뉴','Owner menu'));
   $$('[title="운영자용 화면"],[data-tt=op]').forEach(e=>{e.dataset.tt='op';e.title=L('운영자용 화면','For operators')});
   [['#qClr','지우기','Clear'],['#mAv','내 정보','My info'],['#zIn','확대','Zoom in'],['#zOut','축소','Zoom out'],['#zHome','내 위치','My location'],['#tabbar','주 메뉴','Main menu'],['#dBack','뒤로','Back'],['#dietSeg','내 식단','My diet']].forEach(([s,k,e])=>{const el=$(s);if(el)el.setAttribute('aria-label',L(k,e))});
   if(!restos)$('#rTitle').textContent=L('내 조건에 맞는 메뉴','Dishes for your diet');
@@ -949,7 +1064,7 @@ function renderResults(){
   $$('#results .mc').forEach(e=>e.onclick=()=>go('menu/'+e.dataset.m));
   $$('#results .rc').forEach(e=>e.onclick=()=>go('place/'+e.dataset.r));
 }
-function goOwner(){go('more');setTimeout(()=>{const b=$('#ownBox');if(b)b.scrollIntoView({behavior:'smooth',block:'start'})},120)}
+function goOwner(){openOwnerLogin()}
 
 /* ---------- 지도 홈: 실제 지도(OpenStreetMap·CARTO 타일, Leaflet) + 카카오맵 스타일 UI ----------
    주의: 이 파일의 L()은 번역 함수라서 Leaflet은 window.L(LF)로 부름 */
@@ -1173,7 +1288,7 @@ function showPlace(r){
   if($('#pReq'))$('#pReq').onclick=e=>requestCheck(r,e.currentTarget);
   $('#pMap').onclick=()=>{closeAndClear();go('map');setTimeout(()=>mapSelect(r.id,true),350)};
   $('#pRep').onclick=()=>showPlaceReport(r);
-  $('#pOwn').onclick=()=>{closeAndClear();goOwner();setTimeout(()=>{const i=$('#oR');if(i&&!i.value)i.value=r.ko},200)};
+  $('#pOwn').onclick=()=>{closeAndClear();openOwnerLogin(r.id)};
   let stars=0;const paint=()=>$$('#rvStars button').forEach(b=>{const on=+b.dataset.n<=stars;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});
   $$('#rvStars button').forEach(b=>b.onclick=()=>{stars=+b.dataset.n;paint()});
   $('#rvSend').onclick=async()=>{
@@ -1479,6 +1594,10 @@ function speak(t){
   if(!koVoice)koVoice=ss.getVoices().find(v=>/^ko/i.test(v.lang))||null;
   const u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=.9;if(koVoice)u.voice=koVoice;ss.speak(u);
 }
+function speakEn(t){
+  if(!('speechSynthesis' in window)){toast(L('이 브라우저는 음성 읽기를 지원하지 않아요','Speech isn’t supported in this browser'));return}
+  const ss=window.speechSynthesis;ss.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.92;const v=ss.getVoices().find(x=>/^en/i.test(x.lang));if(v)u.voice=v;ss.speak(u);
+}
 try{window.speechSynthesis&&speechSynthesis.addEventListener&&speechSynthesis.addEventListener('voiceschanged',()=>{koVoice=null})}catch(e){}
 const scanCta=id=>`<button type="button" class="scanCta" id="${id}"><i>📷</i><span><b>${L('메뉴판 AI 읽기','Read a Korean menu with AI')}<em class="ai">AI</em></b><small>${L('사진을 찍으면 메뉴를 영어로 알려 주고 주의할 재료를 표시해요','Snap a photo — get dish names in English and ingredients to watch')}</small></span><span class="ar">›</span></button>`;
 
@@ -1499,37 +1618,24 @@ function renderPhrase(){
   $('#phCopy').onclick=()=>copy(kr);
 }
 $('#phMenu').addEventListener('input',renderPhrase);
-function openBig(kr,en){$('#bigKrT').textContent=kr;$('#bigEnT').textContent=en;$('#bigKr').classList.add('on');$('#bigX').focus()}
+let bigMode='ko';
+function openBig(kr,en,mode){bigMode=mode||'ko';$('#bigKrT').textContent=kr;$('#bigEnT').textContent=en;$('#bigEnT').hidden=!en;$('#bigHint').textContent=bigMode==='en'?L('손님께 보여 주세요 · For the guest','For the guest'):'직원분께 · For the staff';$('#bigSpk').textContent=bigMode==='en'?L('🔊 소리로 들려주기','🔊 Play aloud'):L('🔊 소리로 들려주기 · Play','🔊 Play aloud for the staff');$('#bigKr').classList.add('on');$('#bigX').focus()}
 function closeBig(){$('#bigKr').classList.remove('on');try{speechSynthesis.cancel()}catch(e){}}
 $('#bigX').onclick=closeBig;
-$('#bigSpk').onclick=()=>speak($('#bigKrT').textContent);
+$('#bigSpk').onclick=()=>bigMode==='en'?speakEn($('#bigKrT').textContent):speak($('#bigKrT').textContent);
 function copy(t){try{navigator.clipboard.writeText(t).then(()=>toast(L('문장을 복사했어요','Copied')),()=>toast(L('복사할 수 없어요. 문장을 직접 선택해 주세요','Copy failed — please select the text')))}catch(e){toast(L('복사할 수 없어요','Copy failed'))}}
 
-/* ---------- 사장님 등록 신청 → submissions (운영자 대시보드 ‘등록·검토 큐’) ---------- */
 const MISS_EN={'정확한 제품명':'exact product names','성분표 사진':'label photos','실제 사용 확인':'confirmation of use','재료·육수·소스':'ingredients, broth & sauces','판매 국가':'country of sale'};
-$('#ownForm').onsubmit=async e=>{
-  e.preventDefault();
-  const v=id=>$(id).value.trim();
-  if(!v('#oR')||!v('#oM')){toast(L('식당 이름과 메뉴는 꼭 입력해 주세요','Please enter the restaurant name and dish'));return}
-  if(!live){toast(L('지금은 서버에 연결되지 않아 신청을 보낼 수 없어요','Can’t reach the server right now, so the request can’t be sent'));return}
-  const missing=[];if(!v('#oP'))missing.push('정확한 제품명');if(!$('#oPh').checked)missing.push('성분표 사진');if(!$('#oU').checked)missing.push('실제 사용 확인');
-  missing.push('재료·육수·소스','판매 국가');
-  const now=Date.now(),name=`${v('#oR')} (${$('#oA').value})`,menu=v('#oM');
-  const b=$('#oSend');b.disabled=true;b.textContent=L('보내는 중…','Sending…');
-  try{
-    const {error}=await db.from('submissions').insert({id:'s'+now,restaurant:name,menu,files:[v('#oP')||'제품명 없음',$('#oPh').checked?'성분표 사진':'사진 없음'],missing,status:'누락 보완 요청',ord:now});
-    if(error)throw error;
-    await db.from('activity').insert({id:'a'+now,icon:'＋',title:`웹사이트 등록 신청 접수: ${name} · ${menu}`,sub:'사장님 등록 폼 · '+today(),ord:now});
-    $('#ownBox').innerHTML=`<div class="done"><div class="big">🌿</div><h3>${L('등록 신청이 접수됐어요','Request received')}</h3><p><b>${esc(name)}</b> · ${esc(menu)}<br>${L('운영팀이 검토한 뒤 보완 자료를 요청드리고, 확인이 끝나면 여행자에게 공개돼요.','Our team will review it and ask for anything missing. Once verified, it goes live for travelers.')}</p><div class="miss">${L('보완이 필요한 자료: ','Still needed: ')}${(P.lang==='en'?missing.map(x=>MISS_EN[x]||x):missing).map(esc).join(', ')}</div><div style="margin-top:16px"><button class="btn ghost" onclick="location.reload()">${L('다른 메뉴도 신청하기','List another dish')}</button></div></div>`;
-  }catch(err){console.error('[Supabase]',err);toast(L('신청을 보내지 못했어요. 잠시 후 다시 시도해 주세요','Couldn’t send the request. Please try again shortly'));b.disabled=false;b.textContent=L('등록 신청하기','Send listing request')}
-};
+$('#goOwnApp').onclick=()=>openOwnerLogin();
 
 /* ---------- 공통 ---------- */
 $$('.lang button').forEach(b=>b.onclick=()=>{P.lang=b.dataset.l;update();route()});
-/* ---------- 스플래시 → 시연용 로그인 → 지도 ----------
-   실제 인증이 아니에요. 비밀번호 없이 닉네임만 이 브라우저(localStorage)에 저장해요. */
+/* ---------- 스플래시 → 시연용 로그인(이용 고객 / 식당 사장님) ----------
+   실제 인증이 아니에요. 비밀번호 없이 닉네임·가게만 이 브라우저(localStorage)에 저장해요. */
 const UKEY='leafmap-user-v1';
 let U=null;try{U=JSON.parse(localStorage.getItem(UKEY)||'null')}catch(e){}
+let lgRole=U&&U.role==='owner'?'owner':'traveler',lgPid=U&&U.pid||null,lgNewMode=false;
+const isOwner=()=>!!(U&&U.role==='owner');
 function renderUser(){
   const nm=U&&U.name?U.name:'';
   $('#mAv').textContent=nm?[...nm][0].toUpperCase():'👤';
@@ -1537,24 +1643,287 @@ function renderUser(){
   $('#meName').textContent=nm?L(`${nm}님`,nm):L('게스트','Guest');
   $('#logout').textContent=U&&!U.guest?L('로그아웃','Sign out'):L('로그인','Sign in');
 }
-function showLogin(){const l=$('#login');l.hidden=false;l.classList.remove('out');$('#lgName').value=U&&U.name||''}
+const DISTS=[...new Map(PLACES.map(p=>[p.d[0],p.d])).values()].sort((a,b)=>a[1].localeCompare(b[1],'ko'));
+const placeHay=r=>[r.ko,r.en,r.addr,...r.d,...(r.type||[]),AREA_KEYS[r.d[0]]||''].join(' ').toLowerCase();
+function setRole(role){
+  lgRole=role;
+  $$('#lgRole button').forEach(b=>{const on=b.dataset.role===role;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});
+  $('#lgTrav').hidden=role==='owner';$('#lgOwn').hidden=role!=='owner';$('#lgGuest').style.display=role==='owner'?'none':'';
+  $('#lgPp').dataset.t=role==='owner'?'lgPo':'lgP';$('#lgGo').dataset.t=role==='owner'?'lgGoO':'lgGo';$('#lgNoteP').dataset.t=role==='owner'?'lgNoteO':'lgNote';
+  applyLang();renderLgStores();
+}
+$$('#lgRole button').forEach(b=>b.onclick=()=>{
+  const r=b.dataset.role;if(r===lgRole)return;
+  if(r==='owner'&&P.lang!=='ko'){P.lang='ko';setRole(r);update();return}  /* 사장님 화면은 한국어가 기본 */
+  setRole(r);
+});
+function renderLgStores(){
+  const sel=lgPid&&PLACES.find(p=>p.id===lgPid);
+  const item=(r,on)=>`<button type="button" class="sitem ${on?'on':''}" data-pid="${r.id}"><span class="t"><b>${esc(L(r.ko,r.en))}</b><small>${esc(L(`${r.en} · ${r.type[1]} · ${r.d[1]}`,`${r.type[0]} · ${r.d[0]}`))}</small></span><span class="ck">${on?'✓':''}</span></button>`;
+  if(sel&&!lgNewMode){
+    $('#lgSel').innerHTML=`<div class="slist">${item(sel,true)}</div><button type="button" class="newst" id="lgChange">${L('다른 가게 고르기','Choose another place')}</button>`;
+    $('#lgFind').hidden=true;
+    $('#lgChange').onclick=()=>{lgPid=null;renderLgStores();$('#lgStoreQ').focus()};
+    return;
+  }
+  $('#lgSel').innerHTML='';$('#lgFind').hidden=false;
+  $('#lgStoreQ').hidden=lgNewMode;$('#lgNewBox').hidden=!lgNewMode;
+  if(lgNewMode){$('#lgStores').innerHTML='';
+    if(!$('#lgNewDist').options.length)$('#lgNewDist').innerHTML=DISTS.map((d,i)=>`<option value="${i}">${esc(L(d[1],d[0]))}</option>`).join('');
+    else [...$('#lgNewDist').options].forEach((o,i)=>o.textContent=L(DISTS[i][1],DISTS[i][0]));
+    return}
+  const q=$('#lgStoreQ').value.trim().toLowerCase();
+  const rs=q?PLACES.filter(r=>q.split(/\s+/).every(w=>placeHay(r).includes(w))).slice(0,6):[];
+  $('#lgStores').innerHTML=q?(rs.length?rs.map(r=>item(r,false)).join(''):`<p class="small" style="text-align:left;margin-top:4px">${L('찾는 가게가 없어요. 아래에서 새 가게로 시작할 수 있어요.','No match. You can start as a new place below.')}</p>`)
+    :`<p class="small" style="text-align:left;margin-top:4px">${L(`리프맵에 있는 부산 식당 ${PLACES.length}곳 중에서 찾아요`,`Search the ${PLACES.length} Busan places on LeafMap`)}</p>`;
+  $$('#lgStores .sitem').forEach(b=>b.onclick=()=>{lgPid=b.dataset.pid;renderLgStores()});
+}
+$('#lgStoreQ').addEventListener('input',renderLgStores);
+$('#lgStoreQ').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();const f=$('#lgStores .sitem');if(f)f.click()}});
+$('#lgNew').onclick=()=>{lgNewMode=!lgNewMode;if(lgNewMode)lgPid=null;applyLang();renderLgStores();if(lgNewMode)$('#lgNewName').focus()};
+function showLogin(){const l=$('#login');l.hidden=false;l.classList.remove('out');$('#lgName').value=U&&!U.guest&&U.role!=='owner'&&U.name||'';$('#lgX').hidden=!U;setRole(lgRole)}
+function hideLogin(){const l=$('#login');l.classList.add('out');setTimeout(()=>{l.hidden=true},460)}
+$('#lgX').onclick=()=>{hideLogin();if(lgPrevLang&&lgPrevLang!==P.lang){P.lang=lgPrevLang;update()}lgPrevLang=null;if(U&&U.role!=='owner')lgRole='traveler'};
+let lgPrevLang=null;
+function openOwnerLogin(pid){lgNewMode=false;if(pid)lgPid=pid;lgPrevLang=P.lang;if(P.lang!=='ko'){P.lang='ko';update()}lgRole='owner';showLogin()}
 function enterApp(user){
   U=user;try{localStorage.setItem(UKEY,JSON.stringify(U))}catch(e){}
-  renderUser();$('#lgName').blur();
-  const l=$('#login');l.classList.add('out');setTimeout(()=>{l.hidden=true},460);
+  renderUser();$('#lgName').blur();$('#lgOName').blur();
+  hideLogin();
+  if(isOwner()){showOwner(true);setOTab('store');setTimeout(()=>toast(L(`${U.name?U.name+' ':''}사장님, 반가워요!`,`Welcome${U.name?', '+U.name:''}!`)),380);return}
+  showOwner(false);
   if(!/^#((menu|place)\/|scan$)/.test(location.hash))go('map');
   setTimeout(()=>toast(U.name?L(`${U.name}님, 반가워요! 내 식단 기준으로 지도를 보여드릴게요`,`Welcome, ${U.name}! The map follows your diet`):L('게스트로 둘러보는 중이에요','Browsing as a guest')),380);
 }
-$('#lgForm').onsubmit=e=>{e.preventDefault();const n=$('#lgName').value.trim();if(!n){toast(L('닉네임을 입력해 주세요','Please enter a nickname'));$('#lgName').focus();return}enterApp({name:n,guest:false})};
-$('#lgGuest').onclick=()=>enterApp({name:'',guest:true});
+$('#lgForm').onsubmit=e=>{e.preventDefault();
+  if(lgRole==='owner'){
+    const nm=$('#lgOName').value.trim();
+    if(lgNewMode){const nn=$('#lgNewName').value.trim();if(!nn){toast(L('가게 이름을 입력해 주세요','Please enter your restaurant name'));$('#lgNewName').focus();return}
+      enterApp({role:'owner',name:nm,pid:null,newName:nn,newDist:DISTS[+$('#lgNewDist').value]||DISTS[0]});return}
+    if(!lgPid){toast(L('내 가게를 골라 주세요','Please pick your restaurant'));$('#lgStoreQ').focus();return}
+    enterApp({role:'owner',name:nm,pid:lgPid});return;
+  }
+  const n=$('#lgName').value.trim();if(!n){toast(L('닉네임을 입력해 주세요','Please enter a nickname'));$('#lgName').focus();return}enterApp({role:'traveler',name:n,guest:false})};
+$('#lgGuest').onclick=()=>enterApp({role:'traveler',name:'',guest:true});
 $('#logout').onclick=()=>{try{localStorage.removeItem(UKEY)}catch(e){}U=null;renderUser();showLogin()};
+
+/* ---------- 사장님 앱: 내 가게 · 메뉴 등록 · 손님 요청 · 응대 도우미 ----------
+   데이터: reports(req:/review:/place:<가게 id>), submissions(restaurant가 ‘가게 이름 (구)’로 시작). */
+const OTABS=['store','menu','req','help'];
+let OT='store',OD={reqs:[],revs:[],reps:[],subs:[],loaded:false,err:false},oRows=[{}],oBusy=false;
+const myStore=()=>isOwner()&&U.pid?((restos||PLACES).find(r=>r.id===U.pid)||null):null;
+const storeKo=()=>{const r=myStore();return r?r.ko:(U&&U.newName)||''};
+const storeDist=()=>{const r=myStore();return r?r.d:(U&&U.newDist)||['Busan','부산']};
+const storeLabel=()=>`${storeKo()} (${storeDist()[1]})`;
+const storeLabelL=()=>{const r=myStore();return L(storeLabel(),`${r?r.en:storeKo()} (${storeDist()[0]})`)};
+const SUB_EN={'누락 보완 요청':'Missing info','검토 대기':'Awaiting review','검토 중':'In review','접수':'Received','반영':'Applied','기각':'Declined'};
+const stL=st=>L(st,SUB_EN[st]||st);
+function showOwner(on){$('#owner').hidden=!on;$('#app').classList.toggle('ownmode',!!on);$('#ownBack').hidden=true;if(on){renderOwner();ownerLoad()}}
+function setOTab(t){
+  if(!OTABS.includes(t))t='store';OT=t;
+  $$('.oscr').forEach(s=>s.classList.toggle('on',s.id==='o-'+t));
+  $$('#otabbar button').forEach(b=>{const on=b.dataset.otab===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
+  const s=$('#o-'+t);if(s)s.scrollTop=0;
+}
+$$('#otabbar button').forEach(b=>b.onclick=()=>setOTab(b.dataset.otab));
+async function ownerLoad(){
+  if(!isOwner())return;
+  OD={reqs:[],revs:[],reps:[],subs:[],loaded:false,err:false};
+  try{
+    if(!db)throw new Error('no client');
+    const id=U.pid,ko=storeKo();
+    const [a,b]=await Promise.all([
+      id?db.from('reports').select('id,menu_id,who,text,at,status,note,ord').in('menu_id',['req:'+id,'review:'+id,'place:'+id]).order('ord',{ascending:false}).limit(500):Promise.resolve({data:[]}),
+      ko?db.from('submissions').select('id,restaurant,menu,files,missing,status,ord').like('restaurant',ko+' (%').order('ord',{ascending:false}).limit(100):Promise.resolve({data:[]})
+    ]);
+    if(a.error)throw a.error;if(b.error)throw b.error;
+    (a.data||[]).forEach(x=>{const k=String(x.menu_id).split(':')[0];(k==='req'?OD.reqs:k==='review'?OD.revs:OD.reps).push(x)});
+    OD.subs=b.data||[];
+  }catch(e){console.warn('[Supabase] 사장님 데이터를 불러오지 못함',e);OD.err=true}
+  OD.loaded=true;if(isOwner())renderOwner();
+}
+function renderOwner(){
+  if(!isOwner())return;
+  renderOStore();renderOMenu();renderOReq();renderOHelp();
+  if(!$$('.oscr.on').length)setOTab(OT);
+}
+const offNote=()=>OD.err?`<div class="offline" style="display:block">${L('서버에 연결하지 못해 손님 요청과 등록 현황을 불러오지 못했어요. 연결되면 자동으로 보여드려요.','Couldn’t reach the server, so requests and sign-ups can’t load right now.')}</div>`:'';
+const dietLbl=k=>DIETS[k]?L(DIETS[k].ko,DIETS[k].en):L('기타','Other');
+const starsOf=x=>+String(x.note||'').replace('rating:','')||0;
+
+function renderOStore(){
+  const r=myStore(),nm=U.name,reqN=OD.reqs.length,revN=OD.revs.length,repN=OD.reps.length;
+  const ver=r?(r.menus||[]).length:0;
+  const avg=revN?(OD.revs.reduce((s,x)=>s+starsOf(x),0)/Math.max(1,OD.revs.filter(starsOf).length)):0;
+  let h=`<div class="ohead"><div class="k">${nm?esc(L(`${nm} 사장님의 가게`,`${nm}’s restaurant`)):L('내 가게','My restaurant')}</div>
+    <h2>${esc(r?L(r.ko,r.en):storeKo())}</h2>
+    <div class="s">${r?`${esc(L(r.type[1],r.type[0]))} · ${esc(L(r.d[1],r.d[0]))}`:`${esc(L(storeDist()[1],storeDist()[0]))} · ${L('새 가게','New place')}`}</div>
+    <div class="pills">${r?kindPill(r)+verPill(r):`<span class="pill pend">${L('리프맵 지도에 아직 없어요','Not on the LeafMap map yet')}</span>`}</div></div>`;
+  h+=`<div class="kpis"><button class="kpi" data-og="req"><b>${OD.loaded?reqN:'·'}</b><span>${L('성분 확인 요청','Check requests')}</span></button><button class="kpi" data-og="req"><b>${OD.loaded?revN:'·'}</b><span>${L('리뷰','Reviews')}${revN&&avg?` ★${avg.toFixed(1)}`:''}</span></button><button class="kpi" data-og="req"><b>${OD.loaded?repN:'·'}</b><span>${L('정보 제보','Info reports')}</span></button></div>`;
+  h+=offNote();
+  /* 다음 할 일 */
+  let co;
+  if(!r)co=[L('아직 리프맵 지도에 없는 가게예요. 메뉴와 양념 제품을 등록하면 운영팀 확인 후 외국인 손님에게 보여드려요.','Your place isn’t on the map yet. Register dishes and sauces — after our check, travelers will see them.'),L('메뉴 등록하기','Register dishes')];
+  else if(ver)co=null;
+  else if(reqN)co=[L(`외국인 채식 손님 ${reqN}명이 이 가게 메뉴 성분 확인을 기다리고 있어요. 메뉴와 양념 제품을 등록하면 ‘조건에 맞음’으로 표시돼요.`,`${reqN} vegetarian visitor${reqN>1?'s are':' is'} waiting for your dishes to be checked. Register them to show as “matches”.`),L('지금 메뉴 등록하기','Register dishes now')];
+  else co=[L('메뉴와 양념 제품을 등록하면, 리프맵이 성분표를 확인해 외국인 손님에게 ‘조건에 맞음’으로 보여드려요.','Register dishes and sauces — we check the labels and show them as “matches” to visitors.'),L('메뉴 등록하기','Register dishes')];
+  if(co)h+=`<div class="callout"><i>💡</i><div>${co[0]}<br><button class="btn sm" data-og="menu">${co[1]} ›</button></div></div>`;
+  else h+=`<div class="callout" style="background:var(--okbg);color:var(--ok)"><i>🌿</i><div>${L(`확인된 메뉴 ${ver}개가 손님에게 ‘조건에 맞음’ 근거와 함께 보이고 있어요.`,`${ver} verified dish${ver>1?'es are':' is'} shown to visitors with evidence.`)}</div></div>`;
+  /* 손님 식단 */
+  const dc={};OD.reqs.forEach(x=>{const k=DIETS[x.note]?x.note:'custom';dc[k]=(dc[k]||0)+1});
+  const mx=Math.max(1,...Object.values(dc));
+  h+=`<div class="gh">${L('확인을 요청한 손님의 식단','Diets of guests who asked')}</div><div class="group">${reqN?`<div class="bars">${Object.entries(dc).sort((a,b)=>b[1]-a[1]).map(([k,n])=>`<div class="bar"><span>${esc(dietLbl(k))}</span><span class="tr"><i style="width:${Math.round(n/mx*100)}%"></i></span><b>${n}</b></div>`).join('')}</div>`:`<div class="rv small">${r?L('아직 요청이 없어요. 손님이 식당 화면에서 ‘확인 요청’을 누르면 여기에 모여요.','No requests yet. When a visitor taps “Request” on your page, it shows up here.'):L('지도에 올라가면 손님 요청이 여기에 모여요.','Once you’re on the map, requests show up here.')}</div>`}</div>`;
+  /* 등록 진행 상태 */
+  const pub=m=>r&&(r.menus||[]).some(x=>x.ko===String(m).split(' / ')[0]);
+  h+=`<div class="gh">${L('메뉴 등록 진행 상태','Dish sign-up status')}</div><div class="group">${OD.subs.length?OD.subs.map(x=>{const live=pub(x.menu),miss=Array.isArray(x.missing)?x.missing:[];
+      return `<div class="sub-it"><div class="top"><b>${esc(x.menu)}</b>${live?`<span class="pill ok"><span class="dot"></span>${L('공개됨','Live')}</span>`:`<span class="pill ${miss.length?'check':'pend'}">${esc(stL(x.status||'접수'))}</span>`}</div>
+       <div class="steps3"><span class="on">① ${L('접수','Received')}</span><span class="${live||x.status?'on':''}">② ${L('운영팀 확인','Team check')}</span><span class="${live?'on':''}">③ ${L('손님에게 공개','Live')}</span></div>
+       ${!live&&miss.length?`<div class="miss">${L('보완이 필요한 자료: ','Still needed: ')}${(P.lang==='en'?miss.map(m=>MISS_EN[m]||m):miss).map(esc).join(', ')}</div>`:''}</div>`}).join(''):`<div class="rv small">${L('아직 보낸 메뉴가 없어요.','You haven’t sent any dishes yet.')}</div>`}</div>`;
+  /* 손님에게 보이는 내 가게 + 정보 수정 요청 */
+  if(r){
+    h+=`<div class="gh">${L('손님에게 보이는 내 가게 정보','What visitors see')}</div><div class="group"><dl class="kv" style="margin:0">
+      <dt>${L('채식 메뉴','Veggie dishes')}</dt><dd>${esc(menuL(r).join(', ')||'-')}</dd>
+      <dt>${L('영업시간','Hours')}</dt><dd>${esc(r.hours||'-')}</dd>
+      ${(r.note&&L(r.note[1],r.note[0]))?`<dt>${L('참고','Notes')}</dt><dd>${esc(L(r.note[1],r.note[0]))}</dd>`:''}
+      <dt>${L('출처','Source')}</dt><dd>HappyCow · ${L('2026년 11월 확인','checked Nov 2026')}</dd></dl>
+      <div class="form" style="display:flex;gap:8px;padding-top:0"><button class="btn ghost" id="oPeek" style="flex:1">👀 ${L('손님 화면으로 보기','View as a visitor')}</button><button class="btn ghost" id="oEdit" style="flex:1">✎ ${L('정보 수정 요청','Request a change')}</button></div>
+      <form class="form" id="oEditF" hidden novalidate style="border-top:1px solid var(--line)">
+        <label class="f" for="oEType">${L('무엇이 달라졌나요?','What changed?')}</label>
+        <select id="oEType"><option value="hours">${L('영업시간','Opening hours')}</option><option value="menu">${L('채식 메뉴','Veggie dishes')}</option><option value="closed">${L('휴업·폐업','Closed / closing')}</option><option value="etc">${L('기타','Other')}</option></select>
+        <label class="f" for="oEText">${L('바뀐 내용','Details')}</label><textarea id="oEText" maxlength="300" placeholder="${L('예: 월요일 휴무, 11:00–21:00','e.g. Closed Mondays, 11:00–21:00')}"></textarea>
+        <button class="btn" type="submit" id="oESend">${L('수정 요청 보내기','Send request')}</button>
+        <p class="note">${L('운영팀이 확인한 뒤 반영해요.','Our team reviews it before updating.')}</p></form></div>`;
+  }
+  h+=`<div class="gh">${L('계정','Account')}</div><div class="group"><div class="row"><i>🧑‍🍳</i><span class="t">${esc(nm?L(`${nm} 사장님`,nm):L('사장님','Owner'))}<small>${L('시연용 사장님 계정 · 이 브라우저에만 저장','Demo owner account · saved in this browser')}</small></span><button class="btn sm ghost" id="oLogout" type="button">${L('로그아웃','Sign out')}</button></div></div>`;
+  $('#o-store').innerHTML=h;
+  $$('#o-store [data-og]').forEach(b=>b.onclick=()=>setOTab(b.dataset.og));
+  $('#oLogout').onclick=()=>{try{localStorage.removeItem(UKEY)}catch(e){}U=null;showOwner(false);renderUser();lgRole='owner';showLogin()};
+  if(r){
+    $('#oPeek').onclick=()=>{$('#owner').hidden=true;$('#app').classList.remove('ownmode');$('#ownBack').hidden=false;go('place/'+r.id)};
+    $('#oEdit').onclick=()=>{const f=$('#oEditF');f.hidden=!f.hidden;if(!f.hidden)$('#oEText').focus()};
+    $('#oEditF').onsubmit=async e=>{e.preventDefault();
+      const t=$('#oEText').value.trim(),ty=$('#oEType').value,tyKo={hours:'영업시간',menu:'채식 메뉴',closed:'휴업·폐업',etc:'기타'}[ty];
+      if(!t){toast(L('바뀐 내용을 적어 주세요','Please describe the change'));return}
+      if(!live){toast(L('지금은 서버에 연결되지 않아 보낼 수 없어요','Can’t reach the server right now'));return}
+      const b=$('#oESend');b.disabled=true;const now=Date.now();
+      try{
+        const e1=(await db.from('reports').insert({id:'p'+now,menu_id:'place:'+r.id,who:'사장님 (가게 앱)'+(U.name?` (${U.name})`:''),text:`[${r.ko}] 사장님 정보 수정 요청 (${tyKo}) — ${t}`,cat:null,at:today(),status:'접수',ord:now})).error;if(e1)throw e1;
+        await db.from('activity').insert({id:'a'+now,icon:'🧑‍🍳',title:`${r.ko} 사장님 정보 수정 요청 (${tyKo})`,sub:'사장님 앱 · '+today(),ord:now});
+        toast(L('수정 요청을 보냈어요. 운영팀이 확인할게요','Sent — our team will review it'));ownerLoad();
+      }catch(err){console.error('[Supabase]',err);toast(L('보내지 못했어요. 잠시 후 다시 시도해 주세요','Couldn’t send. Please try again'));b.disabled=false}
+    };
+  }
+}
+$('#ownBack').onclick=()=>{closeAndClear();showOwner(true)};
+
+/* 메뉴 등록: 여러 메뉴 + 양념 제품, 메뉴판 사진(AI)으로 메뉴 이름 채우기 */
+const kbHint=kb=>'💬 '+esc(L(`외국인 손님이 이 메뉴에서 자주 묻는 재료: ${kb[3]}`,`Visitors often ask about: ${kb[4]}`));
+const kbOf=ko=>{const ns=String(ko||'').replace(/\s/g,'');const m=ns&&MKB_IDX.find(([k])=>ns.includes(k));return m?m[1]:null};
+function renderOMenu(){
+  const r=myStore();
+  let h=`<div class="hello" style="font-size:21px;margin-top:6px">${L('메뉴와 양념 제품을<br>등록해 주세요','Register your dishes<br>and sauces')}</div>
+   <p class="small" style="margin-top:6px">${L('메뉴마다 쓰는 재료와 양념 제품을 알려 주시면, 리프맵이 성분표를 확인해 외국인 손님에게 ‘조건에 맞음’ 근거와 함께 보여드려요.','Tell us the ingredients and sauce products for each dish. We check the labels and show visitors whether it fits their diet.')}</p>
+   <label class="ocr ${oBusy?'busy':''}" id="oOcr"><i>📷</i><span style="flex:1"><b>${L('메뉴판 사진으로 메뉴 채우기','Fill dishes from a menu photo')} <em class="ai">AI</em></b><small>${L('사진 속 메뉴 이름을 AI가 읽어 아래 칸에 넣어 드려요','AI reads the dish names into the form')}</small></span><input type="file" accept="image/*" id="oOcrF"></label>
+   <div class="oprog" id="oProg" hidden><i></i></div><p class="small" id="oProgT" hidden></p>`;
+  h+=oRows.map((d,i)=>{const kb=kbOf(d.ko);return `<div class="dish" data-i="${i}"><div class="dh"><span>${L('메뉴','Dish')} ${i+1}</span>${oRows.length>1?`<button type="button" data-rm="${i}">✕ ${L('삭제','Remove')}</button>`:''}</div><div class="form" style="padding-top:0">
+     <label class="f">${L('메뉴 이름','Dish name')} <em>(${L('한국어','Korean')})</em></label><input type="text" data-k="ko" maxlength="40" value="${esc(d.ko||'')}" placeholder="${L('예: 비건 짜장면','As written on your menu')}">
+     <label class="f">${L('영어 이름','English name')} <em>(${L('선택','optional')})</em></label><input type="text" data-k="en" maxlength="60" value="${esc(d.en||'')}" placeholder="${L('예: Vegan black bean noodles','e.g. Vegan black bean noodles')}">
+     <label class="f">${L('재료·육수·소스','Ingredients, broth & sauce')}</label><input type="text" data-k="ing" maxlength="120" value="${esc(d.ing||'')}" placeholder="${L('예: 면, 양파, 춘장 / 채수','e.g. noodles, onion, black bean paste / veg broth')}">
+     <label class="f">${L('양념 제품 이름·용량','Sauce products & size')} <em>(${L('정확할수록 빨라요','the more exact, the faster')})</em></label><input type="text" data-k="prod" maxlength="120" value="${esc(d.prod||'')}" placeholder="${L('예: OO식품 춘장 500g','e.g. OO Foods black bean paste 500g')}">
+     <label class="f">${L('판매 국가','Country of sale')}</label><input type="text" data-k="country" maxlength="30" value="${esc(d.country||'')}" placeholder="${L('예: 대한민국','e.g. South Korea')}">
+     <label class="ck"><input type="checkbox" data-k="photo" ${d.photo?'checked':''}> ${L('제품 성분표 사진이 있어요','I have photos of the labels')} <span class="small">(${L('시연용','demo')})</span></label>
+     <label class="ck"><input type="checkbox" data-k="use" ${d.use?'checked':''}> ${L('이 제품을 지금 이 메뉴에 쓰고 있어요','I use these products in this dish now')}</label>
+     <div class="hint" data-h ${kb?'':'hidden'}>${kb?kbHint(kb):''}</div></div></div>`}).join('');
+  h+=`<button class="btn ghost full" type="button" id="oAdd" style="margin-top:12px">＋ ${L('메뉴 추가','Add a dish')}</button>
+   <button class="btn full" type="button" id="oSendM" style="margin-top:10px">${L(`메뉴 ${oRows.filter(d=>(d.ko||'').trim()).length||''}개 등록 신청하기`.replace('  ',' '),`Send ${oRows.filter(d=>(d.ko||'').trim()).length||''} dish${oRows.filter(d=>(d.ko||'').trim()).length===1?'':'es'}`)}</button>
+   <p class="note">${L(`‘${esc(storeLabel())}’ 이름으로 운영팀에 보내져요. 검토 후 공개돼요.`,`Sent to our team as “${esc(storeLabelL())}”. It goes live after review.`)}</p>`;
+  $('#o-menu').innerHTML=h;
+  $$('#o-menu .dish').forEach(el=>{const i=+el.dataset.i;
+    el.querySelectorAll('[data-k]').forEach(inp=>{const k=inp.dataset.k;
+      inp.addEventListener(inp.type==='checkbox'?'change':'input',()=>{oRows[i][k]=inp.type==='checkbox'?inp.checked:inp.value;if(k==='ko'){const b=$('#oSendM'),n=oRows.filter(d=>(d.ko||'').trim()).length;b.textContent=L(`메뉴 ${n||''}개 등록 신청하기`.replace('  ',' '),`Send ${n||''} dish${n===1?'':'es'}`)}});
+      if(k==='ko')inp.addEventListener('input',()=>{const kb=kbOf(inp.value),hb=el.querySelector('[data-h]');hb.hidden=!kb;hb.innerHTML=kb?kbHint(kb):''});
+    })});
+  $$('#o-menu [data-rm]').forEach(b=>b.onclick=()=>{oRows.splice(+b.dataset.rm,1);renderOMenu()});
+  $('#oAdd').onclick=()=>{oRows.push({});renderOMenu();const ins=$$('#o-menu .dish [data-k=ko]');ins[ins.length-1].focus()};
+  $('#oOcrF').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>ownerOCR(rd.result);rd.readAsDataURL(f);e.target.value=''};
+  $('#oSendM').onclick=sendDishes;
+}
+function oProg(p,t){const w=$('#oProg'),tt=$('#oProgT');if(!w)return;w.hidden=tt.hidden=p==null;if(p!=null){w.querySelector('i').style.width=Math.round(p*100)+'%';tt.textContent=t}}
+async function ownerOCR(src){
+  oBusy=true;$('#oOcr').classList.add('busy');
+  try{
+    oProg(.03,L('AI 글자 인식 준비 중… (처음 한 번은 10초쯤 걸려요)','Loading the AI reader… (about 10 s the first time)'));
+    await loadTess();
+    if(!tessWorker)tessWorker=await Tesseract.createWorker('kor+eng',1,{logger:m=>{if(m.status==='recognizing text'){scanProg(.35+m.progress*.65,L('메뉴판 글자를 읽는 중…','Reading the menu…'));oProg(.35+m.progress*.65,L('메뉴판 글자를 읽는 중…','Reading the menu…'))}else if(m.progress!=null){scanProg(.05+m.progress*.3,L('AI 글자 인식 준비 중…','Loading the AI text reader…'));oProg(.05+m.progress*.3,L('AI 글자 인식 준비 중…','Loading the AI reader…'))}}});
+    oProg(.4,L('메뉴판 글자를 읽는 중…','Reading the menu…'));
+    const {data}=await tessWorker.recognize(await shrink(src));
+    const have=new Set(oRows.map(d=>(d.ko||'').replace(/\s/g,'')));
+    const add=scanLines(data.text).filter(l=>!have.has(l.replace(/\s/g,''))).map(l=>{const kb=kbOf(l);return {ko:l,en:kb?kb[1]:''}});
+    oRows=oRows.filter(d=>(d.ko||'').trim()||d.ing||d.prod).concat(add);if(!oRows.length)oRows=[{}];
+    toast(add.length?L(`메뉴 ${add.length}개를 읽었어요. 이름을 확인하고 재료를 채워 주세요`,`Read ${add.length} dish${add.length>1?'es':''}. Check the names and fill in ingredients`):L('메뉴 이름을 찾지 못했어요. 직접 입력해 주세요','Couldn’t find dish names. Please type them'));
+  }catch(e){console.error('[OCR]',e);toast(L('AI 글자 인식을 불러오지 못했어요. 메뉴를 직접 입력해 주세요','Couldn’t load the AI reader. Please type the dishes'))}
+  oBusy=false;renderOMenu();
+}
+async function sendDishes(){
+  const rows=oRows.filter(d=>(d.ko||'').trim());
+  if(!rows.length){toast(L('메뉴 이름을 하나 이상 입력해 주세요','Please enter at least one dish'));const i=$('#o-menu [data-k=ko]');if(i)i.focus();return}
+  if(!live){toast(L('지금은 서버에 연결되지 않아 신청을 보낼 수 없어요','Can’t reach the server right now, so the request can’t be sent'));return}
+  const b=$('#oSendM');b.disabled=true;b.textContent=L('보내는 중…','Sending…');
+  const now=Date.now(),name=storeLabel();
+  const recs=rows.map((d,i)=>{const t=k=>(d[k]||'').trim();const missing=[];
+    if(!t('prod'))missing.push('정확한 제품명');if(!d.photo)missing.push('성분표 사진');if(!d.use)missing.push('실제 사용 확인');if(!t('ing'))missing.push('재료·육수·소스');if(!t('country'))missing.push('판매 국가');
+    return {id:'s'+now+'_'+i,restaurant:name,menu:t('ko')+(t('en')?' / '+t('en'):''),files:[t('prod')||'제품명 없음',d.photo?'성분표 사진':'사진 없음',...(t('ing')?['재료: '+t('ing')]:[]),...(t('country')?['판매 국가: '+t('country')]:[])],missing,status:missing.length?'누락 보완 요청':'검토 대기',ord:now-i}});
+  try{
+    const {error}=await db.from('submissions').insert(recs);if(error)throw error;
+    await db.from('activity').insert({id:'a'+now,icon:'🧑‍🍳',title:`사장님 앱 등록 신청: ${name} · 메뉴 ${recs.length}개`,sub:'사장님 앱 · '+today(),ord:now});
+    oRows=[{}];toast(L(`메뉴 ${recs.length}개를 보냈어요. 진행 상태는 ‘내 가게’에서 볼 수 있어요`,`Sent ${recs.length} dish${recs.length>1?'es':''}. Track it under “My place”`));
+    await ownerLoad();setOTab('store');
+  }catch(err){console.error('[Supabase]',err);toast(L('신청을 보내지 못했어요. 잠시 후 다시 시도해 주세요','Couldn’t send the request. Please try again shortly'));renderOMenu()}
+}
+
+/* 손님 요청·리뷰·제보 */
+function renderOReq(){
+  const r=myStore();
+  let h=`<div class="hello" style="font-size:21px;margin-top:6px">${L('손님 요청과 리뷰','Guest requests & reviews')}</div>${offNote()}`;
+  if(!r){$('#o-req').innerHTML=h+`<div class="empty" style="margin-top:14px"><b>${L('아직 지도에 없는 가게예요','Not on the map yet')}</b>${L('메뉴를 등록해 지도에 올라가면, 손님의 확인 요청·리뷰·제보가 여기에 모여요.','Once your dishes are listed, guest requests, reviews and reports will appear here.')}</div>`;return}
+  const dc={};OD.reqs.forEach(x=>{const k=DIETS[x.note]?x.note:'custom';dc[k]=(dc[k]||0)+1});
+  h+=`<div class="gh">🙋 ${L(`성분 확인 요청 ${OD.reqs.length}건`,`${OD.reqs.length} check request${OD.reqs.length===1?'':'s'}`)}</div><div class="group">${OD.reqs.length?`<div class="rv"><div class="chips">${Object.entries(dc).sort((a,b)=>b[1]-a[1]).map(([k,n])=>`<span class="chip">${esc(dietLbl(k))} · ${n}</span>`).join('')}</div><p class="small" style="margin-top:10px">${L('이 손님들은 메뉴의 육수·양념에 동물성 재료가 있는지 알고 싶어 해요. 메뉴를 등록하면 확인 결과가 손님에게 바로 보여요.','These guests want to know if broths and sauces contain animal products. Register your dishes and they’ll see the result.')}</p><button class="btn sm" data-og="menu" style="margin-top:10px">${L('메뉴 등록하기','Register dishes')} ›</button></div>`
+     +OD.reqs.slice(0,15).map(x=>`<div class="rv"><div class="m">${esc(x.at||'')}</div>${esc(dietLbl(x.note))} ${L('식단 손님이 확인을 요청했어요','guest asked for a check')}</div>`).join(''):`<div class="rv small">${L('아직 요청이 없어요.','No requests yet.')}</div>`}</div>`;
+  h+=`<div class="gh">★ ${L(`리프맵 리뷰 ${OD.revs.length}개`,`${OD.revs.length} LeafMap review${OD.revs.length===1?'':'s'}`)}</div><div class="group">${OD.revs.length?OD.revs.map(x=>{const n=starsOf(x);return `<div class="rv"><div class="m">${n?'★'.repeat(n)+'☆'.repeat(5-n)+' · ':''}${esc(x.who||L('손님','Guest'))} · ${esc(x.at||'')}</div>${esc(x.text||'')}</div>`}).join(''):`<div class="rv small">${L('아직 리뷰가 없어요.','No reviews yet.')}</div>`}
+    <div class="rv"><a class="small" href="${kakaoUrl(r)}" target="_blank" rel="noopener" style="color:var(--g7);font-weight:700">${L('카카오맵 리뷰 보기 ↗','Kakao Map reviews ↗')}</a></div></div>`;
+  h+=`<div class="gh">⚑ ${L(`가게 정보 제보 ${OD.reps.length}건`,`${OD.reps.length} info report${OD.reps.length===1?'':'s'}`)}</div><div class="group">${OD.reps.length?OD.reps.map(x=>`<div class="rv"><div class="m">${esc(x.at||'')} · <span class="pill ${x.status==='반영'?'ok':x.status==='기각'?'pend':'check'}">${esc(stL(x.status||'접수'))}</span></div>${esc(String(x.text||'').replace(/^\[[^\]]*\]\s*/,''))}</div>`).join(''):`<div class="rv small">${L('들어온 제보가 없어요.','No reports.')}</div>`}</div>`;
+  $('#o-req').innerHTML=h;
+  $$('#o-req [data-og]').forEach(b=>b.onclick=()=>setOTab(b.dataset.og));
+}
+
+/* 응대 도우미: 외국인 손님이 자주 묻는 질문 → 답을 누르면 영어로 크게 보여 주고 읽어 줌 */
+const OQA=[
+ ['Is there any meat or fish in this?','이 음식에 고기나 생선이 들어가나요?',[['아니요, 들어가지 않아요.','No, there’s no meat or fish.'],['네, 들어가요.','Yes, it has meat or fish.'],['빼고 만들어 드릴 수 있어요.','We can make it without.']]],
+ ['What is the broth made from?','육수는 무엇으로 만드나요?',[['채소·다시마 육수예요.','It’s a vegetable and kelp broth.'],['멸치 육수예요.','It’s anchovy broth.'],['고기 육수예요.','It’s meat broth.']]],
+ ['Does the kimchi have fish sauce or salted shrimp?','김치에 액젓이나 새우젓이 들어가나요?',[['네, 들어가요.','Yes, it does.'],['아니요, 비건 김치예요.','No, it’s vegan kimchi.'],['김치는 빼 드릴게요.','We’ll leave out the kimchi.']]],
+ ['Can you make it without egg or dairy?','달걀이나 유제품 없이 만들 수 있나요?',[['네, 빼 드릴게요.','Yes, we can leave them out.'],['죄송하지만 어려워요.','Sorry, we can’t.']]],
+ ['Is there pork or beef in it?','돼지고기나 소고기가 들어가나요?',[['아니요, 들어가지 않아요.','No, there’s no pork or beef.'],['돼지고기가 들어가요.','It has pork.'],['소고기가 들어가요.','It has beef.']]],
+ ['Is there alcohol in the sauce?','소스에 술(맛술)이 들어가나요?',[['아니요, 술은 안 들어가요.','No, there’s no alcohol.'],['맛술이 조금 들어가요.','It has a little cooking wine.']]],
+ ['Which dishes are vegan?','비건 메뉴는 어떤 거예요?',[['메뉴판에 표시된 메뉴예요.','The ones marked on the menu.'],['이 메뉴예요.','This one.'],['지금은 비건 메뉴가 없어요.','Sorry, we don’t have vegan dishes now.']]]
+];
+function renderOHelp(){
+  let h=`<div class="hello" style="font-size:21px;margin-top:6px">${L('외국인 손님 응대 도우미','Talking with foreign guests')}</div>
+   <p class="small" style="margin-top:6px">${L('채식 손님이 자주 묻는 질문이에요. 답을 누르면 영어로 크게 보여 주고 소리로도 읽어 줘요.','Common questions from vegetarian guests. Tap an answer to show it large in English and play it aloud.')}</p>`;
+  h+=OQA.map((q,i)=>`<div class="qa"><div class="q">“${esc(q[0])}”</div>${P.lang==='ko'?`<div class="qk">${esc(q[1])}</div>`:'<div style="height:10px"></div>'}<div class="chips">${q[2].map((a,j)=>`<button type="button" class="chip" data-qa="${i}_${j}">${esc(L(a[0],a[1]))}</button>`).join('')}</div></div>`).join('');
+  h+=`<div class="gh">${L('식단별로 안 먹는 재료','What each diet avoids')}</div><div class="group"><div class="dtab">${['vegan','lacto','pesco','nopork','nobeef'].map(k=>`<b>${esc(dietLbl(k))}</b><span>${esc(DIETS[k].ex.filter(c=>c!=='other').map(catName).join(', '))}${k==='vegan'?L(' 등 동물성 전부',' — all animal products'):''}</span>`).join('')}</div></div>`;
+  const [kr,en]=[krSentence(DIETS.vegan.ex,'staff',''),enSentence(DIETS.vegan.ex,'')];
+  h+=`<div class="gh">${L('손님이 이런 한국어 카드를 보여 줄 수 있어요','Guests may show you a card like this')}</div><div class="kr-card" style="margin-top:10px"><div class="lbl">${L('예시 · 비건 손님','Example · vegan guest')}</div><div class="kr">${esc(kr)}</div><div class="en">${esc(en)}</div></div>`;
+  $('#o-help').innerHTML=h;
+  $$('#o-help [data-qa]').forEach(b=>b.onclick=()=>{const [i,j]=b.dataset.qa.split('_').map(Number),a=OQA[i][2][j];openBig(a[1],P.lang==='ko'?a[0]:'','en')});
+}
+
 function bootSplash(){
-  if(!U)showLogin();
+  if(!U)showLogin();else if(isOwner())showOwner(true);
   const sp=$('#splash');
   setTimeout(()=>{sp.classList.add('out');setTimeout(()=>sp.remove(),600)},1600);
 }
 
-function update(){saveP();applyLang();renderFilters();renderResults();renderMap();renderPhrase()}
+function update(){saveP();applyLang();renderFilters();renderResults();renderMap();renderPhrase();if(isOwner()&&!$('#owner').hidden)renderOwner();if(!$('#login').hidden)renderLgStores()}
 
 async function load(){
   /* 식당 목록은 PLACES(실제 공개 정보). Supabase에는 리프맵이 확인한 메뉴만 같은 id로 붙음 */
