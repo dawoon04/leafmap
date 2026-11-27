@@ -318,7 +318,6 @@ input,select,textarea{font:inherit;color:inherit}
 .sits{display:flex;gap:6px;overflow-x:auto;margin:0 0 12px;padding-bottom:2px;scrollbar-width:none}
 .sits .chip{flex:none;font-size:13px}
 .big-kr .spk{margin:28px auto 0;padding:14px 26px;border-radius:14px;background:#2E2408;color:#FFF8E6;font-weight:800;font-size:16px}
-.mchips .dl{flex:none;align-self:center;font-size:11.5px;font-weight:800;color:#3A4440;background:rgba(255,255,255,.92);border-radius:8px;padding:5px 8px;box-shadow:0 1px 5px rgba(0,0,0,.12)}
 .mchips .chip{box-shadow:0 1px 5px rgba(0,0,0,.16);background:#fff;font-size:13px;padding:7px 12px}
 .mchips .chip.on{background:var(--g8);color:#fff}
 .mchips .chip.cond{color:var(--g8);font-weight:800}
@@ -1095,7 +1094,7 @@ function renderSheet(){
 }
 function renderMap(){
   if(!restos)return;
-  $('#mapArea').innerHTML=`<button type="button" class="chip ${P.veganOnly?'on':''}" id="mVeg">🌱 ${L('전부 비건만','All-vegan only')}</button><span class="dl">${L('내 식단','My diet')}</span>`
+  $('#mapArea').innerHTML=`<button type="button" class="chip ${P.veganOnly?'on':''}" id="mVeg">🌱 ${L('전부 비건만','All-vegan only')}</button>`
     +['vegan','lacto','pesco','nopork','nobeef'].map(k=>`<button type="button" class="chip ${P.diet===k?'on':''}" data-d="${k}" aria-pressed="${P.diet===k}">${L(DIETS[k].ko,DIETS[k].en)}</button>`).join('')
     +`<button type="button" class="chip ${P.diet==='custom'?'on':''}" id="mCond">⚙ ${L('직접 설정','Custom')}</button>`;
   $$('#mapArea [data-d]').forEach(e=>e.onclick=()=>{P.diet=e.dataset.d;P.ex=[...DIETS[P.diet].ex];MV.sel=null;update();toast(L(`‘${DIETS[P.diet].ko}’에 맞는 식당 ${placesShown().length}곳을 보여드려요`,`Showing ${placesShown().length} places for “${DIETS[P.diet].en}”`))});
