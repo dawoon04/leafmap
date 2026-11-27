@@ -866,7 +866,11 @@ const menuL=r=>(P.lang==='en'?r.menu[0]:r.menu[1])||[];
 let myPos=null;
 function distKm(r){if(!myPos)return null;const R=6371,toR=x=>x*Math.PI/180,dLa=toR(r.lat-myPos[0]),dLo=toR(r.lng-myPos[1]);const a=Math.sin(dLa/2)**2+Math.cos(toR(myPos[0]))*Math.cos(toR(r.lat))*Math.sin(dLo/2)**2;return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))}
 const fmtKm=d=>d==null?'':d<1?Math.round(d*1000)+'m':d.toFixed(1)+'km';
-function matchP(r){if(!P.q)return true;const q=P.q.toLowerCase();return [r.ko,r.en,r.addr,...r.d,...(r.type||[]),...r.menu[0],...r.menu[1],...(r.menus||[]).flatMap(m=>[m.ko,m.en])].some(x=>String(x||'').toLowerCase().includes(q))}
+/* 동네·학교 이름으로도 찾을 수 있게 구(d[0])별 별칭 */
+const AREA_KEYS={'Busanjin-gu':'seomyeon 서면 jeonpo 전포 bujeon 부전','Haeundae-gu':'haeundae 해운대 centum 센텀 jangsan 장산','Suyeong-gu':'gwangalli 광안리 광안 millak 민락 mangmi 망미','Nam-gu':'daeyeon 대연 ksu 경성대 kyungsung pknu 부경대 yongho 용호','Jung-gu':'nampo 남포 gwangbok 광복 biff jagalchi 자갈치','Geumjeong-gu':'pnu 부산대 pusan national university jangjeon 장전 oncheonjang 온천장','Dong-gu':'busan station 부산역 choryang 초량','Saha-gu':'gamcheon 감천 hadan 하단','Seo-gu':'songdo 송도 gamcheon 감천','Yeonje-gu':'yeonsan 연산','Buk-gu':'deokcheon 덕천 hwamyeong 화명','Gangseo-gu':'myeongji 명지','Yeongdo-gu':'yeongdo 영도','Gijang-gun':'gijang 기장'};
+function matchP(r){if(!P.q)return true;const q=P.q.toLowerCase().trim();const hay=[r.ko,r.en,r.addr,...r.d,...(r.type||[]),...r.menu[0],...r.menu[1],...(r.note||[]),AREA_KEYS[r.d[0]]||'',...(r.menus||[]).flatMap(m=>[m.ko,m.en])].join(' ').toLowerCase();
+  const has=w=>hay.includes(w)||(w.length>3&&/(ies|es|s)$/.test(w)&&hay.includes(w.replace(/(ies|es|s)$/,'')))||(w.length>3&&/y$/.test(w)&&hay.includes(w.slice(0,-1)+'ies'))||(w==='카레'&&/(^|[^이])커리/.test(hay));
+  return q.split(/\s+/).every(has)||hay.replace(/\s/g,'').includes(q.replace(/\s/g,''))}
 function matchQ(m,r){if(!P.q)return true;const q=P.q.toLowerCase();return [m.ko,m.en,r.ko,r.en,...(m.ing||[])].some(x=>String(x||'').toLowerCase().includes(q))}
 function whyLine(m,j){
   if(j.s==='excl')return {c:'excl',t:L('포함: ','Contains: ')+j.hit.map(catName).join(', ')};
@@ -902,7 +906,7 @@ const placeOK=r=>(!P.veganOnly||r.kind==='vegan')&&dietOK(r);
 /* 메뉴 전부가 내 식단에 맞는 곳(위로 올림): 비건 식단은 전부 비건인 곳, 육류·생선만 가리는 식단은 전부 비건·전부 채식인 곳 */
 const needVegan=()=>['egg','dairy','honey'].some(c=>P.ex.includes(c));
 const fullFit=r=>needVegan()?r.kind==='vegan':(r.kind==='vegan'||r.kind==='vegetarian');
-const fitPill=r=>!needVegan()&&fullFit(r)?`<span class="pill vg"><span class="dot"></span>${L('메뉴 전부 OK','Whole menu fits')}</span>`:'';
+const fitPill=r=>!dietOK(r)?`<span class="pill pend">${L('내 식단엔 확인 필요','May not fit your diet')}</span>`:!needVegan()&&fullFit(r)?`<span class="pill vg"><span class="dot"></span>${L('메뉴 전부 OK','Whole menu fits')}</span>`:'';
 function dietWhy(rs){
   const f=(rs||[]).filter(fullFit).length;
   const top=L(`메뉴 전부 맞는 ${f}곳 먼저`,`${f} with a fully fitting menu first`);
@@ -911,10 +915,12 @@ function dietWhy(rs){
   return top;
 }
 const dietName=()=>L(DIETS[P.diet].ko,DIETS[P.diet].en);
+const searchSub=rs=>{const f=rs.filter(dietOK).length;return L(`‘${dietName()}’에 맞는 곳 ${f} · 확인 필요 ${rs.length-f} · 맞는 곳 먼저`,`${f} fit ${dietName()} · ${rs.length-f} may not · best fits first`)};
 function placesShown(){
-  const rs=(restos||[]).filter(r=>placeOK(r)&&matchP(r));
+  /* 검색할 때는 식단 때문에 결과가 사라지지 않게 전부 보여 주고, 식단에 맞는 곳을 위로 */
+  const rs=(restos||[]).filter(r=>(P.q?(!P.veganOnly||r.kind==='vegan'):placeOK(r))&&matchP(r));
   const kr=needVegan()||P.ex.includes('honey')?{vegan:0,vegetarian:1,options:2}:{vegetarian:0,vegan:1,options:2};
-  return rs.sort((a,b)=>(fullFit(b)-fullFit(a))||(myPos?distKm(a)-distKm(b):0)||kr[a.kind]-kr[b.kind]||(b.rt||0)-(a.rt||0));
+  return rs.sort((a,b)=>(dietOK(b)-dietOK(a))||(fullFit(b)-fullFit(a))||(myPos?distKm(a)-distKm(b):0)||kr[a.kind]-kr[b.kind]||(b.rt||0)-(a.rt||0));
 }
 function stats(){
   const rows=allMenus().filter(({m,r})=>matchQ(m,r));
@@ -937,8 +943,8 @@ function renderResults(){
     if($('#goOwner'))$('#goOwner').onclick=goOwner;
   }else{
     const rs=placesShown(),v=rs.filter(r=>r.kind==='vegan').length;
-    $('#rTitle').textContent=P.q?L(`‘${P.q}’ 검색 결과`,`Results for “${P.q}”`):L(`‘${dietName()}’에 맞는 곳 ${rs.length}곳`,`${rs.length} places for ${dietName()}`);
-    $('#rCount').textContent=`${dietWhy(rs)} · `+L(`전부 비건 ${v}곳 · 채식 메뉴 있음 ${rs.length-v}곳 · 공개 정보 기준`,`${v} all-vegan · ${rs.length-v} with veg options · public info`);
+    $('#rTitle').textContent=P.q?L(`‘${P.q}’ 검색 결과 ${rs.length}곳`,`${rs.length} result${rs.length===1?'':'s'} for “${P.q}”`):L(`‘${dietName()}’에 맞는 곳 ${rs.length}곳`,`${rs.length} places for ${dietName()}`);
+    $('#rCount').textContent=P.q?searchSub(rs):`${dietWhy(rs)} · `+L(`전부 비건 ${v}곳 · 채식 메뉴 있음 ${rs.length-v}곳 · 공개 정보 기준`,`${v} all-vegan · ${rs.length-v} with veg options · public info`);
     box.innerHTML=rs.length?`<div class="list">${rs.map(r=>placeCard(r)).join('')}</div>`:`<div class="empty"><b>${L('검색 결과가 없어요','No places found')}</b>${L('검색어를 바꿔 보세요.','Try another keyword.')}</div>`;
   }
   $$('#results .mc').forEach(e=>e.onclick=()=>go('menu/'+e.dataset.m));
@@ -1080,8 +1086,8 @@ function renderSheet(){
     $('#pcX').onclick=()=>mapSelect(null);
   }else{
     const rs=placesShown(),v=rs.filter(r=>r.kind==='vegan').length;
-    $('#msT').textContent=L(`‘${dietName()}’에 맞는 곳 ${rs.length}곳`,`${rs.length} places for ${dietName()}`);
-    $('#msS').textContent=`${dietWhy(rs)} · `+L(`전부 비건 ${v} · 채식 메뉴 있음 ${rs.length-v} · 공개 정보, 리프맵 확인 전`,`${v} all-vegan · ${rs.length-v} with veg options · public info, not yet verified`);
+    $('#msT').textContent=P.q?L(`‘${P.q}’ 검색 결과 ${rs.length}곳`,`${rs.length} result${rs.length===1?'':'s'} for “${P.q}”`):L(`‘${dietName()}’에 맞는 곳 ${rs.length}곳`,`${rs.length} places for ${dietName()}`);
+    $('#msS').textContent=P.q?searchSub(rs):`${dietWhy(rs)} · `+L(`전부 비건 ${v} · 채식 메뉴 있음 ${rs.length-v} · 공개 정보, 리프맵 확인 전`,`${v} all-vegan · ${rs.length-v} with veg options · public info, not yet verified`);
     b.innerHTML=(rs.map(r=>placeCard(r)).join('')||`<div class="empty"><b>${L('식당이 없어요','No places')}</b></div>`)+`<p class="small" style="text-align:center;padding:4px 0 8px">${L('식당 정보 출처: HappyCow 공개 목록 (2026년 11월 확인) · 방문 전에 영업 여부를 확인하세요','Source: HappyCow public listings (checked Nov 2026) · confirm opening before you go')}</p>`;
     $$('#msB .rc').forEach(e=>e.onclick=()=>mapSelect(e.dataset.r,true));
   }
