@@ -379,7 +379,7 @@ input,select,textarea{font:inherit;color:inherit}
 <body>
 
 <aside class="side" aria-hidden="false">
-  <div class="brand"><span class="logo"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></span>LeafMap 리프맵</div>
+  <div class="brand"><span class="logo"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></span>LeafMap<span data-t="brandKo"> 리프맵</span></div>
   <h2 id="sideT">부산 채식 메뉴,<br><em>육수와 양념까지</em> 확인하는 앱</h2>
   <p id="sideP">메뉴마다 재료·육수·양념 제품의 성분표를 대조하고, 식당 확인까지 거친 결과만 ‘맞음’으로 보여드려요.</p>
   <div class="qr">
@@ -387,7 +387,7 @@ input,select,textarea{font:inherit;color:inherit}
     <div><b id="qrT">휴대폰으로 열어 보세요</b><span id="qrP">카메라로 QR을 찍으면 앱 화면으로 바로 열려요</span></div>
   </div>
   <a class="dashbtn" href="dashboard.html" title="운영자용 화면"><span aria-hidden="true">▦</span><span data-t="dash">운영자 대시보드</span></a>
-  <div class="meta"><span data-t="foot2">식당 정보는 HappyCow 공개 목록 기준(2026년 11월)이고, 메뉴 성분은 아직 확인하지 않았어요.</span><br>AI데이터기반서비스기획 · 2023761031 이다운</div>
+  <div class="meta"><span data-t="foot2">식당 정보는 HappyCow 공개 목록 기준(2026년 11월)이고, 메뉴 성분은 아직 확인하지 않았어요.</span><br><span data-t="credit">AI데이터기반서비스기획 · 2023761031 이다운</span></div>
 </aside>
 
 <div id="app">
@@ -497,7 +497,7 @@ input,select,textarea{font:inherit;color:inherit}
       <div class="group">
         <a class="row" href="dashboard.html"><i>▦</i><span class="t"><span data-t="dash">운영자 대시보드</span><small data-t="dashS">등록 검토·제보 처리 (PC 화면)</small></span><span class="ar">›</span></a>
       </div>
-      <div class="foot"><b>LeafMap 리프맵</b> · <span data-t="foot1">부산 채식 여행자를 위한 메뉴 성분 확인 서비스 (MVP)</span><br><span data-t="foot2">식당 정보는 HappyCow 공개 목록 기준(2026년 11월)이고, 메뉴 성분은 아직 확인하지 않았어요.</span><br>AI데이터기반서비스기획 · 2023761031 이다운</div>
+      <div class="foot"><b>LeafMap<span data-t="brandKo"> 리프맵</span></b> · <span data-t="foot1">부산 채식 여행자를 위한 메뉴 성분 확인 서비스 (MVP)</span><br><span data-t="foot2">식당 정보는 HappyCow 공개 목록 기준(2026년 11월)이고, 메뉴 성분은 아직 확인하지 않았어요.</span><br><span data-t="credit">AI데이터기반서비스기획 · 2023761031 이다운</span></div>
     </section>
   </main>
 
@@ -529,7 +529,7 @@ input,select,textarea{font:inherit;color:inherit}
     <div class="pb" id="dBody"></div>
   </div>
 
-  <div class="big-kr" id="bigKr" role="dialog" aria-modal="true"><button class="x" id="bigX">✕ 닫기 Close</button><div class="hint">직원분께 · For the staff</div><div class="kr" id="bigKrT"></div><div class="en" id="bigEnT"></div><button class="spk" id="bigSpk" type="button">🔊 소리로 들려주기 · Play</button></div>
+  <div class="big-kr" id="bigKr" role="dialog" aria-modal="true"><button class="x" id="bigX" data-t="bigX">✕ 닫기 Close</button><div class="hint">직원분께 · For the staff</div><div class="kr" id="bigKrT"></div><div class="en" id="bigEnT"></div><button class="spk" id="bigSpk" type="button" data-t="bigSpk">🔊 소리로 들려주기 · Play</button></div>
   <div id="toast" role="status"></div>
 
   <div class="splash" id="splash" aria-hidden="true"><div class="mark"><svg width="54" height="54" viewBox="0 0 24 24"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></div><div class="nm">LeafMap</div><div class="tg" id="splashT">부산 채식 메뉴, 성분까지 확인하고 고르기</div><div class="by">리프맵 · BUSAN</div></div>
@@ -779,7 +779,7 @@ const T={
  b1:['확인된 메뉴는 ‘조건에 맞음’으로 표시돼 여행자가 안심하고 주문해요','Verified dishes show as “matches”, so travelers order with confidence'],b2:['재료 설명이 어려운 외국인 손님 응대 부담이 줄어요','Fewer hard-to-explain ingredient questions'],b3:['제품을 바꾸면 변경 신고로 바로 반영돼요','Changed a product? Update it any time'],
  foot1:['부산 채식 여행자를 위한 메뉴 성분 확인 서비스 (MVP)','Menu ingredient checks for vegetarian travelers in Busan (MVP)'],foot2:['식당 정보는 HappyCow 공개 목록 기준(2026년 11월)이고, 메뉴 성분은 아직 확인하지 않았어요.','Places come from HappyCow public listings (Nov 2026); dishes are not yet verified.'],foot3:['운영자 화면','For operators'],
  tHome:['찾기','Explore'],tMap:['지도','Map'],tCard:['AI 메뉴판','AI Menu'],tMore:['더보기','More'],
- edit:['조건','Filters'],mq:['메뉴·식당 검색','Search dishes or places'],lgP:['메뉴마다 육수·양념 제품 성분까지 확인해 드려요','We check every dish down to the broth and sauce labels'],lgName:['닉네임','Nickname'],lgDiet:['내 식단','My diet'],lgGo:['시작하기','Get started'],lgGuest:['로그인 없이 둘러보기','Continue as guest'],lgNote:['시연용 로그인이에요. 비밀번호 없이 닉네임만 이 브라우저에 저장돼요.','Demo sign-in — no password, your nickname stays in this browser only.'],meS:['시연용 계정 · 이 브라우저에만 저장','Demo account · saved in this browser only'],gMy:['내 설정','My settings'],langL:['언어 · Language','Language · 언어'],
+ edit:['조건','Filters'],mq:['메뉴·식당 검색','Search dishes or places'],lgP:['메뉴마다 육수·양념 제품 성분까지 확인해 드려요','We check every dish down to the broth and sauce labels'],lgName:['닉네임','Nickname'],lgDiet:['내 식단','My diet'],lgGo:['시작하기','Get started'],lgGuest:['로그인 없이 둘러보기','Continue as guest'],lgNote:['시연용 로그인이에요. 비밀번호 없이 닉네임만 이 브라우저에 저장돼요.','Demo sign-in — no password, your nickname stays in this browser only.'],meS:['시연용 계정 · 이 브라우저에만 저장','Demo account · saved in this browser only'],gMy:['내 설정','My settings'],langL:['언어 · Language','Language'],brandKo:[' 리프맵',''],credit:['AI데이터기반서비스기획 · 2023761031 이다운','AI Data-Driven Service Planning · 2023761031 Dawoon Lee'],bigX:['✕ 닫기 Close','✕ Close'],bigSpk:['🔊 소리로 들려주기 · Play','🔊 Play aloud for the staff'],
  oRL:['식당 이름','Restaurant name'],oAL:['지역','Area'],oA1:['서면·전포','Seomyeon · Jeonpo'],oA2:['대연동(경성대·부경대)','Daeyeon-dong (KSU · PKNU)'],oA3:['장전동(부산대)','Jangjeon-dong (PNU)'],oA4:['그 외 부산','Elsewhere in Busan'],oML:['등록할 메뉴','Dish to list'],oPL:['사용하는 양념·소스 제품명','Sauce & seasoning products used'],oPE:['(정확할수록 빨라요)','(the more exact, the faster)'],oFL:['함께 보낼 자료','Attachments'],oFE:['(시연용: 첨부했다고 가정)','(demo: assumed attached)'],oPhL:['제품 성분표 사진이 있어요','I have photos of the ingredient labels'],oUL:['이 제품을 지금 이 메뉴에 쓰고 있어요','I currently use these products in this dish'],oSend:['등록 신청하기','Send listing request'],oNote:['신청은 운영팀 검토 후 공개돼요. 시연용이라 연락처는 받지 않아요.','Requests go live after our team reviews them. This is a demo, so we don’t collect contact details.'],
  dashS:['등록 검토·제보 처리 (PC 화면)','Review sign-ups & reports (desktop)']
 };
@@ -817,7 +817,8 @@ function applyLang(){
   $('#oR').placeholder=L('예: 광안 비건하우스','e.g. Gwangan Vegan House');
   $('#oM').placeholder=L('예: 비건 짜장면','e.g. Vegan jjajangmyeon');
   $('#oP').placeholder=L('예: OO식품 춘장 500g','e.g. OO Foods black bean paste 500g');
-  [['#mAv','내 정보','My info'],['#zIn','확대','Zoom in'],['#zOut','축소','Zoom out'],['#zHome','내 위치','My location'],['#tabbar','주 메뉴','Main menu'],['#dBack','뒤로','Back'],['#dietSeg','내 식단','My diet']].forEach(([s,k,e])=>{const el=$(s);if(el)el.setAttribute('aria-label',L(k,e))});
+  $$('[title="운영자용 화면"],[data-tt=op]').forEach(e=>{e.dataset.tt='op';e.title=L('운영자용 화면','For operators')});
+  [['#qClr','지우기','Clear'],['#mAv','내 정보','My info'],['#zIn','확대','Zoom in'],['#zOut','축소','Zoom out'],['#zHome','내 위치','My location'],['#tabbar','주 메뉴','Main menu'],['#dBack','뒤로','Back'],['#dietSeg','내 식단','My diet']].forEach(([s,k,e])=>{const el=$(s);if(el)el.setAttribute('aria-label',L(k,e))});
   if(!restos)$('#rTitle').textContent=L('내 조건에 맞는 메뉴','Dishes for your diet');
   renderUser();
   setTitle();
@@ -876,7 +877,7 @@ function whyLine(m,j){
 function menuCard(m,r,dim){
   const j=judge(m,P.ex),w=whyLine(m,j);
   return `<button class="mc ${dim?'dim':''}" data-m="${esc(m.id)}"><div class="top"><span class="area">${esc(dist(r))}</span>${pill(j.s)}</div>
-   <h3>${esc(L(m.ko,m.en))}</h3><div class="en">${esc(L(m.en,m.ko))}</div><div class="rest">${esc(L(r.ko,r.en))}</div>
+   <h3>${esc(L(m.ko,m.en))}</h3><div class="en">${esc(L(m.en,''))}</div><div class="rest">${esc(L(r.ko,r.en))}</div>
    <div class="why ${w.c}">${esc(w.t)}</div></button>`;
 }
 const kindPill=r=>`<span class="pill ${r.kind==='vegan'?'vg':r.kind==='vegetarian'?'vt':'op'}"><span class="dot"></span>${L(KIND[r.kind].ko,KIND[r.kind].en)}</span>`;
@@ -1070,7 +1071,7 @@ function renderMap(){
   $$('#mapArea [data-d]').forEach(e=>e.onclick=()=>{P.diet=e.dataset.d;P.ex=[...DIETS[P.diet].ex];update();toast(L(`‘${DIETS[P.diet].ko}’ 기준으로 한국어 카드를 바꿨어요`,`Phrase card set to “${DIETS[P.diet].en}”`))});
   $('#mVeg').onclick=()=>{P.veganOnly=!P.veganOnly;MV.sel=null;update()};
   $('#mCond').onclick=openFilters;
-  $('#mLang').textContent=P.lang==='en'?'한국어':'EN';
+  $('#mLang').textContent=P.lang==='en'?'KO':'EN';
   $('#mlegend').innerHTML=`<span><i style="background:${KIND.vegan.c}"></i>${L('전부 비건','All vegan')}</span><span><i style="background:${KIND.vegetarian.c}"></i>${L('전부 채식','Vegetarian')}</span><span><i style="background:${KIND.options.c}"></i>${L('채식 메뉴 있음','Veg options')}</span>`;
   drawMarkers();renderSheet();
 }
@@ -1105,14 +1106,14 @@ function showPlace(r){
   const ms=(r.menus||[]);
   const items=ms.map(m=>{const j=judge(m,P.ex),w=whyLine(m,j);return `<button class="mi" data-m="${esc(m.id)}"><div><b>${esc(L(m.ko,m.en))}</b><small>${esc(L(m.en,m.ko))} · ${esc(w.t)}</small></div>${pill(j.s)}</button>`}).join('');
   const d=distKm(r),note=L(r.note[1],r.note[0]),avg=revAvg(r.id),n=revOf(r.id).length;
-  openDlg(L(r.ko,r.en),`<div class="small" style="margin-bottom:12px">${esc(L(r.en,r.ko))} · ${esc(dist(r))}${d!=null?' · '+fmtKm(d):''}</div>
+  openDlg(L(r.ko,r.en),`<div class="small" style="margin-bottom:12px">${esc(L(r.en,r.type[0]))} · ${esc(dist(r))}${d!=null?' · '+fmtKm(d):''}</div>
    <div class="pc-pills" style="margin-bottom:12px">${kindPill(r)}${verPill(r)}</div>
    <div class="h4" style="margin-top:0">🌱 ${L('채식으로 먹을 수 있는 메뉴','Veggie-friendly dishes')}</div>
    <div class="mi-list" style="margin-bottom:6px">${menuL(r).map(m=>`<span>${esc(m)}</span>`).join('')}</div>
    <p class="small" style="margin-bottom:12px">${L('공개된 식당 정보를 요약한 거예요. 메뉴는 바뀔 수 있어요.','Summarised from public listings. Menus may change.')}</p>
    ${ms.length?'':`<div class="banner check"><span style="font-weight:800">!</span><div><b>${L('리프맵 확인 전','Not yet verified by LeafMap')}</b>${L('재료·육수·양념 성분은 아직 확인하지 않았어요. 주문하기 전에 아래 한국어 카드로 직원에게 꼭 물어보세요.','Ingredients, broths and sauces have not been checked yet. Ask the staff with the Korean card below before ordering.')}</div></div>${reqBox(r)}`}
    <dl class="kv"><dt>${L('유형','Type')}</dt><dd>${esc(L(r.type[1],r.type[0]))} · ${esc(L(KIND[r.kind].ko,KIND[r.kind].en))}</dd>
-   <dt>${L('주소','Address')}</dt><dd>${L('부산 ','Busan, ')}${esc(r.addr)}</dd>
+   <dt>${L('주소','Address')}</dt><dd>${P.lang==='en'?esc(r.d[0])+', Busan':'부산 '+esc(r.addr)}</dd>
    <dt>${L('영업시간','Hours')}</dt><dd>${esc(r.hours||'-')}</dd>
    ${note?`<dt>${L('참고','Notes')}</dt><dd>${esc(note)}</dd>`:''}
    <dt>${L('정보 출처','Source')}</dt><dd><a href="${HC_BUSAN}" target="_blank" rel="noopener" style="text-decoration:underline">HappyCow</a> · ${L('2026년 11월 확인','checked Nov 2026')}</dd></dl>
@@ -1165,7 +1166,7 @@ function showPlace(r){
 function showPlaceReport(r){
   $('#dTitle').textContent=L('정보 제보','Report');
   const opts=[['closed','문을 닫았어요','It has closed'],['hours','영업시간이 달라요','Hours are different'],['vegan','비건 정보가 달라요','Vegan info is wrong'],['etc','기타','Other']];
-  $('#dBody').innerHTML=`<div class="small">${esc(L(r.ko,r.en))} · ${esc(r.addr)}</div>
+  $('#dBody').innerHTML=`<div class="small">${esc(L(r.ko,r.en))} · ${esc(L(r.addr,r.d[0]+', Busan'))}</div>
    <div class="form" style="margin-top:6px"><label class="f" for="prType">${L('무엇이 달랐나요?','What was different?')}</label><select id="prType">${opts.map(o=>`<option value="${o[0]}">${L(o[1],o[2])}</option>`).join('')}</select>
    <label class="f" for="prText">${L('자세히 알려 주세요','Details')}</label><textarea id="prText" maxlength="300" placeholder="${L('예: 11월부터 휴업 중이에요','e.g. Closed since November')}"></textarea>
    <label class="f" for="prFrom">${L('어디에서 오셨어요?','Where are you from?')} <em>(${L('선택','optional')})</em></label><input type="text" id="prFrom" maxlength="30">
@@ -1203,7 +1204,7 @@ function showMenu(m,r){const fromPlace=prevRoute.startsWith('place/');
   const ev=(m.sauce||[]).length?(m.sauce||[]).map(s=>`<div class="ev"><div class="r1"><b>${esc(s.n)}</b><span class="small">${esc(s.c||'')}</span></div><div class="small">${L('제품','Product')}: ${esc(s.p)}</div><div class="raw">${L('성분표 원문','Label')}: ${esc(s.raw)}</div>${aiNote(s.raw)}</div>`).join(''):`<p class="small">${L('따로 쓰는 양념 제품이 없어 기본 재료로 판정했어요.','No packaged sauce — judged from the base ingredients.')}</p>`;
   const conf=m.pending==='conflict'?pill('check',L('제보 검토 중','Report under review')):m.pending?pill('check',L('식당 확인 대기','Waiting for restaurant')):pill('ok',L('식당 확인 완료','Restaurant confirmed'));
   const bad=new Set(j.hit||[]);
-  openDlg(L(m.ko,m.en),`<div class="small" style="margin-bottom:12px">${esc(L(r.ko,r.en))} · ${esc(L(m.en,m.ko))}</div>
+  openDlg(L(m.ko,m.en),`<div class="small" style="margin-bottom:12px">${esc(L(r.ko+' · '+m.en,r.en))}</div>
    <div class="banner ${j.s}"><span style="font-weight:800">${ic}</span><div><b>${L(ST[j.s].ko,ST[j.s].en)}</b>${esc(banner)}</div></div>
    <dl class="kv"><dt>${L('기본 재료','Ingredients')}</dt><dd>${(m.ing||[]).map(x=>`<span class="tag2">${esc(x)}</span>`).join('')}</dd>
    <dt>${L('육수','Broth')}</dt><dd>${esc(m.broth||'-')}</dd>
@@ -1405,7 +1406,7 @@ function renderScanTab(){
    <div class="scImg" id="scImg">${scLast.img?`<img src="${scLast.img}" alt="${L('메뉴판 사진','Menu photo')}">`:''}</div>
    <div id="scOut"></div>
    <details id="scTxtBox" class="form" style="margin-top:14px;padding:0"><summary class="small" style="cursor:pointer;font-weight:700">✎ ${L('메뉴 이름을 직접 적거나 고치기','Type or fix the dish names')}</summary>
-    <textarea id="scTxt" style="margin-top:8px" placeholder="${L('한 줄에 메뉴 하나씩. 예: 밀면','One dish per line, e.g. 밀면')}"></textarea>
+    <textarea id="scTxt" style="margin-top:8px" placeholder="${L('한 줄에 메뉴 하나씩. 예: 밀면','One dish per line, as written on the menu (in Korean)')}"></textarea>
     <button class="btn sm" id="scTxtGo" style="margin-top:8px">${L('다시 분석하기','Analyze')}</button></details>`;
   $('#scTxt').value=scLast.text;if(scLast.text)renderScan(scLast.text);
   $('#scFile').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>runOCR(r.result);r.readAsDataURL(f)};
