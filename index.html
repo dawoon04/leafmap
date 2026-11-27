@@ -479,17 +479,17 @@ input,select,textarea{font:inherit;color:inherit}
           <div><i>↻</i><span data-t="b3">제품을 바꾸면 변경 신고로 바로 반영돼요</span></div>
         </div>
         <form id="ownForm" class="form" novalidate>
-          <label class="f" for="oR">식당 이름</label>
+          <label class="f" for="oR" data-t="oRL">식당 이름</label>
           <input type="text" id="oR" maxlength="40" placeholder="예: 광안 비건하우스">
-          <label class="f" for="oA">지역</label><select id="oA"><option>서면·전포</option><option>대연동(경성대·부경대)</option><option>장전동(부산대)</option><option>그 외 부산</option></select>
-          <label class="f" for="oM">등록할 메뉴</label><input type="text" id="oM" maxlength="40" placeholder="예: 비건 짜장면">
-          <label class="f" for="oP">사용하는 양념·소스 제품명 <em>(정확할수록 빨라요)</em></label>
+          <label class="f" for="oA" data-t="oAL">지역</label><select id="oA"><option value="서면·전포" data-t="oA1">서면·전포</option><option value="대연동(경성대·부경대)" data-t="oA2">대연동(경성대·부경대)</option><option value="장전동(부산대)" data-t="oA3">장전동(부산대)</option><option value="그 외 부산" data-t="oA4">그 외 부산</option></select>
+          <label class="f" for="oM" data-t="oML">등록할 메뉴</label><input type="text" id="oM" maxlength="40" placeholder="예: 비건 짜장면">
+          <label class="f" for="oP"><span data-t="oPL">사용하는 양념·소스 제품명</span> <em data-t="oPE">(정확할수록 빨라요)</em></label>
           <input type="text" id="oP" maxlength="60" placeholder="예: OO식품 춘장 500g">
-          <label class="f">함께 보낼 자료 <em>(시연용: 첨부했다고 가정)</em></label>
-          <label class="ck"><input type="checkbox" id="oPh"> 제품 성분표 사진이 있어요</label>
-          <label class="ck"><input type="checkbox" id="oU"> 이 제품을 지금 이 메뉴에 쓰고 있어요</label>
-          <button class="btn" type="submit" id="oSend">등록 신청하기</button>
-          <p class="note">신청은 운영팀 검토 후 공개돼요. 시연용이라 연락처는 받지 않아요.</p>
+          <label class="f"><span data-t="oFL">함께 보낼 자료</span> <em data-t="oFE">(시연용: 첨부했다고 가정)</em></label>
+          <label class="ck"><input type="checkbox" id="oPh"> <span data-t="oPhL">제품 성분표 사진이 있어요</span></label>
+          <label class="ck"><input type="checkbox" id="oU"> <span data-t="oUL">이 제품을 지금 이 메뉴에 쓰고 있어요</span></label>
+          <button class="btn" type="submit" id="oSend" data-t="oSend">등록 신청하기</button>
+          <p class="note" data-t="oNote">신청은 운영팀 검토 후 공개돼요. 시연용이라 연락처는 받지 않아요.</p>
         </form>
       </div>
 
@@ -779,7 +779,9 @@ const T={
  b1:['확인된 메뉴는 ‘조건에 맞음’으로 표시돼 여행자가 안심하고 주문해요','Verified dishes show as “matches”, so travelers order with confidence'],b2:['재료 설명이 어려운 외국인 손님 응대 부담이 줄어요','Fewer hard-to-explain ingredient questions'],b3:['제품을 바꾸면 변경 신고로 바로 반영돼요','Changed a product? Update it any time'],
  foot1:['부산 채식 여행자를 위한 메뉴 성분 확인 서비스 (MVP)','Menu ingredient checks for vegetarian travelers in Busan (MVP)'],foot2:['식당 정보는 HappyCow 공개 목록 기준(2026년 11월)이고, 메뉴 성분은 아직 확인하지 않았어요.','Places come from HappyCow public listings (Nov 2026); dishes are not yet verified.'],foot3:['운영자 화면','For operators'],
  tHome:['찾기','Explore'],tMap:['지도','Map'],tCard:['AI 메뉴판','AI Menu'],tMore:['더보기','More'],
- edit:['조건','Filters'],mq:['메뉴·식당 검색','Search dishes or places'],lgP:['메뉴마다 육수·양념 제품 성분까지 확인해 드려요','We check every dish down to the broth and sauce labels'],lgName:['닉네임','Nickname'],lgDiet:['내 식단','My diet'],lgGo:['시작하기','Get started'],lgGuest:['로그인 없이 둘러보기','Continue as guest'],lgNote:['시연용 로그인이에요. 비밀번호 없이 닉네임만 이 브라우저에 저장돼요.','Demo sign-in — no password, your nickname stays in this browser only.'],meS:['시연용 계정 · 이 브라우저에만 저장','Demo account · saved in this browser only'],gMy:['내 설정','My settings'],langL:['언어 · Language','Language · 언어'],dashS:['등록 검토·제보 처리 (PC 화면)','Review sign-ups & reports (desktop)']
+ edit:['조건','Filters'],mq:['메뉴·식당 검색','Search dishes or places'],lgP:['메뉴마다 육수·양념 제품 성분까지 확인해 드려요','We check every dish down to the broth and sauce labels'],lgName:['닉네임','Nickname'],lgDiet:['내 식단','My diet'],lgGo:['시작하기','Get started'],lgGuest:['로그인 없이 둘러보기','Continue as guest'],lgNote:['시연용 로그인이에요. 비밀번호 없이 닉네임만 이 브라우저에 저장돼요.','Demo sign-in — no password, your nickname stays in this browser only.'],meS:['시연용 계정 · 이 브라우저에만 저장','Demo account · saved in this browser only'],gMy:['내 설정','My settings'],langL:['언어 · Language','Language · 언어'],
+ oRL:['식당 이름','Restaurant name'],oAL:['지역','Area'],oA1:['서면·전포','Seomyeon · Jeonpo'],oA2:['대연동(경성대·부경대)','Daeyeon-dong (KSU · PKNU)'],oA3:['장전동(부산대)','Jangjeon-dong (PNU)'],oA4:['그 외 부산','Elsewhere in Busan'],oML:['등록할 메뉴','Dish to list'],oPL:['사용하는 양념·소스 제품명','Sauce & seasoning products used'],oPE:['(정확할수록 빨라요)','(the more exact, the faster)'],oFL:['함께 보낼 자료','Attachments'],oFE:['(시연용: 첨부했다고 가정)','(demo: assumed attached)'],oPhL:['제품 성분표 사진이 있어요','I have photos of the ingredient labels'],oUL:['이 제품을 지금 이 메뉴에 쓰고 있어요','I currently use these products in this dish'],oSend:['등록 신청하기','Send listing request'],oNote:['신청은 운영팀 검토 후 공개돼요. 시연용이라 연락처는 받지 않아요.','Requests go live after our team reviews them. This is a demo, so we don’t collect contact details.'],
+ dashS:['등록 검토·제보 처리 (PC 화면)','Review sign-ups & reports (desktop)']
 };
 const TABS=['map','home','card','more'];
 const TITLE={home:null,map:null,card:['AI 메뉴판','AI Menu reader'],more:['더보기','More']};
@@ -812,6 +814,11 @@ function applyLang(){
   $('#lgT').innerHTML=L('부산 채식 여행,<br><em>리프맵</em>으로 시작해요','Vegetarian Busan,<br>starts with <em>LeafMap</em>');
   if($('#splashT'))$('#splashT').textContent=L('부산 채식 메뉴, 성분까지 확인하고 고르기','Vegetarian Busan, checked to the broth');
   $('#lgName').placeholder=L('예: 다운','e.g. Alex');
+  $('#oR').placeholder=L('예: 광안 비건하우스','e.g. Gwangan Vegan House');
+  $('#oM').placeholder=L('예: 비건 짜장면','e.g. Vegan jjajangmyeon');
+  $('#oP').placeholder=L('예: OO식품 춘장 500g','e.g. OO Foods black bean paste 500g');
+  [['#mAv','내 정보','My info'],['#zIn','확대','Zoom in'],['#zOut','축소','Zoom out'],['#zHome','내 위치','My location'],['#tabbar','주 메뉴','Main menu'],['#dBack','뒤로','Back'],['#dietSeg','내 식단','My diet']].forEach(([s,k,e])=>{const el=$(s);if(el)el.setAttribute('aria-label',L(k,e))});
+  if(!restos)$('#rTitle').textContent=L('내 조건에 맞는 메뉴','Dishes for your diet');
   renderUser();
   setTitle();
 }
@@ -1469,21 +1476,22 @@ $('#bigSpk').onclick=()=>speak($('#bigKrT').textContent);
 function copy(t){try{navigator.clipboard.writeText(t).then(()=>toast(L('문장을 복사했어요','Copied')),()=>toast(L('복사할 수 없어요. 문장을 직접 선택해 주세요','Copy failed — please select the text')))}catch(e){toast(L('복사할 수 없어요','Copy failed'))}}
 
 /* ---------- 사장님 등록 신청 → submissions (운영자 대시보드 ‘등록·검토 큐’) ---------- */
+const MISS_EN={'정확한 제품명':'exact product names','성분표 사진':'label photos','실제 사용 확인':'confirmation of use','재료·육수·소스':'ingredients, broth & sauces','판매 국가':'country of sale'};
 $('#ownForm').onsubmit=async e=>{
   e.preventDefault();
   const v=id=>$(id).value.trim();
-  if(!v('#oR')||!v('#oM')){toast('식당 이름과 메뉴는 꼭 입력해 주세요');return}
-  if(!live){toast('지금은 서버에 연결되지 않아 신청을 보낼 수 없어요');return}
+  if(!v('#oR')||!v('#oM')){toast(L('식당 이름과 메뉴는 꼭 입력해 주세요','Please enter the restaurant name and dish'));return}
+  if(!live){toast(L('지금은 서버에 연결되지 않아 신청을 보낼 수 없어요','Can’t reach the server right now, so the request can’t be sent'));return}
   const missing=[];if(!v('#oP'))missing.push('정확한 제품명');if(!$('#oPh').checked)missing.push('성분표 사진');if(!$('#oU').checked)missing.push('실제 사용 확인');
   missing.push('재료·육수·소스','판매 국가');
   const now=Date.now(),name=`${v('#oR')} (${$('#oA').value})`,menu=v('#oM');
-  const b=$('#oSend');b.disabled=true;b.textContent='보내는 중…';
+  const b=$('#oSend');b.disabled=true;b.textContent=L('보내는 중…','Sending…');
   try{
     const {error}=await db.from('submissions').insert({id:'s'+now,restaurant:name,menu,files:[v('#oP')||'제품명 없음',$('#oPh').checked?'성분표 사진':'사진 없음'],missing,status:'누락 보완 요청',ord:now});
     if(error)throw error;
     await db.from('activity').insert({id:'a'+now,icon:'＋',title:`웹사이트 등록 신청 접수: ${name} · ${menu}`,sub:'사장님 등록 폼 · '+today(),ord:now});
-    $('#ownBox').innerHTML=`<div class="done"><div class="big">🌿</div><h3>등록 신청이 접수됐어요</h3><p><b>${esc(name)}</b> · ${esc(menu)}<br>운영팀이 검토한 뒤 보완 자료를 요청드리고, 확인이 끝나면 여행자에게 공개돼요.</p><div class="miss">보완이 필요한 자료: ${missing.map(esc).join(', ')}</div><div style="margin-top:16px"><button class="btn ghost" onclick="location.reload()">다른 메뉴도 신청하기</button></div></div>`;
-  }catch(err){console.error('[Supabase]',err);toast('신청을 보내지 못했어요. 잠시 후 다시 시도해 주세요');b.disabled=false;b.textContent='등록 신청하기'}
+    $('#ownBox').innerHTML=`<div class="done"><div class="big">🌿</div><h3>${L('등록 신청이 접수됐어요','Request received')}</h3><p><b>${esc(name)}</b> · ${esc(menu)}<br>${L('운영팀이 검토한 뒤 보완 자료를 요청드리고, 확인이 끝나면 여행자에게 공개돼요.','Our team will review it and ask for anything missing. Once verified, it goes live for travelers.')}</p><div class="miss">${L('보완이 필요한 자료: ','Still needed: ')}${(P.lang==='en'?missing.map(x=>MISS_EN[x]||x):missing).map(esc).join(', ')}</div><div style="margin-top:16px"><button class="btn ghost" onclick="location.reload()">${L('다른 메뉴도 신청하기','List another dish')}</button></div></div>`;
+  }catch(err){console.error('[Supabase]',err);toast(L('신청을 보내지 못했어요. 잠시 후 다시 시도해 주세요','Couldn’t send the request. Please try again shortly'));b.disabled=false;b.textContent=L('등록 신청하기','Send listing request')}
 };
 
 /* ---------- 공통 ---------- */
