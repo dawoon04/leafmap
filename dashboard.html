@@ -250,6 +250,7 @@ label.f em{font-style:normal;color:var(--muted);font-weight:400}
     <button data-p="analyze"><span class="ic">✦</span>AI 성분 분석<span class="tag">AI</span></button>
     <button data-p="reports"><span class="ic">⚑</span>정정 제보·문의<span class="badge" id="bRep">0</span></button>
     <button data-p="demand"><span class="ic">◆</span>실제 식당 수요<span class="tag">DATA</span></button>
+    <button data-p="revenue"><span class="ic">₩</span>요금제·광고 운영<span class="badge" id="bAd">0</span></button>
     <div class="navgroup">여행자 화면</div>
     <button data-p="explore"><span class="ic">⌖</span>메뉴 탐색 (여행자 뷰)</button>
     <div class="navgroup">기획·검증</div>
@@ -443,6 +444,23 @@ label.f em{font-style:normal;color:var(--muted);font-weight:400}
   <div class="grid g2" style="margin-top:16px">
     <div class="card"><h3>최근 리뷰</h3><div class="list" id="dmRev"></div></div>
     <div class="card"><h3>식당 정보 제보</h3><div class="sub">문을 닫았거나 영업시간·비건 정보가 다르다는 제보</div><div class="list" id="dmRep"></div></div>
+  </div>
+</section>
+
+<!-- ================= REVENUE (사장님 앱 요금제·광고) ================= -->
+<section class="page" id="p-revenue">
+  <div class="head">
+    <div><h1>요금제·광고 운영</h1><p>사장님 앱에서 들어온 <b>요금제 가입(첫 달 무료 체험 포함)</b>과 <b>광고 신청</b>을 관리합니다. 광고를 승인하면 그날부터 여행자 앱 지도·검색·식단 목록에 ‘광고’ 표시와 함께 노출돼요. 가격은 검증 전 가설이고 실제 결제는 없어요.</p></div>
+    <button class="btn ghost" id="rvReload">↻ 새로고침</button>
+  </div>
+  <div class="grid g4" id="rvKpi"></div>
+  <div class="card" style="margin-top:16px">
+    <div class="card-h"><div><h3>광고 신청</h3><div class="sub">신청 → 승인(노출 중) → 종료 / 반려 · 인증 메뉴 정보가 있는 가게만 승인하세요</div></div></div>
+    <div class="tbl" id="rvAds"></div>
+  </div>
+  <div class="card" style="margin-top:16px">
+    <div class="card-h"><div><h3>가게별 요금제</h3><div class="sub">가게마다 가장 최근 기록 기준 · 체험은 30일 뒤 자동으로 무료로 돌아감</div></div></div>
+    <div class="tbl" id="rvPlans"></div>
   </div>
 </section>
 
@@ -751,7 +769,7 @@ const fromRows={
 const KEYS={restaurants:'restos',reports:'reps',submissions:'subs',activity:'act'};
 /* 여행자 앱의 실제 식당 기록(review: 리뷰, req: 성분 확인 요청, place: 정보 제보). 데모 데이터와 따로 두고 동기화·초기화하지 않음 */
 let REAL=[];
-const isReal=m=>/^(review|req|place):/.test(String(m||''));
+const isReal=m=>/^(review|req|place|plan|ad):/.test(String(m||''));  // plan:/ad: = 사장님 앱 요금제·광고
 /* 실제 식당 id → [한글 이름, 영문 이름, 구]. index.html의 PLACES와 같은 id (식당을 바꾸면 같이 고칠 것) */
 const PLACE_NAMES={"b1":["꽃피는4월밀익는5월","April and May 45","수영구"],"b2":["아르프 을숙","ARP Eulsuk","사하구"],"b3":["홈비스트로","HOME Bistro and Cafe","해운대구"],"b4":["러브앤커뮤니케이션","Love and Communication","중구"],"b5":["나유타의 부엌","Nayuta's Kitchen","금정구"],"b6":["편한집밥","Pyeonhan Jipbap","북구"],"b7":["소반비건식당","Soban Vegan","서구"],"b8":["베지나랑 부산광안리점","Vegenarang","수영구"],"b9":["예인","Yaein Tea House","연제구"],"b10":["충무김밥 김치수제비","Chungmu Gimbap Kimchi Sujebi","해운대구"],"b11":["도형당","Dohyeongdang","해운대구"],"b13":["홍주방 남포본점","Hongjubang Nampo","중구"],"b14":["아그라 센텀시티몰점","Agra (Shinsegae Centum)","해운대구"],"b15":["아리랑김밥","Arirang Kimbap","사하구"],"b16":["아즈매부엌","Azimae Kitchen","중구"],"b17":["반핀","Banpin","부산진구"],"b18":["바오하우스","Bao Haus","부산진구"],"b19":["바오하우스 광안점","BAOHAUS Gwangalli","수영구"],"b20":["밥장인 부산중앙점","Bapjangin (Busan Central)","중구"],"b21":["벵갈 퀴진","Bengal Cuisine","남구"],"b22":["바반인도레스토랑","Bhavan Indian Restaurant","남구"],"b23":["비비빔","Bibibim","사하구"],"b24":["발리우드","Bollywood Indian Restaurant","수영구"],"b25":["봄베이브라우 광복점","Bombay Brau (Gwangbok)","중구"],"b26":["봄베이브라우 BIFC몰점","Bombay Brau (BIFC Mall)","남구"],"b27":["봄베이브라우 해운대점","Bombay Brau (U-dong)","해운대구"],"b28":["보울스 전포점","Bowls Poke Salad","부산진구"],"b29":["치즈숲화덕피자파스타","Cheese Forest Pizza & Pasta","동구"],"b30":["둔내막국수","Dunnae Makguksu","수영구"],"b31":["에코토피아","Ecotopia","수영구"],"b32":["감내식당","Gamnae Restaurant","사하구"],"b33":["가비 와인 레스토랑","Gavi Wine Restaurant","해운대구"],"b34":["꿀꺽하우스","Ggulggeok House","수영구"],"b35":["고든램지 버거 신세계센텀","Gordon Ramsay Burger (Shinsegae Centum)","해운대구"],"b36":["그리너 전포","Greener (Jeonpo)","부산진구"],"b38":["그리너 센텀시티","Greener (Centum City)","해운대구"],"b39":["그리너 덕천점","Greener (Deokcheon)","북구"],"b40":["그리너 해운대장산점","Greener (Jangsan)","해운대구"],"b41":["그리너 연산점","Greener (Yeonsan)","연제구"],"b42":["해피샐러드클럽","Happy Salad Club","해운대구"],"b43":["장터손칼국수","Jangteo Son Kalguksu","남구"],"b44":["칸티푸르 레스토랑","Kantipur","남구"],"b45":["맛있는 순두부&김치찜","Kimchizip (Sundubu & Kimchijjim)","남구"],"b46":["까치까치","Kkachi Kkachi","서구"],"b47":["콩시루","Kongsiru","해운대구"],"b48":["동녘돈까스","DongNyeok (Korean casual dining)","서구"],"b49":["우리콩순두부","Woori Kong Sundubu","해운대구"],"b50":["라차타","La Cha Ta","중구"],"b51":["리멘시타","Limensita","금정구"],"b52":["리틀오스","Little Aus","수영구"],"b53":["롯데리아 영도동삼점","Lotteria (Yeongdo)","영도구"],"b54":["러스트","Lust","수영구"],"b55":["나마스테 해운대점","Namaste Haeundae","해운대구"],"b56":["뉴리틀인디아","New Little India (BIFF)","중구"],"b57":["뉴리틀인디아 부산역점","New Little India (Dong-gu)","동구"],"b58":["노브랜드버거 부산명지점","No Brand Burger (Myeongji)","강서구"],"b59":["오어왓에버","Or Whatever","부산진구"],"b60":["포케올데이 경성대부경대점","Poke All Day (KSU·PKNU)","남구"],"b62":["폴라니포케","Polani Poke (Yeonsan)","연제구"],"b63":["폴라니포케 해운대","Polani Poke (Haeundae)","해운대구"],"b64":["펀잡","Punjab","해운대구"],"b65":["로얄인디아 서면점","Royal India Seomyeon","부산진구"],"b66":["샐러드 바구니","Salad Basket","부산진구"],"b67":["샐러드박스 부산역점","Salad Box","동구"],"b68":["샐러드마비에","Salad Mavie","부산진구"],"b72":["숲오어샐러드","Soup or Salad","수영구"],"b73":["스프링힐","Spring Hill","해운대구"],"b74":["술고당","Sulgodang","중구"],"b75":["태태태","Tae Tae Tae","부산진구"],"b76":["더플레이트","The Plate","사하구"],"b77":["유니온스테이션","Union Station","수영구"],"b78":["이름없는섬","Unnamed Island","사하구"],"b79":["우정돌솥비빔밥 서면점","Woojung Dolsot Bibimbap (Seomyeon)","부산진구"],"b80":["아르프 영도","ARP","영도구"],"b81":["베이커리한밀","Bakery Hanmil","수영구"],"b82":["오굳띵","Cafe ohh good thing","부산진구"],"b84":["매일이 다르다","Different Today","중구"],"b85":["희소","Heeso","부산진구"],"b86":["조선스낵 신세계센텀점","Joseon Snack (Shinsegae Centum)","해운대구"],"b87":["크샤나","Ksana","기장군"],"b88":["밀한줌","Milhanjum","동래구"],"b89":["뭉구점 비건베이커리","Moonggoojeom","부산진구"],"b90":["온화당","Onhwadang","연제구"],"b91":["알앤비","R&B Bakery","사상구"],"b92":["레인보우크러스트","Rainbow Crust","서구"],"b93":["쌀빵맨","Rice Bread Man","동래구"],"b94":["슈크레포타제","Sucre Potager","부산진구"],"b96":["팡팡팡 마린시티","Artisan Boulangerie Pain Pain Pain","해운대구"],"b97":["빵나오다","bbangnaoda","수영구"],"b99":["비비비당","BIBIBIDANG","해운대구"],"b100":["카페비채","Bichae","해운대구"],"b101":["보리종파티세리 본점","Borijong Patisserie","금정구"],"b103":["카페1945","Café 1945","연제구"],"b108":["츄러스1500","Churros 1500","기장군"],"b109":["데일리럭키","Daily Lucky","수영구"],"b110":["도시농가코페","Doco City Farm House Cafe","부산진구"],"b112":["프루토프루타","Fruto Fruta","부산진구"],"b114":["그리구요거트 전포본점","Greegu","부산진구"],"b118":["지니베이커리 벡스코점","Jinny Bakery (Bexco)","해운대구"],"b119":["조선스낵","Joseon Snack (Suyeong)","수영구"],"b120":["김유일쌀빵제빵소","Kim Yu-il's Rice Bread","부산진구"],"b121":["미쌤쌀빵","Missem Rice Bread","해운대구"],"b122":["모찌의하루 서면본점","Mochiui Haru (Seomyeon)","부산진구"],"b123":["모몽비","Momongve","동래구"],"b126":["올림프케이크&디저트","Olimp Cake & Dessert","해운대구"],"b129":["플레인베이커리","Plain Bakery","북구"],"b131":["세자매바른빵","Sejamea","부산진구"],"b136":["비건푸드 감천","Vegan Food (Gamcheon stall)","사하구"]};
 let lastSynced='';
@@ -799,7 +817,7 @@ async function cloudReset(){
   setSync('busy');
   try{
     for(const t of ['activity','submissions','reports','restaurants']){let q=db.from(t).delete().neq('id','');
-      if(t==='reports')q=q.not('menu_id','like','review:%').not('menu_id','like','req:%').not('menu_id','like','place:%'); // 실제 이용 기록은 지우지 않음
+      if(t==='reports')q=q.not('menu_id','like','review:%').not('menu_id','like','req:%').not('menu_id','like','place:%').not('menu_id','like','plan:%').not('menu_id','like','ad:%'); // 실제 이용 기록·요금제·광고는 지우지 않음
       const {error}=await q;if(error)throw error;}
     await upsertAll();lastSynced=sharedJSON();setSync('ok');
   }catch(e){console.error('[Supabase]',e);setSync('err');toast('Supabase 초기화에 실패했습니다');}
@@ -999,7 +1017,7 @@ function renderQueue(){
     if(a==='prod'){m.pending='restaurant';cont.c&&cont.c.delete(m);if(m.sauce[0]&&m.sauce[0].p==='미등록'){m.sauce[0].p='데모 제품(등록 완료)';m.sauce[0].raw='정제수, 설탕, 식초, 정제소금, 치자황색소';m.sauce[0].c='대한민국'}m.by='운영자(제품 분석)';logAct('✦',`${m.ko} 제품 특정·AI 분석 완료 → 식당 사용 확인 대기`,'검토 큐');save();render();toast('제품을 특정했습니다. 이제 식당 사용 확인만 남았습니다')}
     if(a==='msg'){$('#modal').innerHTML=`<h3>식당 확인 요청 문장</h3><div class="small muted">${r.ko} · ${m.ko}</div><div class="kr-card"><div class="kr">${krSentence(['meat','fish','shell','egg','dairy','honey'],'owner',m.ko)}</div></div><div class="acts"><button class="btn ghost" id="mClose">닫기</button><button class="btn" id="mCopy">복사</button></div>`;$('#modal').classList.add('on');$('#ov').classList.add('on');$('#mClose').onclick=closeAll;$('#mCopy').onclick=()=>{try{navigator.clipboard.writeText($('#modal .kr').textContent);toast('복사했습니다')}catch(e){toast('복사할 수 없는 환경입니다')}}}
   });
-  $('#subBody').innerHTML=S.subs.map(s=>`<tr><td><b>${esc(s.r)}</b><br>${esc(s.m)}</td><td class="small">${s.files.map(esc).join(' · ')}</td><td class="small">${s.missing.length?`<span style="color:var(--exc)">누락: ${s.missing.map(esc).join(', ')}</span>`:'<span style="color:var(--ok)">필수 항목 모두 제출</span>'}</td><td>${pill(s.missing.length?'check':'info',s.status)}</td></tr>`).join('');
+  $('#subBody').innerHTML=S.subs.map(s=>`<tr><td><b>${esc(s.r)}</b><br>${esc(s.m)}</td><td class="small">${s.files.filter(f=>typeof f==='string').map(esc).join('<br>')}</td><td class="small">${s.missing.length?`<span style="color:var(--exc)">누락: ${s.missing.map(esc).join(', ')}</span>`:'<span style="color:var(--ok)">필수 항목 모두 제출</span>'}</td><td>${pill(s.missing.length?'check':'info',s.status)}</td></tr>`).join('');
 }
 $('#openReg').onclick=()=>{
   $('#modal').innerHTML=`<h3>식당 메뉴 등록 (모바일 입력 폼 미리보기)</h3><div class="small muted">초기에는 별도 식당용 앱 대신 이 폼과 운영자 관리표를 씁니다.</div>
@@ -1110,7 +1128,7 @@ function renderBiz(){
 /* ---------------- 실제 식당 수요 (여행자 앱 데이터) ---------------- */
 function demandRows(){
   const by={};const get=id=>by[id]||(by[id]={id,req:0,rev:0,sum:0,rep:0,diets:{},last:''});
-  REAL.forEach(p=>{const i=String(p.menu_id).indexOf(':'),k=String(p.menu_id).slice(0,i),id=String(p.menu_id).slice(i+1);const o=get(id);
+  REAL.forEach(p=>{const i=String(p.menu_id).indexOf(':'),k=String(p.menu_id).slice(0,i),id=String(p.menu_id).slice(i+1);if(!['req','review','place'].includes(k))return;const o=get(id);
     if(k==='req'){o.req++;const d=DIETS[p.note]?p.note:'custom';o.diets[d]=(o.diets[d]||0)+1}
     if(k==='review'){o.rev++;o.sum+=+String(p.note||'').replace('rating:','')||0}
     if(k==='place')o.rep++;
@@ -1160,16 +1178,57 @@ function renderDemand(){
 }
 $('#dmReload').onclick=()=>cloudLoad();
 
+/* ---------------- 요금제·광고 운영 (사장님 앱 기록: reports plan:/ad:) ---------------- */
+const PLAN_P={free:['무료',0],standard:['스탠다드',9900],pro:['프로',19900]};
+const AD_T={pin:['지도 추천 핀',15000],search:['검색 상단 노출',20000],diet:['식단 맞춤 노출',20000]};
+const NOW=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const addD=(d,n)=>{const t=new Date(d+'T00:00:00Z');t.setUTCDate(t.getUTCDate()+n);return t.toISOString().slice(0,10)};
+const jn=p=>{try{return JSON.parse(p.note||'{}')||{}}catch(e){return {}}};
+const wonS=n=>Number(n||0).toLocaleString()+'원';
+function planRows(){const by={};REAL.filter(p=>String(p.menu_id).startsWith('plan:')).sort((a,b)=>(b.ord||0)-(a.ord||0)).forEach(p=>{if(!by[p.menu_id])by[p.menu_id]=p});
+  return Object.values(by).map(p=>{const n=jn(p),exp=n.trial&&n.end<NOW();return {p,n,tier:exp?'free':(n.tier||'free'),trial:!!n.trial&&!exp,exp}})}
+function renderRevenue(){
+  const plans=planRows(),ads=REAL.filter(p=>String(p.menu_id).startsWith('ad:')).sort((a,b)=>(b.ord||0)-(a.ord||0));
+  const paid=plans.filter(x=>!x.trial&&x.tier!=='free'),trial=plans.filter(x=>x.trial);
+  const live=ads.filter(a=>a.status==='노출 중'&&(!jn(a).end||jn(a).end>=NOW())),pend=ads.filter(a=>a.status==='신청');
+  const mPlan=paid.reduce((s,x)=>s+PLAN_P[x.tier][1],0),mAd=live.reduce((s,a)=>{const n=jn(a);return s+(n.price||0)/Math.max(1,n.weeks||1)*4.345},0);
+  const mConv=trial.reduce((s,x)=>s+PLAN_P[x.tier][1],0);
+  $('#rvKpi').innerHTML=[
+    ['유료 요금제 가게',paid.length,'곳',`스탠다드 ${paid.filter(x=>x.tier==='standard').length} · 프로 ${paid.filter(x=>x.tier==='pro').length}`],
+    ['첫 달 무료 체험 중',trial.length,'곳',`모두 유료 전환 시 월 ${wonS(mConv)} (가설)`],
+    ['광고 노출 중',live.length,'건',`승인 대기 ${pend.length}건`],
+    ['월 예상 매출 (가설)',Math.round((mPlan+mAd)/1000).toLocaleString(),'천 원',`요금제 ${wonS(mPlan)} + 광고 ${wonS(Math.round(mAd))}`]
+  ].map(k=>`<div class="card kpi"><div class="l">${k[0]}</div><div class="v">${k[1]}<small>${k[2]}</small></div><div class="d">${k[3]}</div></div>`).join('');
+  const stP={'신청':'check','노출 중':'ok','반려':'mute','종료':'mute'};
+  $('#rvAds').innerHTML=ads.length?`<table><thead><tr><th>가게</th><th>광고</th><th>대상</th><th>기간·금액</th><th>상태</th><th style="width:210px">처리</th></tr></thead><tbody>${ads.map(a=>{const n=jn(a),t=AD_T[a.cat]||['광고',0];const tgt=a.cat==='diet'?(DIETS[n.target]?DIETS[n.target].ko:n.target):n.target;
+      return `<tr><td><b>${esc(a.text||'')}</b><div class="muted" style="font-size:12px">${esc(a.who||'')} · 신청 ${esc(a.at||'')}</div></td><td>${t[0]}</td><td>${esc(tgt||'-')}</td><td>${n.weeks||1}주 · ${wonS(n.price)}${n.start?`<div class="muted" style="font-size:12px">${n.start} ~ ${n.end}</div>`:''}</td><td>${pill(stP[a.status]||'check',esc(a.status||'신청'))}</td>
+      <td>${a.status==='신청'?`<button class="btn sm" data-adok="${a.id}">승인·노출</button> <button class="btn ghost sm" data-adno="${a.id}">반려</button>`:a.status==='노출 중'?`<button class="btn ghost sm" data-adend="${a.id}">종료</button>`:''}</td></tr>`}).join('')}</tbody></table>`
+    :`<div class="muted" style="padding:18px 4px;font-size:13.5px">아직 광고 신청이 없어요. 사장님 앱의 <b>요금·광고</b> 탭에서 신청하면 여기에 모여요.</div>`;
+  $('#rvPlans').innerHTML=plans.length?`<table><thead><tr><th>가게</th><th>요금제</th><th>상태</th><th>시작</th><th>체험 종료</th><th>월 요금(가설)</th></tr></thead><tbody>${plans.map(x=>`<tr><td><b>${esc(x.p.text||'')}</b><div class="muted" style="font-size:12px">${esc(x.p.who||'')}</div></td><td>${PLAN_P[x.tier][0]}</td><td>${x.trial?pill('info','무료 체험 중'):x.exp?pill('mute','체험 끝 → 무료'):x.tier==='free'?pill('mute','무료'):pill('ok','이용 중')}</td><td>${esc(x.n.start||x.p.at||'')}</td><td>${x.n.trial?esc(x.n.end||''):'-'}</td><td>${x.trial||x.tier==='free'?'0원':wonS(PLAN_P[x.tier][1])}</td></tr>`).join('')}</tbody></table>`
+    :`<div class="muted" style="padding:18px 4px;font-size:13.5px">아직 요금제 가입이 없어요.</div>`;
+  const upd=async(id,status,extra)=>{if(!db){toast('Supabase에 연결돼 있어야 처리할 수 있어요');return}
+    const a=ads.find(x=>x.id===id);const n={...jn(a),...(extra||{})};
+    const {error}=await db.from('reports').update({status,note:JSON.stringify(n)}).eq('id',id);if(error){console.error(error);toast('처리하지 못했어요');return}
+    await db.from('activity').insert({id:'a'+Date.now(),icon:'📣',title:`광고 ${status}: ${a.text} · ${(AD_T[a.cat]||['광고'])[0]}`,sub:'운영자 · '+NOW(),ord:Date.now()});
+    toast(`광고를 ‘${status}’(으)로 바꿨어요`);cloudLoad()};
+  $$('[data-adok]').forEach(b=>b.onclick=()=>{const a=ads.find(x=>x.id===b.dataset.adok),n=jn(a);upd(a.id,'노출 중',{start:NOW(),end:addD(NOW(),(n.weeks||1)*7-1)})});
+  $$('[data-adno]').forEach(b=>b.onclick=()=>upd(b.dataset.adno,'반려'));
+  $$('[data-adend]').forEach(b=>b.onclick=()=>upd(b.dataset.adend,'종료',{end:NOW()}));
+}
+$('#rvReload').onclick=()=>cloudLoad();
+
 /* ---------------- 렌더 ---------------- */
 function render(){
   const pend=allMenus().filter(m=>m.pending).length;$('#bQueue').textContent=pend;$('#bQueue').style.display=pend?'':'none';
   const op=S.reps.filter(r=>r.status==='접수'||r.status==='검토 중').length;$('#bRep').textContent=op;$('#bRep').style.display=op?'':'none';
+  const ap=REAL.filter(p=>String(p.menu_id).startsWith('ad:')&&p.status==='신청').length;$('#bAd').textContent=ap;$('#bAd').style.display=ap?'':'none';
   if(current==='overview')renderOverview();
   if(current==='explore')renderExplore();
   if(current==='queue')renderQueue();
   if(current==='reports')renderReports();
   if(current==='market')renderMarket();
   if(current==='demand')renderDemand();
+  if(current==='revenue')renderRevenue();
   if(current==='business')renderBiz();
 }
 const h=(location.hash||'').slice(1);
