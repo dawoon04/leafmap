@@ -539,7 +539,7 @@ input,select,textarea{font:inherit;color:inherit}
     <div class="lhero"><div class="mark"><svg width="38" height="38" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 4 9 4 17c0 1 .1 2 .3 3C6 13 11 9 16 8c-4 2-8 6-9.5 12H8c1-3 3-6 6-7.5 4-2 6-5 6-8.5Z" fill="#1F4D38"/></svg></div><h2 id="lgT">부산 채식 여행,<br><em>리프맵</em>으로 시작해요</h2><p data-t="lgP">메뉴마다 육수·양념 제품 성분까지 확인해 드려요</p></div>
     <form id="lgForm" class="lform" novalidate>
       <label class="f" for="lgName" data-t="lgName">닉네임</label>
-      <input id="lgName" type="text" maxlength="20" autocomplete="nickname" enterkeyhint="go" placeholder="예: 다운">
+      <input id="lgName" type="text" maxlength="20" autocomplete="nickname" enterkeyhint="go" placeholder="예: 홍길동">
       <div class="fl" data-t="lgDiet">내 식단</div>
       <div class="chips" id="dietSeg3"></div>
       <button class="btn full" type="submit" data-t="lgGo">시작하기</button>
@@ -814,7 +814,7 @@ function applyLang(){
   $('#lmap').setAttribute('aria-label',L('부산 채식 식당 지도','Map of veggie-friendly places in Busan'));
   $('#lgT').innerHTML=L('부산 채식 여행,<br><em>리프맵</em>으로 시작해요','Vegetarian Busan,<br>starts with <em>LeafMap</em>');
   if($('#splashT'))$('#splashT').textContent=L('부산 채식 메뉴, 성분까지 확인하고 고르기','Vegetarian Busan, checked to the broth');
-  $('#lgName').placeholder=L('예: 다운','e.g. Alex');
+  $('#lgName').placeholder=L('예: 홍길동','e.g. Alex');
   $('#oR').placeholder=L('예: 광안 비건하우스','e.g. Gwangan Vegan House');
   $('#oM').placeholder=L('예: 비건 짜장면','e.g. Vegan jjajangmyeon');
   $('#oP').placeholder=L('예: OO식품 춘장 500g','e.g. OO Foods black bean paste 500g');
